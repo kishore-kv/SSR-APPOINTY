@@ -1,0 +1,5 @@
+.config_wrapper {
+    min-height: 100vh;
+    position: relative;
+    top: 72px;
+}

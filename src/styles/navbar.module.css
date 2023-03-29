@@ -1,0 +1,30 @@
+.logo {
+    background: none;
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+}
+
+.logo_img {
+    width: 150px;
+    margin-top: -37px;
+    margin-left: -28px;
+    background-color: #fff;;
+}
+
+.header {
+    position:fixed;
+    width:100%;
+    left:0;
+    top:0;
+    right: 0;
+    z-index: 1000;
+}
+
+.link {
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: bolder;
+    padding: 10px;
+}

@@ -1,0 +1,42 @@
+.col {
+    padding: 8px 0;
+}
+
+.button {
+    left: 70%;
+}
+
+.name {
+    letter-spacing: 1px;
+    font-size: 16px;
+}
+
+.text_area {
+    height: 30px;
+    width: 880px;
+}
+
+.text_area_listing {
+    height: 30px;
+    width: 680px;
+}
+.text_area_wrapper {
+    height: 30px;
+    width: 400px;
+}
+
+.text_area_mapping {
+    height: 30px;
+}
+
+.delete_btn {
+    margin-left: 30px;
+}
+
+.primary_btn {
+    margin-left: 10px
+}
+
+.delete_btn :hover {
+    zoom: 1.1;
+}

@@ -1,0 +1,15 @@
+.login_wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar {
+    background-color: #055205 !important;
+}
+
+.validate {
+    color: red;
+}
+

@@ -1,0 +1,100 @@
+.main_class{
+    margin: 12px auto;
+    
+    padding:24px;
+    /* display: flex;
+    justify-content: center; */
+    /* border: 1px solid gray; */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #ffffff;
+}
+.text_center{
+    text-align: center;
+}
+.main_navbar{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    /* border-bottom: 1px solid gray; */
+}
+.mx_2{
+    margin: 0 5px;
+}
+.header_lable{
+    margin: 0 5px; 
+    font-style: italic;
+}
+ 
+input{
+    padding: 5px;
+    margin: 5px;
+    outline: none;
+    border-radius:5px;
+    border: 1px solid #1890ff;
+}
+input[type=file]{
+    border: none;
+}
+
+.main_separator{
+    border-width: 3px;
+    margin: 20px 0;
+}
+
+.main_wrapper{
+    margin: 12px auto;
+    width: 80%;
+    padding:24px;
+}
+.main_wrapper_forUpload{
+    margin: 12px auto;
+    width: 95%;
+    padding:24px;
+}
+.error{
+    color: red;
+    
+}
+
+.display_name_wrapper {
+    padding: 8px 10px;
+    margin-bottom: 55px;
+}
+.display_name_wrapper_forUpload {
+    padding: 8px 10px;
+    margin-bottom: 55px;
+    min-width: 80%;
+}
+
+.config_wrapper {
+    min-height: 100vh;
+    position: relative;
+    top: 72px;
+}
+.badge{
+    padding: 4px 8px;
+    background-color: #1890ff;
+    border-radius: 15px;
+    color: #ffffff;
+
+}
+.editButton{
+    margin: 5px; 
+    color: #1890ff;
+    cursor: pointer;
+    text-decoration: underline;
+
+}
+.formOutline{
+    padding: 10px 15px;
+    background-color:#ffffff ;
+    box-shadow: 0px 0px 9px 9px #c1c1c187;
+    margin-bottom: 15px;
+    min-width: 80%;
+
+}
+
+.marginBottom{
+    margin-bottom: 20px;
+}
