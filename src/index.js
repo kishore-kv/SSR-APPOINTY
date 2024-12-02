@@ -4,7 +4,7 @@ import { render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 // View
-import App from './components/App'
+import App from './components/app';
 
 // styles
 import 'antd/dist/antd.css'
