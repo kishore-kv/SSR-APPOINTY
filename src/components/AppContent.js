@@ -12,7 +12,7 @@ const AppContent = () => {
         <Switch>
           {routes.map((route, idx) => {
             return (
-              route.element && (
+              route.component && (
                 <Route
                   key={idx}
                   path={route.path}
