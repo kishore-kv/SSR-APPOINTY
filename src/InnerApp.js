@@ -1,21 +1,16 @@
 import React, { Suspense, useEffect } from 'react'
-import { StaticRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
+import { routes } from '../customroutes';
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
 
 // We use those styles to show code examples, you should remove them in your application.
 import './scss/examples.scss'
 
-// Containers
-const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
 // Pages
-const Login = React.lazy(() => import('./views/pages/login/Login'))
-const Register = React.lazy(() => import('./views/pages/register/Register'))
-const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
-const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
+
 
 const InnerApp = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
@@ -34,25 +29,23 @@ const InnerApp = () => {
 
     setColorMode(storedTheme)
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
-   console.log('=================',DefaultLayout); 
   return ( 
-    <StaticRouter>
-      <Suspense
-        fallback={
-          <div className="pt-3 text-center">
-            <CSpinner color="primary" variant="grow" />
-          </div>
-        }
-      >
-        <Routes>
+       <>
+         {/* <Routes>
           <Route exact path="/login" name="Login Page" element={<Login />} />
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           <Route path="*" name="Home" element={<DefaultLayout />} />
-        </Routes>
-      </Suspense>
-    </StaticRouter>
+        </Routes> */}
+        <Switch>
+              {routes.map(({ component, exact, path, isProtected }, index) => {
+                {console.log("===",path)}
+                return <Route exact={exact}  path={path} key={index} component={component} />
+                
+              })}
+            </Switch>
+        </>
   )
 }
 
