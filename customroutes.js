@@ -34,5 +34,10 @@ export const routes = [
         exact:true,
         isProtected:false
     },
-     
+     {
+        path:"/theme/colors",
+        component:Page500,
+        exact:true,
+        isProtected:false
+     }
 ]

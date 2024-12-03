@@ -100,6 +100,9 @@ module.exports = {
         extensions: ['.js', '.jsx', '.scss', '.css'],
         alias: {
             src: path.resolve(__dirname, 'src'),
+            '@components': path.resolve(__dirname, 'src/components/'),
+            '@views': path.resolve(__dirname, 'src/views/'),
+            '@layout': path.resolve(__dirname, 'src/layout/'),
         },
     },
 

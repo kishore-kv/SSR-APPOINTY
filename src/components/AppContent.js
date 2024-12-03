@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
-import { Navigate, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
+import Dashboard from '../../src/views/dashboard/Dashboard'
 
 // routes config
 import routes from '../routes'
@@ -17,12 +18,12 @@ const AppContent = () => {
                   path={route.path}
                   exact={route.exact}
                   name={route.name}
-                  component={route.element}
+                  component={route.component}
                 />
               )
             )
           })}
-          <Route path="/" element={<Navigate to="dashboard" replace />} />
+          <Route path="/" component={Dashboard} />
         </Switch>
 
     </CContainer>
