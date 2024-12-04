@@ -40,7 +40,6 @@ const InnerApp = () => {
         </Routes> */}
         <Switch>
               {routes.map(({ component, exact, path, isProtected }, index) => {
-                {console.log("===",path)}
                 return <Route exact={exact}  path={path} key={index} component={component} />
                 
               })}
