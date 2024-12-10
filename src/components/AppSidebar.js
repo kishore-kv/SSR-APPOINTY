@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -9,20 +9,34 @@ import {
   CSidebarHeader,
   CSidebarToggler,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import { CIcon } from '@coreui/icons-react';
 
 import { AppSidebarNav } from './AppSidebarNav'
 
 import { logo } from '../assets/brand/logo'
 import { sygnet } from '../assets/brand/sygnet'
+import {cilPlus,cilCircle,cilCalendar,cilUser,cilGift,cilTags,cilBan,cilUserFollow} from '@coreui/icons'
 
 // sidebar nav config
 import navigation from '../_nav'
+import CustomDropDown from './customComponents/CustomDropDown';
+
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  //custom dropdown levels
+  const dropdownItems = [
+    { label: 'Appointment', icon: cilCalendar },
+    { label: 'Service', icon: cilCircle },
+    { label: 'Staff', icon: cilUser },
+    { label: 'Customer', icon: cilUserFollow },
+    { label: 'Gift Certificate', icon: cilGift },
+    { label: 'Discount Coupon', icon: cilTags },
+    { label: 'Block Date/Time', icon: cilBan },
+  ];
 
   return (
     <CSidebar
@@ -37,8 +51,7 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
+              <div><CustomDropDown toggleIcon={cilPlus} items={dropdownItems} /></div>
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"
