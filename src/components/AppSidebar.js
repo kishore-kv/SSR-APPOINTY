@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -9,13 +9,9 @@ import {
   CSidebarHeader,
   CSidebarToggler,
 } from '@coreui/react'
-import { CIcon } from '@coreui/icons-react';
 
 import { AppSidebarNav } from './AppSidebarNav'
-
-import { logo } from '../assets/brand/logo'
-import { sygnet } from '../assets/brand/sygnet'
-import {cilPlus,cilCircle,cilCalendar,cilUser,cilGift,cilTags,cilBan,cilUserFollow} from '@coreui/icons'
+import {cilPlus,cilCircle,cilCalendar,cilTie,cilGift,cilTags,cilBan,cilUserFollow} from '@coreui/icons'
 
 // sidebar nav config
 import navigation from '../_nav'
@@ -31,7 +27,7 @@ const AppSidebar = () => {
   const dropdownItems = [
     { label: 'Appointment', icon: cilCalendar },
     { label: 'Service', icon: cilCircle },
-    { label: 'Staff', icon: cilUser },
+    { label: 'Staff', icon:cilTie  },
     { label: 'Customer', icon: cilUserFollow },
     { label: 'Gift Certificate', icon: cilGift },
     { label: 'Discount Coupon', icon: cilTags },
@@ -53,11 +49,11 @@ const AppSidebar = () => {
         <CSidebarBrand to="/">
               <div><CustomDropDown toggleIcon={cilPlus} items={dropdownItems} /></div>
         </CSidebarBrand>
-        <CCloseButton
+        {/* <CCloseButton
           className="d-lg-none"
           dark
           onClick={() => dispatch({ type: 'set', sidebarShow: false })}
-        />
+        /> */}
       </CSidebarHeader>
       <AppSidebarNav items={navigation} />
       <CSidebarFooter className="border-top d-none d-lg-flex">

@@ -1,0 +1,23 @@
+.custom-dropdown-toggle {
+    /* Remove any default caret icon */
+    background: none; /* Optional: Keep button styling minimal */
+  }
+
+  .custom-dropdown-toggle::after {
+    content: none !important; /* Remove the default dropdown caret */
+  }
+
+  .list-color{
+    background-color: #fff;
+  }
+
+  .meeting__card{
+    background: #fff;
+    justify-content: space-around;
+    border-radius: 2em;
+    width: 100%;
+  }
+  .crow_pad{
+    padding-inline: 3em;
+  }
+  

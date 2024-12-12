@@ -99,6 +99,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx', '.scss', '.css'],
         alias: {
+            path: require.resolve('path-browserify'),
             src: path.resolve(__dirname, 'src'),
             '@components': path.resolve(__dirname, 'src/components/'),
             '@views': path.resolve(__dirname, 'src/views/'),
