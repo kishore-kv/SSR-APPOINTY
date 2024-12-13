@@ -12,16 +12,30 @@ import '@coreui/coreui/dist/css/coreui.min.css';
 import CustomAppointmentModal from './CustomAppointmentModal';
 
 function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
-    const [isOpen , setIsOpen] = useState(false);
+    // const [isOpen , setIsOpen] = useState(false);
 
-    const hanldeClick = (item) => {
-      if(item && item.label === 'Appointment'){
-           setIsOpen(!isOpen)
+    const hanldeClick = (item,e) => {
+      // console.log('=========',item);
+      console.log('======',e);
+      
+       if(e.target.text === 'Appointment'){
+        setVisible(true)
       }
     }
+     
+    /** Handle modal in parent component */
+    const [visible, setVisible] = useState(false); // Modal visibility state
+
+    const handleShowModal = () => {
+      setVisible(true); // Show the modal
+    };
+  
+    const handleCloseModal = () => {
+      setVisible(false); // Hide the modal
+    };
 
     const DropdownItems =  items.map((item, index) => (
-      <CDropdownItem key={index}  onClick={() => hanldeClick(item)} className='primary'>
+      <CDropdownItem key={index} style={{cursor:"pointer"}} onClick={(e) => hanldeClick(item ,e)} className='primary'>
         {item.icon && <CIcon icon={item.icon} className="me-2" />}
         {item.label}
       </CDropdownItem>
@@ -43,8 +57,10 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
       
     </CDropdown>
    
-     {isOpen && <CustomAppointmentModal visible={isOpen} title={'Appointment'} options={[{ icon: cilTie, label: 'Staff', onClick: () => console.log('Staff clicked') },
-    { icon: cilCalendar, label: 'Select Date', onClick: () => console.log('Date clicked') }]}
+     {<CustomAppointmentModal 
+     onClose={handleCloseModal}
+     visible={visible} 
+     title={'Appointment'}   
     />}
      </>
   );

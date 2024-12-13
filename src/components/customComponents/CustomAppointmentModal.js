@@ -14,6 +14,7 @@ import {
 import CustomAppointmentForm from './CustomAppointmentForm';
 import { cilAddressBook, cilCalendar, cilCircle, cilClock, cilEducation } from '@coreui/icons';
 import { types } from '@babel/core';
+// import './CustomAppointmentModal.css';
 
 function CustomAppointmentModal({
   visible,
@@ -23,7 +24,7 @@ function CustomAppointmentModal({
   onAction,
   actionButtonText = 'Submit',
   searchPlaceholder = 'Search...',
-  backgroundColor = '#F5F5F5',
+  backgroundColor = '#00bcd4',
 }) {
   
    const formItems = [
@@ -34,10 +35,10 @@ function CustomAppointmentModal({
     {ion:cilEducation,type:'text'}]
         
   return (
-    <CModal visible={visible} onClose={onClose}>
+    <CModal visible={visible} onClose={onClose} size='md'>
       {/* Modal Header */}
-      <CModalHeader>
-        <CModalTitle>{title}</CModalTitle>
+      <CModalHeader style={{backgroundColor}}>
+        <CModalTitle style={{color:"#fff"}}>{title}</CModalTitle>
         {/* <CButton
           className="btn-close"
           aria-label="Close"

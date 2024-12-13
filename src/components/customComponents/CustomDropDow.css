@@ -11,7 +11,7 @@
     background-color: #fff;
   }
   .input-container{
-    
+    height: 1.9em;
   }
   .meeting__card{
     background: #fff;
@@ -24,23 +24,52 @@
   }
 
 /*styling form input*/
-.input-minimal{
- 
-  border: 1px solid #bf0101;
-  border-radius: 5px;
-  width: 100%;
-  transition: border-color 0.2s ease-in-out;
-}
+
 
 /**/
 .icon-input-wrapper{
-  align-items: center;
-  background:#dfd1d1;
+    align-items: center;
+    background: hsla(0, 1%, 100%, .2);
     justify-content: flex-start;
     gap: 1.15em;
+}
+
+.form-icon{
+  color: #fff !important;
+}
+.input-minimal{
+  background: hsla(0, 1%, 100%, 0) !important;
+   border: 0 !important;
+   height:1.84em;
+  width:16em !important;
 }
 
 span.icon.icon-pointer-right{
   position: absolute;
   left:2.8em;
+}
+
+.input-selected{
+  background: #fff !important;
+}
+
+.non-selected-icon{
+  color: black;
+}
+.dropdown_card{
+  border: 0 !important;
+  background: hsla(0, 1%, 100%, .2) !important;
+  border-radius:1em !important;
+  height:1.9em !important; 
+  margin-bottom:0.5em !important;
+  color: #fff !important;
+  padding-block: 0.2em !important;
+}
+
+.unselected-icon-input-wrapper{
+  background: #fff;
+}
+
+input-selected:focus {
+  box-shadow: none !important;
 }
