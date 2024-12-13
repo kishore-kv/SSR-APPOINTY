@@ -6,5 +6,6 @@ module.exports = {
   staticKeys:"/global-config/config/staticKeys",
   supplierConfig:"/global-config/config/supplierConfig",
   configList:"/global-config/config/configList",
+  locations:"/location/fetchAll"
   //config:"/global-config/config"
 };

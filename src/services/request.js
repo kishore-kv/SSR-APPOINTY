@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const getHeaders = () => {
   return {
     Authorization: "Bearer" + " " + sessionStorage.getItem("token"),
@@ -7,8 +8,12 @@ const getHeaders = () => {
 };
 
 export const request = async (url) => {
-  try {
+  try {  
+    console.log(url);
+     
     const data = await axios["get"](url);
+    console.log('==========data',data);
+    
     if (!data) {
       throw Error("Empty data from get settings");
     }

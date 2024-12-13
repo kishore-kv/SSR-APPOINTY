@@ -15,9 +15,6 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
     // const [isOpen , setIsOpen] = useState(false);
 
     const hanldeClick = (item,e) => {
-      // console.log('=========',item);
-      console.log('======',e);
-      
        if(e.target.text === 'Appointment'){
         setVisible(true)
       }
@@ -56,7 +53,7 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
       </CDropdownMenu>
       
     </CDropdown>
-   
+    
      {<CustomAppointmentModal 
      onClose={handleCloseModal}
      visible={visible} 

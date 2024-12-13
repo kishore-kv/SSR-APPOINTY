@@ -5,6 +5,7 @@ const logger = require("../logger");
 
 
 var reactAppUrl = process && process.env && process.env.REACT_APP_BASE_URL;
+var reactAppointyUrl = process && process.env && process.env.REACT_APPOINTY_BASE_URL;
 debugger;
 module.exports = {
   loginService: async (req, res, next) => {
@@ -57,6 +58,16 @@ module.exports = {
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
     res.status(statusCode).send(response && response.data);
+  }, 
+  getAllLocations: async (req, res, next) => {
+    const pageNo = req.params.page || "0";
+    const limitNo = req.params.limit || '10';
+    let finalUrl = `${reactAppointyUrl}${endpoints.locations}?page=${pageNo}&limit=${limitNo}`;
+    console.log("finalUrl===",finalUrl);
+    let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
   },
+
   
 };

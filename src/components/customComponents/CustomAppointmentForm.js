@@ -34,7 +34,7 @@ const CustomAppointmentForm = ({formItems}) => {
                     <CIcon icon={formItem.ion} className={`${isSelected ?`non-selected-icon`: 'form-icon'}`}/>
                </span>
                <span className="meeting__card__name a-overflow-visible">
-                  <CFormInput  onBlur={(e) => e.target.blur()} className={`input-minimal ${ isSelected ?`input-selected`: ''}`}  value={inputValues[index]} onChange={(e)=>handleInputChange(index , e)} type={formItem.type}/>
+                  <CFormInput  className={`input-minimal ${ isSelected ?`input-selected`: ''}`}  value={inputValues[index]} onChange={(e)=>handleInputChange(index , e)} type={formItem.type}/>
                </span>
             </div>
          </div>})

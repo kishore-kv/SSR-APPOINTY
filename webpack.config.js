@@ -105,10 +105,10 @@ module.exports = {
             '@views': path.resolve(__dirname, 'src/views/'),
             '@layout': path.resolve(__dirname, 'src/layout/'),
             'react-router-dom': path.resolve('./node_modules/react-router-dom'),
-            fallback: {
-                fs: false, // Disable fs for frontend
-              }
         },
+        fallback: {
+            fs: false, // Disable fs for frontend
+          }
     },
 
     optimization: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CModal,
   CModalHeader,
@@ -11,10 +11,13 @@ import {
   CListGroupItem,
 } from '@coreui/react';
 
+
 import CustomAppointmentForm from './CustomAppointmentForm';
 import { cilAddressBook, cilCalendar, cilCircle, cilClock, cilEducation } from '@coreui/icons';
 import { types } from '@babel/core';
-// import './CustomAppointmentModal.css';
+import { useEffect } from 'react';
+import { request } from '../../services/request';
+import './CustomModal.css';
 
 function CustomAppointmentModal({
   visible,
@@ -33,9 +36,20 @@ function CustomAppointmentModal({
     {ion:cilCalendar,type:'date'},
     {ion:cilClock,type:'time'},
     {ion:cilEducation,type:'text'}]
+
+   const [locations , setLocations] = useState([ ]);
+
+   useEffect(async()=>{
+    console.log('=========effect');
+    
+      const response = await request('/getAllLocations/page=1&limit=10');
+      console.log('============',response);
+      
+   },[ ])
         
   return (
-    <CModal visible={visible} onClose={onClose} size='md'>
+    <div className='responsive'>
+     <CModal visible={visible} onClose={onClose} className='resp'>
       {/* Modal Header */}
       <CModalHeader style={{backgroundColor}}>
         <CModalTitle style={{color:"#fff"}}>{title}</CModalTitle>
@@ -62,6 +76,7 @@ function CustomAppointmentModal({
         </CButton>
       </CModalFooter>
     </CModal>
+    </div>
   );
 }
 
