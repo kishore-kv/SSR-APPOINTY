@@ -10,6 +10,11 @@ import App from './components/app';
 import 'antd/dist/antd.css'
 import './index.css'
 
+// Mock the `fs` module for browser environments
+if (typeof window !== 'undefined') {
+  global.fs = {};
+}
+
 // context
 import RootProvider from './Context/RootProvider'
 

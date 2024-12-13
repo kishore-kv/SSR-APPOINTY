@@ -11,9 +11,8 @@ import {
   CListGroupItem,
 } from '@coreui/react';
 
-import { CIcon } from '@coreui/icons-react';
 import CustomAppointmentForm from './CustomAppointmentForm';
-import { cilAddressBook } from '@coreui/icons';
+import { cilAddressBook, cilCalendar, cilCircle, cilClock, cilEducation } from '@coreui/icons';
 import { types } from '@babel/core';
 
 function CustomAppointmentModal({
@@ -24,10 +23,15 @@ function CustomAppointmentModal({
   onAction,
   actionButtonText = 'Submit',
   searchPlaceholder = 'Search...',
-  backgroundColor = '#00A9CE',
+  backgroundColor = '#F5F5F5',
 }) {
   
-   const formItems = [{ion:cilAddressBook,type:'text'},{ion:cilAddressBook,type:'text'},{ion:cilAddressBook,type:'text'}]
+   const formItems = [
+    {ion:cilCircle,type:'text'},
+    {ion:cilAddressBook,type:'text'},
+    {ion:cilCalendar,type:'date'},
+    {ion:cilClock,type:'time'},
+    {ion:cilEducation,type:'text'}]
         
   return (
     <CModal visible={visible} onClose={onClose}>

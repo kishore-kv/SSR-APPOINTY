@@ -10,7 +10,9 @@
   .list-color{
     background-color: #fff;
   }
-
+  .input-container{
+    
+  }
   .meeting__card{
     background: #fff;
     justify-content: space-around;
@@ -20,4 +22,25 @@
   .crow_pad{
     padding-inline: 3em;
   }
-  
+
+/*styling form input*/
+.input-minimal{
+ 
+  border: 1px solid #bf0101;
+  border-radius: 5px;
+  width: 100%;
+  transition: border-color 0.2s ease-in-out;
+}
+
+/**/
+.icon-input-wrapper{
+  align-items: center;
+  background:#dfd1d1;
+    justify-content: flex-start;
+    gap: 1.15em;
+}
+
+span.icon.icon-pointer-right{
+  position: absolute;
+  left:2.8em;
+}
