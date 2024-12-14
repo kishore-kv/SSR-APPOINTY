@@ -1,6 +1,6 @@
 import React from "react";
 import { CButton, CContainer, CRow, CCol } from "@coreui/react";
-// import "./AppointmentPage.css"; // CSS for styling
+import "./AppointmentPage.css"; // CSS for styling
 
 const AppointmentPage = () => {
   return (

@@ -10,6 +10,8 @@ import CIcon from '@coreui/icons-react';
 import {cilCalendar,cilTie,cilGift,cilTags,cilBan,cilUserFollow} from '@coreui/icons'
 import '@coreui/coreui/dist/css/coreui.min.css';
 import CustomAppointmentModal from './CustomAppointmentModal';
+import CustomServiceModal from './CustomServiceModal';
+
 
 function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
     // const [isOpen , setIsOpen] = useState(false);
@@ -17,18 +19,22 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
     const hanldeClick = (item,e) => {
        if(e.target.text === 'Appointment'){
         setVisible(true)
+      }if(e.target.text === 'Service'){
+        setVisibleTwo(true)
       }
     }
      
     /** Handle modal in parent component */
-    const [visible, setVisible] = useState(false); // Modal visibility state
+    const [visible, setVisible] = useState(false);
+    const [visibleTwo, setVisibleTwo] = useState(false); // Modal visibility state
 
-    const handleShowModal = () => {
-      setVisible(true); // Show the modal
-    };
+    // const handleShowModal = () => {
+    //   setVisible(true); // Show the modal
+    // };
   
     const handleCloseModal = () => {
       setVisible(false); // Hide the modal
+      setVisibleTwo(false);
     };
 
     const DropdownItems =  items.map((item, index) => (
@@ -59,6 +65,12 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
      visible={visible} 
      title={'Appointment'}   
     />}
+    {<CustomServiceModal 
+     onClose={handleCloseModal}
+     visible={visibleTwo} 
+     title={'New Service'}   
+    />}
+    
      </>
   );
 }

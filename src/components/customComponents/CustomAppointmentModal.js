@@ -61,7 +61,7 @@ function CustomAppointmentModal({
       </CModalHeader>
 
       {/* Modal Body */}
-      <CModalBody className="p-4 d-flex justify-content-center" style={{ backgroundColor }}>
+      <CModalBody className="p-4 d-flex justify-content-center w-100" style={{ backgroundColor }}>
        <CustomAppointmentForm formItems={formItems}/>
       </CModalBody>
 

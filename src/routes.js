@@ -50,7 +50,7 @@ import Toasts from './views/notifications/toasts/Toasts';
 
 // Widgets
 import Widgets from './views/widgets/Widgets';
-import AppointmentPage from './views/pages/AppointmentPage';
+import AppointmentPage from './views/portal/myspace/AppointmentPage';
 
 
 const routes = [
@@ -58,7 +58,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
-  { path: '/theme/appointment', name: 'Colors', component: AppointmentPage },
+  { path: '/portal/myspace', name: 'myspace', component: AppointmentPage},
   { path: '/theme/typography', name: 'Typography', component: Typography },
   { path: '/base', name: 'Base', component: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', component: Accordion },

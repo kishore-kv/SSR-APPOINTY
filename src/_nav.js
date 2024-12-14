@@ -13,7 +13,7 @@ import {
   cilBullhorn
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle ,CNavLink} from '@coreui/react'
-import AppointmentPage from './views/pages/AppointmentPage'
+import AppointmentPage from './views/portal/myspace/AppointmentPage'
 
 
 const _nav = [
@@ -21,7 +21,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'My Space Area',
-    to: '/theme/colors',
+    to: '/portal/myspace',
     icon: <CIcon icon={cilBriefcase} customClassName="nav-icon" />,
   }, 
   

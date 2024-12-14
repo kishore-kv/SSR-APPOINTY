@@ -23,7 +23,7 @@ const AppContent = () => {
               )
             )
           })}
-          <Route path="/" component={Dashboard} />
+          {/* <Route path="/" component={Dashboard} /> */}
         </Switch>
 
     </CContainer>

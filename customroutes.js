@@ -4,6 +4,7 @@
  import Register  from "./src/views/pages/register/Register"
  import Page404 from "./src/views/pages/page404/Page404"
  import Page500 from "./src/views/pages/page500/Page500"
+import AppointmentPage from "src/views/portal/myspace/AppointmentPage"
   
 
 
@@ -35,8 +36,8 @@ export const routes = [
         isProtected:false
     },
      {
-        path:"/theme/colors",
-        component:Page500,
+        path:"/portal/myspace",
+        component:AppointmentPage,
         exact:true,
         isProtected:false
      }
