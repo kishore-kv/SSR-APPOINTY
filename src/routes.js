@@ -51,6 +51,7 @@ import Toasts from './views/notifications/toasts/Toasts';
 // Widgets
 import Widgets from './views/widgets/Widgets';
 import AppointmentPage from './views/portal/myspace/AppointmentPage';
+import AppointmentDashboard from './views/portal/dashboard/AppointmentDashboard';
 
 
 const routes = [
@@ -59,6 +60,7 @@ const routes = [
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/portal/myspace', name: 'myspace', component: AppointmentPage},
+  { path: '/portal/dashboard', name: 'dashboard', component: AppointmentDashboard},
   { path: '/theme/typography', name: 'Typography', component: Typography },
   { path: '/base', name: 'Base', component: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', component: Accordion },

@@ -34,7 +34,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Dashboard',
-    to: '/base',
+    to: '/portal/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />
   },{
     component: CNavItem,
