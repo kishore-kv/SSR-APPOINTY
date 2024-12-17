@@ -16,7 +16,7 @@ import CustomAppointmentForm from './CustomAppointmentForm';
 import { cilAddressBook, cilCalendar, cilCircle, cilClock, cilEducation } from '@coreui/icons';
 import { types } from '@babel/core';
 import { useEffect } from 'react';
-import { request } from '../../services/request';
+import { request, requestPost } from '../../services/request';
 import './CustomModal.css';
 
 function CustomAppointmentModal({
@@ -36,16 +36,29 @@ function CustomAppointmentModal({
     {ion:cilCalendar,type:'date'},
     {ion:cilClock,type:'time'},
     {ion:cilEducation,type:'text'}]
+   
+    const [data , setData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
-   const [locations , setLocations] = useState([ ]);
-
-   useEffect(async()=>{
-    console.log('=========effect');
-    
-      const response = await request('/getAllLocations/page=1&limit=10');
-      console.log('============',response);
-      
-   },[ ])
+   useEffect(() => {
+    const fetchData = async () => {
+      const payload = { limit: 10, page: 0 };
+      try {
+        const response = await requestPost('/getAllLocations', payload);
+        if (response && response.data.status === "Success") {
+          const { data } = response;
+          setData(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
         
   return (
     <div className='responsive'>
@@ -62,7 +75,11 @@ function CustomAppointmentModal({
 
       {/* Modal Body */}
       <CModalBody className="p-4 d-flex justify-content-center w-100" style={{ backgroundColor }}>
-       <CustomAppointmentForm formItems={formItems}/>
+      {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <CustomAppointmentForm formItems={formItems} locationsData={data} />
+        )}
       </CModalBody>
 
       {/* Modal Footer */}

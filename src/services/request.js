@@ -9,7 +9,7 @@ const getHeaders = () => {
 
 export const request = async (url) => {
   try {  
-    console.log(url);
+    console.log('++++++++++++++++++++++++++++++++++++url',url);
      
     const data = await axios["get"](url);
     console.log('==========data',data);
@@ -38,6 +38,8 @@ export const requestPdf = async (url) => {
 };
 
 export const requestPost = async (url, formData = {}, method = "post") => {
+
+  
   try {
     const data = await axios[method](url, formData, {
       headers: getHeaders(),

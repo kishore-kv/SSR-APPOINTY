@@ -1,8 +1,15 @@
 import React from "react";
 import { CButton, CContainer, CRow, CCol } from "@coreui/react";
 import "./AppointmentPage.css"; // CSS for styling
+import { useModal } from "src/context/modal/ModalContext";
+
 
 const AppointmentPage = () => {
+   
+  const {openModal} = useModal();
+  const handleClick = ( ) => {
+      openModal();
+  }
   return (
     <div className="appointment-page">
       <CContainer fluid className="overlay">
@@ -12,7 +19,7 @@ const AppointmentPage = () => {
             <p className="overlay-description">
               You don't have any appointments today
             </p>
-            <CButton color="light" className="appointment-btn">
+            <CButton color="light" className="appointment-btn" onClick={() => handleClick()}>
               <span>+</span> Appointment
             </CButton>
           </CCol>

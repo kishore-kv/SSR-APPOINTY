@@ -1,13 +1,13 @@
 /* Full-page background with a responsive image */
 
 .appointment-page {
-    background: rebeccapurple;
     width: 100%;
     height: 100vh; 
-    background-image: url("../../../assets/images/components.webp");
+    background-image: url("../../../assets/images/appointimg.svg");
+    border: 2px solid red;
     background-size: cover;
     background-position: center;
-     
+  
   }
   /*
 

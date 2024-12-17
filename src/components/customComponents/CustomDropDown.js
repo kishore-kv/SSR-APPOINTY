@@ -5,12 +5,15 @@ import {
   CDropdownToggle,
   CDropdownMenu,
   CDropdownItem,
+  CRow,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import {cilCalendar,cilTie,cilGift,cilTags,cilBan,cilUserFollow} from '@coreui/icons'
 import '@coreui/coreui/dist/css/coreui.min.css';
 import CustomAppointmentModal from './CustomAppointmentModal';
 import CustomServiceModal from './CustomServiceModal';
+import CustomCustomerModal from './CustomCustomerModal';
+import { useModal } from 'src/context/modal/ModalContext';
+
 
 
 function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
@@ -18,23 +21,27 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
 
     const hanldeClick = (item,e) => {
        if(e.target.text === 'Appointment'){
-        setVisible(true)
+         openModal()
       }if(e.target.text === 'Service'){
         setVisibleTwo(true)
+      }if(e.target.text === 'Customer') {
+         setVisibleThree(true)
+      } 
       }
-    }
      
     /** Handle modal in parent component */
-    const [visible, setVisible] = useState(false);
-    const [visibleTwo, setVisibleTwo] = useState(false); // Modal visibility state
+    // const [visible, setVisible] = useState(false);
+    const [visibleTwo, setVisibleTwo] = useState(false); 
+    const [visibleThree, setVisibleThree] = useState(false); // Modal visibility state
 
     // const handleShowModal = () => {
     //   setVisible(true); // Show the modal
     // };
-  
+    const {closeModal , isModalOpen , openModal} = useModal();
     const handleCloseModal = () => {
-      setVisible(false); // Hide the modal
+      // setVisible(false); // Hide the modal
       setVisibleTwo(false);
+      setVisibleThree(false);
     };
 
     const DropdownItems =  items.map((item, index) => (
@@ -51,6 +58,7 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
       <CDropdownToggle color={toggleColor} className='custom-dropdown-toggle'>
         {toggleIcon && <CIcon icon={toggleIcon} className="me-2" />}
       </CDropdownToggle>
+      
 
       {/* Dropdown Menu */}
       
@@ -61,14 +69,21 @@ function CustomDropDown({ toggleIcon, items, toggleColor = 'primary' }) {
     </CDropdown>
     
      {<CustomAppointmentModal 
-     onClose={handleCloseModal}
-     visible={visible} 
+     onOpen={openModal}
+     onClose={closeModal}
+     visible={isModalOpen} 
      title={'Appointment'}   
     />}
     {<CustomServiceModal 
      onClose={handleCloseModal}
      visible={visibleTwo} 
      title={'New Service'}   
+    />}
+
+    {<CustomCustomerModal
+      onClose={handleCloseModal}
+      visible={visibleThree}
+      title={'New Customer'}
     />}
     
      </>
