@@ -33,7 +33,7 @@ function CustomCustomerModal(
     
           {/* Modal Body */}
           <CModalBody className="p-4 d-flex justify-content-center service-modal-body" style={{ backgroundColor }}>
-             hiii
+              
           </CModalBody>
     
           <CModalFooter style={{ backgroundColor }}>

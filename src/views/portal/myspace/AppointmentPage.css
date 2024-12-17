@@ -1,6 +1,6 @@
 /* Full-page background with a responsive image */
 
-.appointment-page {
+/* .appointment-page {
     width: 100%;
     height: 100vh; 
     background-image: url("../../../assets/images/appointimg.svg");
@@ -8,7 +8,7 @@
     background-size: cover;
     background-position: center;
   
-  }
+  } */
   /*
 
   .overlay {
@@ -55,3 +55,38 @@
     }
   }
    */
+   .custom-time-picker {
+    position: relative;
+    width: 250px;
+  }
+   
+  .time-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+   
+  .flatpickr-time {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr); /* Four columns */
+    gap: 10px; /* Spacing between slots */
+    padding: 10px;
+  }
+   
+  .flatpickr-time .flatpickr-minute,
+  .flatpickr-time .flatpickr-hour {
+    color: #ff0000; /* Red color for time slots */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+   
+  .flatpickr-time .flatpickr-minute:hover,
+  .flatpickr-time .flatpickr-hour:hover {
+    background-color: #f0f0f0; /* Light hover background */
+    border-radius: 5px;
+  }
+

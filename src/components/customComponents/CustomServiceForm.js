@@ -4,6 +4,9 @@ import CIcon from '@coreui/icons-react'
 import { CDropdown, CForm, CFormInput, CRow, CFormTextarea,CFormLabel, CFormFloating, CDropdownItem, CFormSelect, CCol } from '@coreui/react'
 import './CustomServiceForm.css'
 import Select from 'react-select';
+import "flatpickr/dist/themes/material_green.css";
+import Flatpickr from "react-flatpickr";
+import CustomTimePicker from 'src/views/portal/myspace/child'
 function CustomServiceForm() {
 
 
@@ -81,7 +84,6 @@ function CustomServiceForm() {
           <CFormLabel htmlFor="description" className='custom_description'>Description</CFormLabel>
          </CFormFloating>
         </CRow>
-
       </CRow>
     </CForm>
   )

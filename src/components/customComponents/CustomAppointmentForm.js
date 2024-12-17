@@ -5,6 +5,9 @@ import React, { useEffect, useState } from 'react'
 import './CustomDropDow.css'
 import { request } from '../../services/request'
 
+import "flatpickr/dist/themes/material_green.css";
+import Flatpickr from "react-flatpickr";
+
 /*  This component consists of two children 1.dropDown for location and 2.formInputs
  */
 
@@ -29,8 +32,24 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
     updatedValues[index] = e.target.value;
     setInputValues(updatedValues)
   }
-
+    const handleFlatPicker = (value) => {
+       console.log(Date(value[0]));
+       
+    }
   const formInputs = formItems.map((formItem, index) => {
+     const options = formItem.type === 'time' ? {
+        enableTime: true,       // Enable time selection
+        noCalendar: true,       // Disable calendar
+        dateFormat: "h:i K",    // Time format: 12-hour with AM/PM
+        time_24hr: false,       // Use 12-hour format
+        minuteIncrement: 15,    // Show times in 15-minute intervals
+        minTime: "02:00",       // Earliest selectable time
+        maxTime: "15:15",       // Latest selectable time
+        defaultHour: 2,  
+        mode:"range"       // Default hour (optional)
+
+  }: { minDate: "2017-01-01" };
+        
     const isSelected = selectedIndex === index;
     return <div key={index} class="mb-2 mt-2 d-flex input-container" onClick={() => handleSelect(index)}>
       {isSelected && <span class="icon icon-pointer-right selected-pointer white-text">
@@ -41,8 +60,9 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
           <CIcon icon={formItem.ion} className={`${isSelected ? `non-selected-icon` : 'form-icon'}`} />
         </span>
         <span className="meeting__card__name a-overflow-visible">
-          <CFormInput className={`input-minimal ${isSelected ? `input-selected` : ''}`} value={inputValues[index]} onChange={(e) => handleInputChange(index, e)} type={formItem.type} />
-        </span>
+          {(formItem.type === 'date' || formItem.type === 'time') ? <Flatpickr options={options} onChange={(value)=>handleFlatPicker(value)}/>
+          :<CFormInput className={`input-minimal ${isSelected ? `input-selected` : ''}`} value={inputValues[index]} onChange={(e) => handleInputChange(index, e)} type={formItem.type} />
+          }</span>
       </div>
     </div>
   })
@@ -90,6 +110,7 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
           </CDropdownMenu>
         </CDropdown>
         {formInputs}
+       
       </CRow>
     </CForm>
   )

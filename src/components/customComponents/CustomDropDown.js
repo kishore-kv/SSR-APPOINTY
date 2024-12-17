@@ -11,7 +11,7 @@ import CIcon from '@coreui/icons-react';
 import '@coreui/coreui/dist/css/coreui.min.css';
 import CustomAppointmentModal from './CustomAppointmentModal';
 import CustomServiceModal from './CustomServiceModal';
-import CustomCustomerModal from './CustomCustomerModal';
+import CustomCustomerModal from './customermodal/CustomCustomerModal';
 import { useModal } from 'src/context/modal/ModalContext';
 
 
