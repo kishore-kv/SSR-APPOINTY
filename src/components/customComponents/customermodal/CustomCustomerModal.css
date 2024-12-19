@@ -4,7 +4,6 @@
     gap: 1em;
 }
 
-
 .custom_icon_input {
     display: flex;
     width: 100%;
@@ -17,8 +16,6 @@
     border:none;
     outline:none;
 }
-
-
 .row_name_custom{
     height: 50px;
     border: 1px solid red;
@@ -36,8 +33,6 @@
     align-items: center;
     display: flex;
 }
-
-
 input::placeholder {
 	opacity: 0;
 }
@@ -58,4 +53,16 @@ input::placeholder {
 input:not(:placeholder-shown) + label {
   transform: translateY(calc(-50% - var(--pad))) scale(.8);
   color: var(--accent);
+}
+
+label.timezone_labl {
+    font-size:10px;
+    /* z-index:11; */
+    transform:translateY(-10px)
+}
+
+.custom_two_select_col {
+    gap:15%;
+    width: 100%;
+    display: flex;
 }

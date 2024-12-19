@@ -19,7 +19,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import Select from 'react-select';
 import './CustomCustomerModal.css';
-import { cibLibreoffice, cilChatBubble, cilEnvelopeClosed, cilFax, cilHandPointRight, cilHouse, cilPlus, cilSend, cilUser } from '@coreui/icons';
+import { cibLibreoffice, cilChatBubble, cilEnvelopeClosed, cilFax, cilGlobeAlt, cilHandPointRight, cilHouse, cilPlus, cilSend, cilUser } from '@coreui/icons';
 
 function CustomCustomerModal(
   { visible,
@@ -30,7 +30,7 @@ function CustomCustomerModal(
     searchPlaceholder = 'Search...',
     backgroundColor = '#FFF' }) {
   
-      const options = [
+    const options = [
         { value: 'chocolate', label: 'Chocolate' },
         { value: 'strawberry', label: 'Strawberry' },
         { value: 'vanilla', label: 'Vanilla' },
@@ -40,6 +40,16 @@ function CustomCustomerModal(
       const handleChange = (selectedOption) => {
         setSelectedCategory(selectedOption);
       };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const customStyle = {
+    control: (provided) => ({
+      ...provided,
+      border: 'none', // Remove border
+      boxShadow: 'none', // Remove outline
+      // padding: '4px', // Optional: Add padding for better appearance
+    })
+  }
+  
 
   return (
     <CModal visible={visible} onClose={onClose} className='service'>
@@ -182,67 +192,176 @@ function CustomCustomerModal(
           </CRow>
           <span></span>
           </CRow>
-          
-          
+          {/* COUNTYR && STATE */}
           <CRow>
-          <div>
-            <label htmlFor="category">Select Category</label>
-            <Select
-              id="category"
-              name="category"
+          <CRow className='row_name_custom'>
+            <CCol xs={12} className='d-flex align-items-center p-1'>
+              <div className='custom_two_select_col'>
+              <CCol xs={5} className='custom_col_item'>
+                <CIcon icon={cilHandPointRight} size='lg' />
+                <div className="custom_icon_input d-flex align-items-center">
+                <CIcon icon={cilGlobeAlt} />
+                <div class="form-group w-100">
+                <Select
+              id="timezone"
+              name="timezone"
               options={options}
               value={selectedCategory}
               onChange={handleChange}
+              onMenuOpen={() => setIsDropdownOpen(true)}
+              onMenuClose={() => setIsDropdownOpen(false)}
               isSearchable
               isClearable
               isMulti={false} // Set to true for multi-select
               closeMenuOnSelect={true}
-              placeholder="Select a category"
+              placeholder=""
+              styles={customStyle}
             />
-          </div>
-          </CRow>
-          <CRow>
-          <CCol xs={12} className='d-flex'>
-                <CCol  style={{background:'yellow'}} xs={11} className='custom_col_item'>
-              <CIcon icon={cilHandPointRight} size='lg' style={{ color: "#fff" }} />
-              <CIcon icon={cilUser}/>
-              <CFormFloating>
-              <CFormInput
-            placeholder=""
-            id="name"
-            className='custom_input_name'
-          />
-          <CFormLabel htmlFor="name" className='custom_name'>Name</CFormLabel>
-         </CFormFloating>
-          
+                 <label for="timezone" className={`${(isDropdownOpen || (!isDropdownOpen && selectedCategory))? "timezone_labl":''}`}>Time Zone</label>
+                </div>
+                </div>
               </CCol>
-              
-              <CCol xs={1}>
-                <CIcon icon={cilChatBubble}/>
+              <CCol xs={5} className='custom_col_item'>
+                <CIcon icon={cilHandPointRight} size='lg' />
+                <div className="custom_icon_input d-flex align-items-center">
+                <CIcon icon={cilGlobeAlt} />
+                <div class="form-group w-100">
+                <Select
+              id="timezone"
+              name="timezone"
+              options={options}
+              value={selectedCategory}
+              onChange={handleChange}
+              onMenuOpen={() => setIsDropdownOpen(true)}
+              onMenuClose={() => setIsDropdownOpen(false)}
+              isSearchable
+              isClearable
+              isMulti={false} // Set to true for multi-select
+              closeMenuOnSelect={true}
+              placeholder=""
+              styles={customStyle}
+            />
+                 <label for="timezone" className={`${(isDropdownOpen || (!isDropdownOpen && selectedCategory))? "timezone_labl":''}`}>Time Zone</label>
+                </div>
+                </div>
+                
               </CCol>
-             {/* <span>{"Customer Name is required"}</span> */}
-               </CCol>
-          </CRow>
-          <CRow style={{border:"1px solid pink"}}>
-            <CCol xs={12} className='d-flex'>
-              <CCol  xs={11} className='custom_col_item'>
-                <CIcon icon={cilHandPointRight} size='lg' style={{ color: "#fff" }} />
-                <CIcon icon={cilUser} />
-                <div class="form-group">
-           <input type="text" id="name" placeholder="Name"/>
-          <label for="name">Name</label>
-            </div>
-
-
-
-              </CCol>
-
+              </div>
               <CCol xs={1}>
                 <CIcon icon={cilChatBubble} />
               </CCol>
-              {/* <span>{"Customer Name is required"}</span> */}
             </CCol>
           </CRow>
+          <span></span>
+          </CRow>
+          {/* CITY && ZIP */}
+          <CRow>
+          <CRow className='row_name_custom'>
+            <CCol xs={12} className='d-flex align-items-center p-1'>
+              <div className='custom_two_select_col'>
+              <CCol xs={5} className='custom_col_item'>
+                <CIcon icon={cilHandPointRight} size='lg' />
+                <div className="custom_icon_input d-flex align-items-center">
+                <CIcon icon={cilGlobeAlt} />
+                <div class="form-group w-100">
+                <Select
+              id="timezone"
+              name="timezone"
+              options={options}
+              value={selectedCategory}
+              onChange={handleChange}
+              onMenuOpen={() => setIsDropdownOpen(true)}
+              onMenuClose={() => setIsDropdownOpen(false)}
+              isSearchable
+              isClearable
+              isMulti={false} // Set to true for multi-select
+              closeMenuOnSelect={true}
+              placeholder=""
+              styles={customStyle}
+            />
+                 <label for="timezone" className={`${(isDropdownOpen || (!isDropdownOpen && selectedCategory))? "timezone_labl":''}`}>Time Zone</label>
+                </div>
+                </div>
+              </CCol>
+              <CCol xs={5} className='custom_col_item'>
+                <CIcon icon={cilHandPointRight} size='lg' />
+                <div className="custom_icon_input d-flex align-items-center">
+                <CIcon icon={cilGlobeAlt} />
+                <div class="form-group w-100">
+                <Select
+              id="timezone"
+              name="timezone"
+              options={options}
+              value={selectedCategory}
+              onChange={handleChange}
+              onMenuOpen={() => setIsDropdownOpen(true)}
+              onMenuClose={() => setIsDropdownOpen(false)}
+              isSearchable
+              isClearable
+              isMulti={false} // Set to true for multi-select
+              closeMenuOnSelect={true}
+              placeholder=""
+              styles={customStyle}
+            />
+                 <label for="timezone" className={`${(isDropdownOpen || (!isDropdownOpen && selectedCategory))? "timezone_labl":''}`}>Time Zone</label>
+                </div>
+                </div>
+                
+              </CCol>
+              </div>
+              <CCol xs={1}>
+                <CIcon icon={cilChatBubble} />
+              </CCol>
+            </CCol>
+          </CRow>
+          <span></span>
+          </CRow>
+            
+            {/* TimeZone */}
+          <CRow>
+          <CRow className='row_name_custom'>
+            <CCol xs={12} className='d-flex align-items-center p-1'>
+              <CCol xs={11} className='custom_col_item'>
+                <CIcon icon={cilHandPointRight} size='lg' />
+                <div className="custom_icon_input d-flex align-items-center">
+                <CIcon icon={cilGlobeAlt} />
+                <div class="form-group w-100">
+                <Select
+              id="timezone"
+              name="timezone"
+              options={options}
+              value={selectedCategory}
+              onChange={handleChange}
+              onMenuOpen={() => setIsDropdownOpen(true)}
+              onMenuClose={() => setIsDropdownOpen(false)}
+              isSearchable
+              isClearable
+              isMulti={false} // Set to true for multi-select
+              closeMenuOnSelect={true}
+              placeholder=""
+              styles={customStyle}
+            />
+                 <label for="timezone" className={`${(isDropdownOpen || (!isDropdownOpen && selectedCategory))? "timezone_labl":''}`}>Time Zone</label>
+                </div>
+                </div>
+              </CCol>
+              <CCol xs={1}>
+                <CIcon icon={cilChatBubble} />
+              </CCol>
+            </CCol>
+          </CRow>
+          <span></span>
+          </CRow>
+
+
+          <CRow>
+          <div>
+            <label htmlFor="category" className='custom_select_country'>Country</label>
+            
+          </div>
+          </CRow>
+         
+       
         </CContainer>
       </CModalBody>
 
