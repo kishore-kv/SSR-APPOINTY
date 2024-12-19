@@ -1,0 +1,61 @@
+.custom_container {
+    flex-direction: column;
+    display: flex;
+    gap: 1em;
+}
+
+
+.custom_icon_input {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border:1px solid rgba(0,0,0,.12)
+}
+
+.custom_icon_input input{
+    height:100%;
+    border:none;
+    outline:none;
+}
+
+
+.row_name_custom{
+    height: 50px;
+    border: 1px solid red;
+    
+}
+.form-group{
+    width: 100%;
+}
+.custom_container{
+    height: auto;
+}
+.custom_col_item{
+    height: 100%;
+    gap: 0.5em;
+    align-items: center;
+    display: flex;
+}
+
+
+input::placeholder {
+	opacity: 0;
+}
+
+.form-group {
+    height: 100%;
+    --pad: .37rem;
+    position: relative;
+  }
+  label {
+    background: #fff;
+    position: absolute;
+    left: var(--pad);
+    top: var(--pad);
+    pointer-events: none;
+  }
+  input:focus + label,
+input:not(:placeholder-shown) + label {
+  transform: translateY(calc(-50% - var(--pad))) scale(.8);
+  color: var(--accent);
+}
