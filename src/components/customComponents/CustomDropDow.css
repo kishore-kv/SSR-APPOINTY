@@ -21,6 +21,7 @@
   }
   .crow_pad{
     padding-inline: 3em;
+    width: 100%;
   }
 
 /*styling form input*/
@@ -74,4 +75,24 @@ input.form-control.input-minimal:focus {
   border:none;
   outline: none;
   box-shadow: none;
+}
+
+
+.icon_select_circle{
+  color: #fff;
+}
+.row.custom_select_service {
+  background: hsla(0, 1%, 100%, .2);
+  border-radius: 1em;
+  height: 33px;
+  margin-inline: 1px;
+  padding: 0;
+  border: 1px solid;
+  width: 100%;
+}
+
+.row.crow_pad {
+  padding-block: 1em;
+  display: flex;
+  gap: 1px;
 }

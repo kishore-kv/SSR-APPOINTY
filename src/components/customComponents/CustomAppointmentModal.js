@@ -31,7 +31,6 @@ function CustomAppointmentModal({
 }) {
   
    const formItems = [
-    {ion:cilCircle,type:'text'},
     {ion:cilAddressBook,type:'text'},
     {ion:cilCalendar,type:'date'},
     {ion:cilClock,type:'time'},

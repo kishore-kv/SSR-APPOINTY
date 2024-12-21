@@ -68,7 +68,7 @@ module.exports = {
    getLocationById: async (req, res, next) => {
     console.log('-----------',req);
     const id = req.params.id;
-    let finalUrl = `${reactAppointyUrl}${endpoints.locationById}/${id}?expand=true`;
+    let finalUrl = `${reactAppointyUrl}${endpoints.locationById}/${id}`;
     console.log("finalUrl===",finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400

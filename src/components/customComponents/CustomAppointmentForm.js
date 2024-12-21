@@ -1,11 +1,14 @@
-import { cilHandPointRight } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import { CDropdown, CForm, CFormInput, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react'
+import { cilArrowBottom, cilCircle, cilHandPointRight } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import { CDropdown, CForm, CFormInput, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import './CustomDropDow.css'
-import { request } from '../../services/request'
-
+import './CustomDropDow.css';
+import './CustomOption.css';
+import { request } from '../../services/request';
+import Select from 'react-select';
 import "flatpickr/dist/themes/material_green.css";
+import { components } from "react-select";
+
 import Flatpickr from "react-flatpickr";
 
 /*  This component consists of two children 1.dropDown for location and 2.formInputs
@@ -15,7 +18,8 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [inputValues, setInputValues] = useState([null, null, null, null]);
   const [location ,setLocation] = useState('');
-
+  const [selctedService , setSelectedService] = useState('');
+  
 
   const handleSelect = (activendex) => {
     setSelectedIndex(activendex)
@@ -66,15 +70,22 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
       </div>
     </div>
   })
-
+   
+    
     //location state handling
       const handleSelectLocation = (index , location ) => {
-        console.log('=========', `${location.branchName},${location.city}`);
-        setLocation(location)
+        setLocation(location);
       }
 
-
+      const [serviceDetails , setServiceDetails] = useState({})
       //handling the fetchBYLOCATION API BY location id;
+      const options = serviceDetails && serviceDetails.data && serviceDetails.data['servicesList'].map((service) => ({
+        value: service.id,
+        label: service.serviceName,
+        ...service,
+      })) || [ ];
+      
+
       useEffect(() => {
         const fetchServiceData = async () => {
           const {id} = location;
@@ -82,19 +93,55 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
             const response = await request(`/getLocationById/${id}`);
             if (response && response.data.status === "Success") {
               const { data } = response;
-              setData(data);
+              setServiceDetails(data);
             }
           } catch (error) {
             console.error(error);
-          } finally {
-            setIsLoading(false);
-          }
+          } 
         };
          if(location){
             fetchServiceData();
          }
       }, [location]);
-      
+       //SELECT DROPDOWN TAG STYLING 
+        const customStyles = {
+          control: (base , state) => ({
+            ...base,
+            width:"100%",
+            height:"30px",
+            minHeight:"30px",
+            background:"hsla(0, 1%, 100%, .05)",
+            borderColor:'none',
+            border:'none',
+            boxShadow:'none',
+            color:'#fff',
+          }),
+          singleValue: (base) => ({
+            ...base,
+            color: "#fff", // Make selected text visible
+          }),
+          dropdownIndicator: (base) => ({
+            ...base,
+    
+          }),
+          menu: (base) => ({
+            ...base,
+            width:"110%",
+            right:"0%"
+          })
+          }
+
+            //option value
+      const [selectedOptionValue , setSelectedOptionValue] = useState({label:'service',value:'service'});
+
+          const handleChange = (selectedOption) => {
+            // setSelectedService(selectedOption)
+            console.log("Selected:", selectedOption);
+          };
+
+          const handleMenuOpen = () => {
+            setSelectedOptionValue(null); // Clear the value when the menu opens
+          };
 
   return (
     <CForm className='form_size'>
@@ -109,11 +156,80 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
             }
           </CDropdownMenu>
         </CDropdown>
+        <CRow xs={12} className='custom_select_service'>
+          <CCol xs={1} className='py-1 icon_select_circle'> 
+           <CIcon icon={cilCircle}/>
+          </CCol>
+          {/* {select component} */}
+          <CCol xs={11}>
+          <Select
+           options={options}
+           onMenuOpen={handleMenuOpen}
+           placeholder={''}
+           onChange={handleChange}
+           isDisabled={options.length === 0}
+           isSearchable
+           components={{
+            DropdownIndicator,
+            IndicatorSeparator: () => null,
+             Option: CustomOption
+           }}
+           value={selectedOptionValue}
+           styles={customStyles}
+          />
+      </CCol>
+        </CRow>
         {formInputs}
        
       </CRow>
     </CForm>
   )
+}
+
+
+// Custom Option Component
+const CustomOption = ({ data, innerRef, innerProps }) => {
+   
+
+ return (<div
+    ref={innerRef}
+    {...innerProps}
+    >  
+    <div className="custom-option" ref={innerRef} {...innerProps}>
+        <CCol xs={12}>
+          <CRow className='w-100'>
+           <CCol xs={2} className='px-1'>
+             <div className="custom-option__icon">
+            <span className="avatar-icon__initial">En</span>
+            </div>
+            </CCol>
+          <CCol xs={8} className='d-flex flex-column'>
+             <strong>{data.serviceName}</strong>
+              <span>{data.durationMins} mins</span>
+          </CCol>
+          <CCol xs={2} className='py-2'>
+              <span>Rs.{data.price}</span>
+          </CCol>
+         </CRow>
+        </CCol>
+    </div>
+  
+  </div>)
+}
+
+// Custom Single Value Component
+// const CustomSingleValue = ({ data }) => (
+//   <div>
+//     <strong>{data.serviceName}</strong>
+//     <span style={{ marginLeft: "10px", color: "#555" }}>
+//       (Duration: {data.durationMins} mins)
+//     </span>
+//   </div>
+// );
+const DropdownIndicator = (props) => {
+
+  return props.options.length > 0 ? <components.DropdownIndicator {...props} /> : null
+  
 }
 
 export default CustomAppointmentForm

@@ -20,6 +20,8 @@ import CIcon from '@coreui/icons-react';
 import Select from 'react-select';
 import './CustomCustomerModal.css';
 import { cibLibreoffice, cilChatBubble, cilEnvelopeClosed, cilFax, cilGlobeAlt, cilHandPointRight, cilHouse, cilPlus, cilSend, cilUser } from '@coreui/icons';
+import { useFormik } from 'formik';
+import { name } from 'file-loader';
 
 function CustomCustomerModal(
   { visible,
@@ -30,6 +32,13 @@ function CustomCustomerModal(
     searchPlaceholder = 'Search...',
     backgroundColor = '#FFF' }) {
   
+       const formik   =useFormik({
+        initialValues:{
+           name:'',
+           email:'',
+           mobile:''
+        }
+       })
     const options = [
         { value: 'chocolate', label: 'Chocolate' },
         { value: 'strawberry', label: 'Strawberry' },
@@ -53,6 +62,7 @@ function CustomCustomerModal(
 
   return (
     <CModal visible={visible} onClose={onClose} className='service'>
+       <CForm>
       {/* Modal Header */}
       <CModalHeader style={{ backgroundColor }}>
         <CModalTitle>{title}</CModalTitle>
@@ -60,6 +70,7 @@ function CustomCustomerModal(
 
       {/* Modal Body */}
       <CModalBody className="p-4 d-flex justify-content-center service-modal-body" style={{ backgroundColor }}>
+       
         <CContainer className='custom_container'>
          <CRow>
           <CRow className='row_name_custom'>
@@ -69,7 +80,7 @@ function CustomCustomerModal(
                 <div className="custom_icon_input d-flex align-items-center">
                 <CIcon icon={cilUser} />
                 <div class="form-group w-100">
-                <input type="text" id="name" placeholder="Name" className='w-100'/>
+                <input type="text" id="name" placeholder="Name" className='w-100' name='name' onChange={formik.handleChange} value={formik.values.name}/>
                  <label for="name">Name</label>
                 </div>
                 </div>
@@ -91,7 +102,7 @@ function CustomCustomerModal(
                 <div className="custom_icon_input d-flex align-items-center">
                 <CIcon icon={cilEnvelopeClosed} />
                 <div class="form-group w-100">
-                <input type="text" id="email" placeholder="Email" className='w-100'/>
+                <input type="text" id="email" placeholder="Email" className='w-100'name='email' onChange={formik.handleChange}value={formik.values.email}/>
                  <label for="email">Email</label>
                 </div>
                 </div>
@@ -112,7 +123,7 @@ function CustomCustomerModal(
                 <div className="custom_icon_input d-flex align-items-center">
                 <span>{"+91"}</span>
                 <div class="form-group w-100">
-                <input type="text" id="mobile" placeholder="mobile" className='w-100'/>
+                <input type="text" id="mobile" placeholder="mobile" className='w-100' name='mobile' onChange={formik.handleChange}value={formik.values.mobile}/>
                  <label for="mobile">Mobile</label>
                 </div>
                 </div>
@@ -374,6 +385,7 @@ function CustomCustomerModal(
           Add
         </CButton>
       </CModalFooter>
+      </CForm>
     </CModal>
   );
 
