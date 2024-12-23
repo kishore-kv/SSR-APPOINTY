@@ -84,10 +84,10 @@ input.form-control.input-minimal:focus {
 .row.custom_select_service {
   background: hsla(0, 1%, 100%, .2);
   border-radius: 1em;
-  height: 33px;
+  height: 30px;
   margin-inline: 1px;
   padding: 0;
-  border: 1px solid;
+  /* border: 1px solid; */
   width: 100%;
 }
 
@@ -96,3 +96,33 @@ input.form-control.input-minimal:focus {
   display: flex;
   gap: 1px;
 }
+
+.custom_dropdown_locations{
+  width: 100%;
+  padding: 0 !important;
+  height: 30px;
+}
+
+.input-container {
+  /* border:1px solid red; */
+  padding:0  !important;
+  height:30px;
+}
+
+span.meeting__card__name{
+  width: 86%;
+}
+
+input.custom_type_date , input.custom_type_time{
+  width:100%;
+  background: hsla(0, 1%, 100%, .01);
+  border:0;
+  color:#fff;
+  outline:0;
+  /* background:red */
+}
+.selected_flatpicky{
+  color: black !important;
+}
+
+

@@ -9,6 +9,7 @@ import {
   CFormInput,
   CListGroup,
   CListGroupItem,
+  CSpinner,
 } from '@coreui/react';
 
 
@@ -25,13 +26,12 @@ function CustomAppointmentModal({
   title,
   options = [],
   onAction,
-  actionButtonText = 'Submit',
+  actionButtonText = 'Book',
   searchPlaceholder = 'Search...',
   backgroundColor = '#00bcd4',
 }) {
   
    const formItems = [
-    {ion:cilAddressBook,type:'text'},
     {ion:cilCalendar,type:'date'},
     {ion:cilClock,type:'time'},
     {ion:cilEducation,type:'text'}]

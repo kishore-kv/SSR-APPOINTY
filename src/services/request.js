@@ -9,11 +9,7 @@ const getHeaders = () => {
 
 export const request = async (url) => {
   try {  
-    console.log('++++++++++++++++++++++++++++++++++++url',url);
-     
     const data = await axios["get"](url);
-    console.log('==========data',data);
-    
     if (!data) {
       throw Error("Empty data from get settings");
     }

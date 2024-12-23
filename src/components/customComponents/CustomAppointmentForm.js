@@ -1,4 +1,4 @@
-import { cilArrowBottom, cilCircle, cilHandPointRight } from '@coreui/icons';
+import { cilArrowBottom, cilCircle, cilHandPointRight, cilUser } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import { CDropdown, CForm, CFormInput, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
@@ -19,8 +19,8 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
   const [inputValues, setInputValues] = useState([null, null, null, null]);
   const [location ,setLocation] = useState('');
   const [selctedService , setSelectedService] = useState('');
+  //serviceStaff
   
-
   const handleSelect = (activendex) => {
     setSelectedIndex(activendex)
   }
@@ -56,15 +56,16 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
         
     const isSelected = selectedIndex === index;
     return <div key={index} class="mb-2 mt-2 d-flex input-container" onClick={() => handleSelect(index)}>
-      {isSelected && <span class="icon icon-pointer-right selected-pointer white-text">
+      {/* {isSelected && <span class="icon icon-pointer-right selected-pointer white-text">
         <CIcon icon={cilHandPointRight} size='lg' style={{ color: "#fff" }} />
-      </span>}
+      </span>} */}
       <div className={`d-flex icon-input-wrapper meeting__card px-3 ${isSelected && 'unselected-icon-input-wrapper'}`}>
         <span class="avatar-icon avatar-icon--has-img">
           <CIcon icon={formItem.ion} className={`${isSelected ? `non-selected-icon` : 'form-icon'}`} />
         </span>
-        <span className="meeting__card__name a-overflow-visible">
-          {(formItem.type === 'date' || formItem.type === 'time') ? <Flatpickr options={options} onChange={(value)=>handleFlatPicker(value)}/>
+        <span className="meeting__card__name">
+          {(formItem.type === 'date' || formItem.type === 'time') ? 
+          <Flatpickr options={options} onChange={(value)=>handleFlatPicker(value)} className={`custom_type_${formItem.type} ${isSelected&&"selected_flatpicky"}`}/>
           :<CFormInput className={`input-minimal ${isSelected ? `input-selected` : ''}`} value={inputValues[index]} onChange={(e) => handleInputChange(index, e)} type={formItem.type} />
           }</span>
       </div>
@@ -79,6 +80,8 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
 
       const [serviceDetails , setServiceDetails] = useState({})
       //handling the fetchBYLOCATION API BY location id;
+      console.log(`service` , serviceDetails);
+      
       const options = serviceDetails && serviceDetails.data && serviceDetails.data['servicesList'].map((service) => ({
         value: service.id,
         label: service.serviceName,
@@ -92,6 +95,8 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
           try {
             const response = await request(`/getLocationById/${id}`);
             if (response && response.data.status === "Success") {
+              setSelectedOptionValue({label:'Select Service',value:'service'});
+              setSelectedStaff({label:'Choose Staff', value:'staff'})
               const { data } = response;
               setServiceDetails(data);
             }
@@ -130,23 +135,44 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
             right:"0%"
           })
           }
-
-            //option value
-      const [selectedOptionValue , setSelectedOptionValue] = useState({label:'service',value:'service'});
-
+          //  services handlers
           const handleChange = (selectedOption) => {
             // setSelectedService(selectedOption)
-            console.log("Selected:", selectedOption);
+            const updatedOption = {label:selectedOption.label,value:selectedOption.value}
+            setSelectedOptionValue(updatedOption);
+            setStaffObject(selectedOption);
+            // console.log("Selected:", selectedOption);
           };
 
           const handleMenuOpen = () => {
             setSelectedOptionValue(null); // Clear the value when the menu opens
           };
 
+            //option value
+      const [selectedOptionValue , setSelectedOptionValue] = useState({label:'Select Service',value:'service'});
+         //stafflist option
+      const [staffObject , setStaffObject] = useState({});
+        //staffList array
+        console.log('staff obj' , staffObject);
+        
+      const [selectedStaff,setSelectedStaff] = useState({label:'Choose Staff', value:'staff'})
+      const staffList = staffObject && staffObject.staffList?.map((provider) =>({
+              value:provider.id,
+              label:provider.firstName,
+              ...provider
+      })) || [ ];
+            // staff handlers;
+          const handleSelectedStaff = ( option ) => {
+            // console.log(`option`, option);
+            const staffPerson = {label:`${option.firstName} ${option.lastName}`, value:`${option.firstName} ${option.lastName}`};
+             setSelectedStaff(staffPerson);
+          }
+         
+
   return (
     <CForm className='form_size'>
       <CRow sm={8} className='crow_pad'>
-        <CDropdown>
+        <CDropdown className='mb-2 custom_dropdown_locations'>
           <CDropdownToggle className="dropdown_card"> {location && `${location.branchName},${location.city}`|| `Locations`} </CDropdownToggle>
           <CDropdownMenu style={{ width: '100%' }} className="">
             {
@@ -156,7 +182,7 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
             }
           </CDropdownMenu>
         </CDropdown>
-        <CRow xs={12} className='custom_select_service'>
+        <CRow xs={12} className='custom_select_service my-2'>
           <CCol xs={1} className='py-1 icon_select_circle'> 
            <CIcon icon={cilCircle}/>
           </CCol>
@@ -167,14 +193,35 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
            onMenuOpen={handleMenuOpen}
            placeholder={''}
            onChange={handleChange}
-           isDisabled={options.length === 0}
            isSearchable
            components={{
-            DropdownIndicator,
+            // DropdownIndicator,
             IndicatorSeparator: () => null,
              Option: CustomOption
            }}
            value={selectedOptionValue}
+           styles={customStyles}
+          />
+      </CCol>
+        </CRow>
+        {/* staff members dropdown */}
+        <CRow xs={12} className='custom_select_service my-2'>
+          <CCol xs={1} className='py-1 icon_select_circle'> 
+           <CIcon icon={cilUser}/>
+          </CCol>
+          {/* {select component} */}
+          <CCol xs={11}>
+          <Select
+           options={staffList}
+           placeholder={''}
+           onChange={handleSelectedStaff}
+           isSearchable
+           components={{
+            // DropdownIndicator,
+            IndicatorSeparator: () => null,
+             Option: CustomStaff
+           }}
+           value={selectedStaff}
            styles={customStyles}
           />
       </CCol>
@@ -217,19 +264,22 @@ const CustomOption = ({ data, innerRef, innerProps }) => {
   </div>)
 }
 
-// Custom Single Value Component
-// const CustomSingleValue = ({ data }) => (
-//   <div>
-//     <strong>{data.serviceName}</strong>
-//     <span style={{ marginLeft: "10px", color: "#555" }}>
-//       (Duration: {data.durationMins} mins)
-//     </span>
-//   </div>
-// );
-const DropdownIndicator = (props) => {
+const CustomStaff = ({ data, innerRef, innerProps }) => {
+  return (<div
+     ref={innerRef}
+     {...innerProps}
+     >  
+     <div className="custom-option" ref={innerRef} {...innerProps}>
+              <strong>{data.firstName}</strong>
+               <span>{data.lastName}</span>   
+     </div>
+   </div>)
+ }
 
-  return props.options.length > 0 ? <components.DropdownIndicator {...props} /> : null
+// const DropdownIndicator = (props) => {
+
+//   return props.options.length > 0 ? <components.DropdownIndicator {...props} /> : null
   
-}
+// }
 
 export default CustomAppointmentForm
