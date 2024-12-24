@@ -75,7 +75,7 @@ function CustomAppointmentModal({
       {/* Modal Body */}
       <CModalBody className="p-4 d-flex justify-content-center w-100" style={{ backgroundColor }}>
       {isLoading ? (
-          <div>Loading...</div>
+          <div><CSpinner/></div>
         ) : (
           <CustomAppointmentForm formItems={formItems} locationsData={data} />
         )}

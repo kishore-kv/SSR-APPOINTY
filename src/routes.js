@@ -56,7 +56,7 @@ import AppointmentDashboard from './views/portal/dashboard/AppointmentDashboard'
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  // { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/portal/myspace', name: 'myspace', component: AppointmentPage},

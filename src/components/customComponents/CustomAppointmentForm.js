@@ -1,6 +1,6 @@
 import { cilArrowBottom, cilCircle, cilHandPointRight, cilUser } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
-import { CDropdown, CForm, CFormInput, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol } from '@coreui/react'
+import { CDropdown, CForm, CFormInput, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol, CSpinner } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import './CustomDropDow.css';
 import './CustomOption.css';
@@ -73,24 +73,18 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
   })
    
     
-    //location state handling
-      const handleSelectLocation = (index , location ) => {
-        setLocation(location);
-      }
+   
 
-      const [serviceDetails , setServiceDetails] = useState({})
       //handling the fetchBYLOCATION API BY location id;
-      console.log(`service` , serviceDetails);
       
-      const options = serviceDetails && serviceDetails.data && serviceDetails.data['servicesList'].map((service) => ({
-        value: service.id,
-        label: service.serviceName,
-        ...service,
-      })) || [ ];
       
-
+      
+     const [loadingService,setLoadingService] = useState(false);
+     //REFACTOR OPTIONS FOR SERVICES DROPDOWN LIST;
+     const [options , setOptions] = useState([ ]);
       useEffect(() => {
         const fetchServiceData = async () => {
+          setLoadingService(true);
           const {id} = location;
           try {
             const response = await request(`/getLocationById/${id}`);
@@ -98,11 +92,21 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
               setSelectedOptionValue({label:'Select Service',value:'service'});
               setSelectedStaff({label:'Choose Staff', value:'staff'})
               const { data } = response;
-              setServiceDetails(data);
+              
+              let servicesList = data && data.data && data.data['servicesList']?.map((service) => ({
+                value: service.id,
+                label: service.serviceName,
+                ...service,
+              })) || [ ];
+              console.log(`serviceList` , servicesList);
+              
+              setOptions(servicesList);
             }
           } catch (error) {
             console.error(error);
-          } 
+          } finally{
+            setLoadingService(false);
+          }
         };
          if(location){
             fetchServiceData();
@@ -140,7 +144,12 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
             // setSelectedService(selectedOption)
             const updatedOption = {label:selectedOption.label,value:selectedOption.value}
             setSelectedOptionValue(updatedOption);
-            setStaffObject(selectedOption);
+            const staffOptionsList = selectedOption && selectedOption.staffList?.map((provider) =>({
+              value:provider.id,
+              label:provider.firstName,
+              ...provider
+      })) || [ ];
+            setStaffOptions(staffOptionsList);
             // console.log("Selected:", selectedOption);
           };
 
@@ -151,16 +160,11 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
             //option value
       const [selectedOptionValue , setSelectedOptionValue] = useState({label:'Select Service',value:'service'});
          //stafflist option
-      const [staffObject , setStaffObject] = useState({});
-        //staffList array
-        console.log('staff obj' , staffObject);
+      const [staffOptions , setStaffOptions] = useState([ ]);
+       
         
       const [selectedStaff,setSelectedStaff] = useState({label:'Choose Staff', value:'staff'})
-      const staffList = staffObject && staffObject.staffList?.map((provider) =>({
-              value:provider.id,
-              label:provider.firstName,
-              ...provider
-      })) || [ ];
+    
             // staff handlers;
           const handleSelectedStaff = ( option ) => {
             // console.log(`option`, option);
@@ -168,7 +172,11 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
              setSelectedStaff(staffPerson);
           }
          
-
+         //location state handling
+      const handleSelectLocation = (index , location ) => {
+        setStaffOptions([ ]);
+        setLocation(location);
+      }
   return (
     <CForm className='form_size'>
       <CRow sm={8} className='crow_pad'>
@@ -189,15 +197,24 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
           {/* {select component} */}
           <CCol xs={11}>
           <Select
-           options={options}
-           onMenuOpen={handleMenuOpen}
+           options={loadingService ? []:options}
            placeholder={''}
            onChange={handleChange}
            isSearchable
            components={{
             // DropdownIndicator,
             IndicatorSeparator: () => null,
-             Option: CustomOption
+             Option: CustomOption,
+             NoOptionsMessage:(props) => loadingService ?    <div
+             style={{
+               display: 'flex',
+               justifyContent: 'center',
+               minHeight:'30px',
+               alignItems: 'center'
+             }}
+           >
+             <CSpinner size="sm" />
+           </div> : <components.NoOptionsMessage {...props} />
            }}
            value={selectedOptionValue}
            styles={customStyles}
@@ -212,7 +229,7 @@ const CustomAppointmentForm = ({ formItems, locationsData }) => {
           {/* {select component} */}
           <CCol xs={11}>
           <Select
-           options={staffList}
+           options={staffOptions}
            placeholder={''}
            onChange={handleSelectedStaff}
            isSearchable

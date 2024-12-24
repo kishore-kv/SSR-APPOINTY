@@ -1,7 +1,8 @@
 import React from "react";
-import { CButton, CContainer, CRow, CCol } from "@coreui/react";
+import { CButton, CContainer, CRow, CCol, CCard, CCardBody, CCardImage, CCardTitle, CCardText } from "@coreui/react";
 import "./AppointmentPage.css"; // CSS for styling
 import { useModal } from "src/context/modal/ModalContext";
+import AppointmentCard from "./customcards/AppointmentCard";
 
 
 const AppointmentPage = () => {
@@ -12,7 +13,7 @@ const AppointmentPage = () => {
   }
   return (
     <div className="appointment-page">
-      <CContainer fluid className="overlay">
+     {false? <CContainer fluid className="overlay">
         <CRow className="justify-content-center align-items-center text-center">
           <CCol md={8}>
             <h1 className="overlay-title">Enjoy your day!</h1>
@@ -24,7 +25,13 @@ const AppointmentPage = () => {
             </CButton>
           </CCol>
         </CRow>
-      </CContainer>
+      </CContainer>: <CRow className="justify-content-end">
+        <CCol xs={12} lg={6}>
+         <AppointmentCard/>
+         <AppointmentCard/>
+         </CCol>
+      </CRow>
+      }
     </div>
   );
 };
