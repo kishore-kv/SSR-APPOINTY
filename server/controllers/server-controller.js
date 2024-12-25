@@ -5,14 +5,13 @@ const logger = require("../logger");
 
 
 var reactAppUrl = process && process.env && process.env.REACT_APP_BASE_URL;
-debugger;
+var reactAppointyUrl = process && process.env && process.env.REACT_APPOINTY_BASE_URL;
 module.exports = {
   loginService: async (req, res, next) => {
     res.send({message:'Welcome to my world'})
   },
   configlogin: async (req, res, next) => {
     let finalUrl = `${reactAppUrl}${endpoints.configlogin}`;
-    debugger;
     console.log("finalUrl===",finalUrl);
     let response = await serviceReq(req,finalUrl, "POST", req.body,req.headers,false);
     let statusCode = response && response.status || 400
@@ -20,7 +19,6 @@ module.exports = {
   },
   config: async (req, res, next) => {
     let finalUrl = `${reactAppUrl}${endpoints.config}`;
-    debugger;
     console.log("finalUrl===",finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
@@ -36,7 +34,6 @@ module.exports = {
   },
   staticKeys: async (req, res, next) => {
     let finalUrl = `${reactAppUrl}${endpoints.staticKeys}`;
-    debugger;
     console.log("finalUrl===",finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
@@ -44,7 +41,6 @@ module.exports = {
   },
   supplierConfig: async (req, res, next) => {
     let finalUrl = `${reactAppUrl}${endpoints.supplierConfig}`;
-    debugger;
     console.log("finalUrl===",finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
@@ -52,11 +48,32 @@ module.exports = {
   },
   configList: async (req, res, next) => {
     let finalUrl = `${reactAppUrl}${endpoints.configList}`;
-    debugger;
+    console.log("finalUrl===",finalUrl);
+    let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
+  }, 
+  getAllLocations: async (req, res, next) => {
+  
+    
+    const pageNo = req.body.page ;
+    const limitNo = req.body.limit;
+    let finalUrl = `${reactAppointyUrl}${endpoints.locations}?page=${pageNo}&limit=${limitNo}`;
+  
+    let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
+  },
+
+   getLocationById: async (req, res, next) => {
+    console.log('-----------',req);
+    const id = req.params.id;
+    let finalUrl = `${reactAppointyUrl}${endpoints.locationById}/${id}`;
     console.log("finalUrl===",finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
     res.status(statusCode).send(response && response.data);
   },
+
   
 };

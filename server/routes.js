@@ -1,4 +1,4 @@
-
+ 
 const express = require("express");
 const routes = express.Router();
 const serverController = require("./controllers/server-controller");
@@ -10,4 +10,7 @@ routes.get("/configMap", serverController.configMap);
 routes.get("/staticKeys", serverController.staticKeys);
 routes.get("/supplierConfig", serverController.supplierConfig);
 routes.get("/configList", serverController.configList);
+routes.post("/getAllLocations", serverController.getAllLocations);
+routes.get("/getLocationById/:id" , serverController.getLocationById);
+
 module.exports = routes;

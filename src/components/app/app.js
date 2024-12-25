@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
-import InnerApp from '../../InnerApp';
-import { Provider } from 'react-redux';
-import store from './store';
+import './index.css'
+import InnerApp from '../../layout/InnerApp.jsx';
 
 export class App extends React.Component {
     constructor() {
@@ -9,9 +8,8 @@ export class App extends React.Component {
     }
     render() {
         return (
-            <Provider store={store}>     
-                        <InnerApp />
-            </Provider>
+             
+         <InnerApp />
         );
     }
 }
