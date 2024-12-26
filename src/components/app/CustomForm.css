@@ -7,6 +7,9 @@
   width:50%;
 }
 
+.custom_row_inputs{
+  padding-inline: 1rem;
+}
 .custom_dropdown_locations {
     background:#fff;
     width:100%; 

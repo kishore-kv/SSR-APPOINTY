@@ -1,0 +1,14 @@
+
+.custom_booking_container{
+    background:#fff;
+    display: flex;
+    justify-content: center;
+    border: 2px solid pink;
+    padding-block: 5%;
+    align-items: center;
+     flex-direction: column;
+}
+
+.custom_card{
+    min-width: 50%;
+}
