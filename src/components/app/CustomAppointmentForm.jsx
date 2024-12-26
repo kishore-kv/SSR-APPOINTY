@@ -1,12 +1,15 @@
 
-import {  cilCircle, cilHandPointRight, cilUser } from '@coreui/icons';
+import {  cilCalendar, cilCircle, cilEnvelopeClosed, cilHandPointRight, cilUser } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import { CDropdown, CForm, CFormInput,CDropdownDivider, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol, CSpinner, CContainer } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
- import { MapPin } from "@phosphor-icons/react";
-
- import './CustomForm.css'
+ import { MapPin,CurrencyDollar } from "@phosphor-icons/react";
+ import Select from 'react-select';
+ import './CustomForm.css';
+ import "flatpickr/dist/themes/material_green.css";
+import Flatpickr from "react-flatpickr";
 import { request , requestPost} from '../../services/request';
+import { CButton } from '@coreui/react';
  
  
 
@@ -79,21 +82,28 @@ const CustomAppointmentForm = () => {
     }, []);
        
       
-      
+      //FLATPICKR HANDLERS
+      const handleFlatPicker = ( ) =>{
+
+      }
      
 
-  return ( <div className='d-flex justify-content-center align-items-center h-100'>
-    <CContainer className='custom_container m-0 d-flex justify-content-center align-items-center' style={{height:'80%',
+  return ( <div className=''>
+    <CContainer className='py-lg-5 custom_container flex-column m-0 d-flex justify-content-center align-items-center' 
+    style={{
+      height:'80%',
       border:'1px solid red'
     }}>
-        <CContainer className='w-50 h-auto d-flex justify-content-center align-items-center flex-column'style={{border:"2px solid yellow"}}>
-            <CCol className="p-1" xs={12} style={{border:"2px solid green", width:"80%"}}>
+            
+        <CContainer className='custom_section d-flex justify-content-center align-items-center flex-column'style={{border:"2px solid yellow"}}>
+               <h1 className='custom_appointment_font'>Nueva Cita</h1>
+            <CCol xs={12} style={{border:"2px solid green", width:"80%"}}>
               <CDropdown className='mb-2 custom_dropdown_locations'>
               <CDropdownToggle className="dropdown_card"> <span><MapPin className='responsive-icon' /> {`Posiciones`}</span> <span className="ms-2"></span></CDropdownToggle>
                <CDropdownMenu style={{ width: '100%' }} className="">
               {
                 locations?.map((location, index) => {
-                return <CDropdownItem onClick={()=> handleSelectLocation(index , location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
+                return <CDropdownItem key={location.id} onClick={()=> handleSelectLocation(index , location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
                })
             }
           </CDropdownMenu>
@@ -101,13 +111,62 @@ const CustomAppointmentForm = () => {
             
         </CCol>
          
+              {/* SErVICE */}
+              <CCol xs={12} style={{border:"2px solid green" , width:"80%"}}><Select/></CCol>
+              {/* staff */}
+              <CCol xs={12} style={{border:"2px solid green", width:"80%"}}>
+              <CDropdown className='mb-2 custom_dropdown_locations'>
+              <CDropdownToggle className="dropdown_card"> <span><MapPin className='responsive-icon' /> {`Seleccionar Personal`}</span> <span className="ms-2"></span></CDropdownToggle>
+               <CDropdownMenu style={{ width: '100%' }} className="">
+              {
+                locations?.map((location, index) => {
+                return <CDropdownItem key={location.id} onClick={()=> handleSelectLocation(index , location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
+               })
+            }
+          </CDropdownMenu>
+        </CDropdown>
             
-              <CCol style={{border:"2px solid green"}}>hello</CCol>
-              <CCol style={{border:"2px solid green"}}>hello</CCol>
-              <CCol style={{border:"2px solid green"}}>hello</CCol>
-              <CCol style={{border:"2px solid green"}}>hello</CCol>
+        </CCol>
+             {/* Calendar */}
+        <CCol style={{border:"2px solid green"}}>
+                <span class="avatar-icon avatar-icon--has-img">
+             <CIcon icon={cilCalendar} className={`form-icon`} />
+             </span>
+            <span className="meeting__card__name">
+              <Flatpickr options={{ minDate: "2017-01-01" }} onChange={(value)=>handleFlatPicker(value)} className={`selected_flatpicky`}/>
+            </span>
+        </CCol>
+            {/* TIME */}
+              <CCol style={{border:"2px solid green"}}>
+              <span class="avatar-icon avatar-icon--has-img">
+             <CIcon icon={cilCalendar} className={`form-icon`} />
+             </span>
+            <span className="meeting__card__name">
+              <Flatpickr options={{ minDate: "2017-01-01" }} onChange={(value)=>handleFlatPicker(value)} className={`selected_flatpicky`}/>
+            </span>
+              </CCol>
+              {/* PRICE */}
+              <CCol style={{border:"2px solid green"}}>
+          <span class="avatar-icon avatar-icon--has-img">
+          <CurrencyDollar size={24} />
+        </span>
+        <span className="meeting__card__name">
+        <CFormInput className={`input-minimal`} value={'200'}  type={'text'} />
+          </span>
+                </CCol>
+              {/* CUTOMER NAME */}
+          <CCol style={{border:"2px solid green"}}>
+              <span class="avatar-icon avatar-icon--has-img">
+              <CIcon icon={cilEnvelopeClosed} className={`form-icon`} />
+        </span>
+        <span className="meeting__card__name">
+        <CFormInput className={`input-minimal`} value={'200'}  type={'text'} />
+          </span>
 
+              </CCol>
+              <CButton type='submit'>Reservar</CButton>
         </CContainer>
+       
       </CContainer>
       </div>
         

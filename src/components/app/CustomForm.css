@@ -1,4 +1,12 @@
 
+.custom_appointment_font{
+  font-size: 1.4em;
+}
+
+.container.custom_section{
+  width:50%;
+}
+
 .custom_dropdown_locations {
     background:#fff;
     width:100%; 
@@ -14,9 +22,29 @@
     width: 24px;
     height: 24px;
 }
-@media (max-width: 476px) {
+
+.form-icon {
+  width: 1.5rem;
+}
+
+/* layout */
+.container.custom_container
+.custom_section {
+    flex:1
+}
+.custom_section{
+  gap:1rem;
+}
+@media (max-width: 550px) {
     .responsive-icon {
       width: 4vw;
       height: 4vw;
     }
+   .form-icon {
+      width: 1rem;
+   }
+   .container.custom_section{
+    width:100%;
+  }
+  
 }
