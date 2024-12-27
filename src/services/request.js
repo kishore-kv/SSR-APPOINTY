@@ -33,7 +33,7 @@ export const requestPdf = async (url) => {
 };
 
 export const requestPost = async (url, formData = {}, method = "post") => {
-  console.log(`===============url`, url);
+  // console.log(`===============url`, url);
   
   try {
     const data = await axios[method](url, formData, {

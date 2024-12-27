@@ -60,7 +60,7 @@ module.exports = {
     const pageNo = req.body.page ;
     const limitNo = req.body.limit;
     let finalUrl = `${reactAppointyUrl}${endpoints.locations}?page=${pageNo}&limit=${limitNo}`;
-    // console.log(`===finalUrl`, finalUrl);
+    console.log(`===finalUrl`, finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
     res.status(statusCode).send(response && response.data);

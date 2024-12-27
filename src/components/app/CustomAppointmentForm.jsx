@@ -1,9 +1,7 @@
 
-import {  cilCalendar, cilCircle, cilClock, cilEnvelopeClosed, cilHandPointRight, cilUser } from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
 import { CDropdown, CForm, CFormInput,CDropdownDivider, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol, CSpinner, CContainer } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
- import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple } from "@phosphor-icons/react";
+ import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple, CallBell, User } from "@phosphor-icons/react";
  import Select from 'react-select';
  import './CustomForm.css';
  import "flatpickr/dist/themes/material_green.css";
@@ -18,6 +16,16 @@ import { CButton } from '@coreui/react';
  */
 
 const CustomAppointmentForm = () => {
+  //APPOINTMENT FORM DATA
+  // const formData = {
+  //     "customerEmail": "",
+  //     "locationId": 0,
+  //     "staffId": 0,
+  //     "serviceId": 0,
+  //     "date": "2024-12-27T10:56:01.227Z",
+  //     "startTime": "2024-12-27T10:56:01.227Z"
+  //   }
+  // const [formData , setF]
     //fetching locations data
     const [locations , setLocations] = useState([ ]);
 
@@ -31,7 +39,15 @@ const CustomAppointmentForm = () => {
    const [isLoading , setIsLoading] = useState(false);
    //error for location
    const [ isError , setIsError] = useState(false);  
-   
+       /*++++++++++++ REACT SELECT +++++++++++++++++++++++*/
+   //diplaying servicesOptionlist
+   //displaying service
+   const [ service , setService] = useState("Seleccionar ubicación")
+    const [serviceOptions , setServiceOptions] = useState([{}]);
+
+    /*++++++++++STAFF STATE TRACKER+++++++*/
+    const [staff , setStaff] = useState("Seleccionar Personal");
+    const [staffOptions ,setStaffOptions] = useState([ ]);
   /* APIS calls*/
   //locations
     const fetchLocations = async () => {
@@ -52,18 +68,23 @@ const CustomAppointmentForm = () => {
         setIsLoading(false);
       }
     };
-      console.log(`locationID`, typeof locationID);
+      // console.log(`locationID`, typeof locationID);
       
     //servicesById
     //Function to call the API based on the location
   const fetchServiceData = async (location) => {
-    console.log(location);
+    // console.log(location);
     
     try {
       const response = await request(`/getLocationById/${location}`);
       if (response && response.data.status === "Success") {
         const { data } = response.data;
-        console.log(`servicedata`,data);
+        const updtaeServiceList = data?.servicesList
+                                      ?.map((service) => ({label:`${service.serviceName} (${service.durationMins}mins)` ,value:service.serviceName, ...service}));
+        // console.log(updtaeServiceList);
+          
+        setServiceOptions(updtaeServiceList);
+        // console.log(`servicedata`,data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -80,7 +101,7 @@ const CustomAppointmentForm = () => {
         const response = await requestPost(`/getStaffListHours`,payLoad);
         if (response && response.data.status === "Success") {
           const { data } = response.data;
-          console.log(`servicedata`,data);
+          // console.log(`servicedata`,data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -89,8 +110,8 @@ const CustomAppointmentForm = () => {
 
   // useEffect to listen for location changes and call the API
     useEffect(() => {
-      fetchLocations(locationID);
-      fetchStaffHoursData();
+      fetchLocations();
+      // fetchStaffHoursData();
     }, []);
 
     //useEffect for fetching locationById
@@ -108,8 +129,17 @@ const CustomAppointmentForm = () => {
             setIsLocationID(updateID);
             setLocation(`${location.branchName},${location.city}`);
     }
-      
-
+       //setting the new service on dropdown
+      const handleSelectService=(indx,service) => {
+          console.log(`service`, service);
+          const updateStaffList = service.staffList;
+        setService(`${service.serviceName} (${service.durationMins}mins)`);
+        setStaffOptions(updateStaffList);
+      }
+      //setting the staffNumber on dropdow
+      const handleSelectStaff = (index , staff) =>{
+        setStaff(`${staff.firstName} ${staff.lastName}`);
+      }
 
       //FLATPICKR HANDLERS
       const handleFlatPicker = (index , location ) =>{
@@ -143,22 +173,43 @@ const CustomAppointmentForm = () => {
         </CCol>
 
         {/* SErVICE */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+        {/* <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <Select 
            placeholder = "Seleccionar ubicación"
+           options={serviceOptions}
           />
-          
-          </CCol>
+          </CCol> */}
+
+          {/*alternate service*/}
+
+          <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+          <CDropdown className='mb-2 custom_dropdown_locations'>
+            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><CallBell className='' size={'7%'}/> {service}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownMenu style={{ width: '100%' }} className="">
+
+              { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
+              { !isLoading &&
+                serviceOptions?.map((service, index) => {
+                  return <CDropdownItem key={service.id} onClick={() => handleSelectService(index, service)}>{`${service.serviceName} (${service.durationMins}mins)`}</CDropdownItem>
+                })
+              }
+            </CDropdownMenu>
+          </CDropdown>
+          {/* {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>} */}
+        </CCol>
+
+
+          {/* /?++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
         {/* staff */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin size={'7%'} /> {`Seleccionar Personal`}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><User size={'7%'} /> {staff}</span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
-              {/* {
-                locations?.map((location, index) => {
-                  return <CDropdownItem key={location.id} onClick={() => handleSelectLocation(index, location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
+              {
+                staffOptions?.map((staff, index) => {
+                  return <CDropdownItem key={staff.id} onClick={() => handleSelectStaff(index, staff)}>{`${staff.firstName} ${staff.lastName}`}</CDropdownItem>
                 })
-              } */}
+              }
             </CDropdownMenu>
           </CDropdown>
 
@@ -173,7 +224,7 @@ const CustomAppointmentForm = () => {
             </CCol>
             <CCol lg={10} xs={10}>
               <span className="meeting__card__name">
-                <Flatpickr options={{ minDate: "2017-01-01" }} onChange={(value) => handleFlatPicker(value)} className={`selected_flatpicky w-100`} />
+                <Flatpickr options={{ minDate: new Date(), disable:[0,1] }} onChange={(value) => handleFlatPicker(value)} className={`selected_flatpicky w-100`} />
               </span>
             </CCol>
           </CRow>
