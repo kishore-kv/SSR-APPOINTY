@@ -8,5 +8,9 @@ module.exports = {
   configList:"/global-config/config/configList",
   locations:"/location/fetchAll",
   //config:"/global-config/config"
-  locationById:"/location/fetchServiceStaffDetails"
+  locationById:"/location/fetchServiceStaffDetails",
+  fetchStaffAvailabilty:"/fetchStaffAvailability",
+  newAppointment:"/appointment/newAppointment",
+  fetchAppointmentById:"/appointment/fetch"
+
 };

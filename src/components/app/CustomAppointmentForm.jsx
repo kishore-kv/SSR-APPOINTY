@@ -21,37 +21,100 @@ import { CButton } from '@coreui/react';
 const CustomAppointmentForm = () => {
     //fetching locations data
     const [locations , setLocations] = useState([ ]);
+
+    //displaying location
+    const [location , setLocation] = useState("Posiciones");
+
+    //trackingLOcationId
+    const [locationID , setIsLocationID] = useState('');
+
+    //loader for location
+   const [isLoading , setIsLoading] = useState(false);
+   //error for location
+   const [ isError , setIsError] = useState(false);  
    
-     
-
-
-
+  /* APIS calls*/
+  //locations
     const fetchLocations = async () => {
       const payload = { limit: 10, page: 0 };
+      setIsLoading(true);
       try {
         const response = await requestPost('/getAllLocations', payload);
         if (response && response.data.status === "Success") {
-          const { data } = response;
-          console.log(`data`,data);
+          const { data } = response.data;
+          // console.log(`data`,data);
           
           setLocations(data);
         }
       } catch (error) {
+        setIsError(true);
         console.error(error);
       } finally {
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     };
-
-
-    useEffect(() => {
-      fetchLocations();
-    }, []);
-       
+      console.log(`locationID`, typeof locationID);
       
-      //FLATPICKR HANDLERS
-      const handleFlatPicker = ( ) =>{
+    //servicesById
+    //Function to call the API based on the location
+  const fetchServiceData = async (location) => {
+    console.log(location);
+    
+    try {
+      const response = await request(`/getLocationById/${location}`);
+      if (response && response.data.status === "Success") {
+        const { data } = response.data;
+        console.log(`servicedata`,data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };  
 
+   //Fuction to call the API based on the date
+    const fetchStaffHoursData = async( ) =>{
+      const payLoad = {
+        id:'2',
+        date:'23-12-2024'
+      }
+      try {
+        const response = await requestPost(`/getStaffListHours`,payLoad);
+        if (response && response.data.status === "Success") {
+          const { data } = response.data;
+          console.log(`servicedata`,data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+  // useEffect to listen for location changes and call the API
+    useEffect(() => {
+      fetchLocations(locationID);
+      fetchStaffHoursData();
+    }, []);
+
+    //useEffect for fetching locationById
+    useEffect(() => {
+      if (locationID) {
+        fetchServiceData(locationID);
+      }
+    }, [locationID]);
+
+
+       /*++++++++++Handlers++++++++++++++++++++*/
+    //Displaying the locations location handler;
+    const handleSelectLocation = (indx , location) => {
+            const updateID = location.id;
+            setIsLocationID(updateID);
+            setLocation(`${location.branchName},${location.city}`);
+    }
+      
+
+
+      //FLATPICKR HANDLERS
+      const handleFlatPicker = (index , location ) =>{
+         
       }
      
 
@@ -62,34 +125,41 @@ const CustomAppointmentForm = () => {
         border: '1px solid red'
       }}>
 
-      <CContainer className='custom_section d-flex justify-content-center align-items-center flex-column' style={{ border: "2px solid yellow" }}>
+      <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "2px solid yellow" }}>
         <h1 className='custom_appointment_font'>Nueva Cita</h1>
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span><MapPin className='responsive-icon' /> {`Posiciones`}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card"> <span><MapPin className='responsive-icon' /> {location}</span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
-              {
+
+              { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
+              { !isLoading &&
                 locations?.map((location, index) => {
                   return <CDropdownItem key={location.id} onClick={() => handleSelectLocation(index, location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
                 })
               }
             </CDropdownMenu>
           </CDropdown>
-
+          {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>}
         </CCol>
 
         {/* SErVICE */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}><Select /></CCol>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
+          <Select 
+           placeholder = "Seleccionar ubicación"
+          />
+          
+          </CCol>
         {/* staff */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card"> <span><MapPin className='responsive-icon' /> {`Seleccionar Personal`}</span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
-              {
+              {/* {
                 locations?.map((location, index) => {
                   return <CDropdownItem key={location.id} onClick={() => handleSelectLocation(index, location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
                 })
-              }
+              } */}
             </CDropdownMenu>
           </CDropdown>
 
@@ -155,8 +225,8 @@ const CustomAppointmentForm = () => {
             </CCol>
           </CRow>
         </CCol>
-        <CCol lg={4}>
-          <CButton type='submit'>Reservar</CButton>
+        <CCol lg={4} className='d-flex justify-content-center'>
+          <CButton type='submit' className='w-100'>Reservar</CButton>
         </CCol>
       </CContainer>
 

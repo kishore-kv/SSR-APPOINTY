@@ -4,7 +4,7 @@ const FormData = require('form-data');
 const logger = require("../logger");
 
 
-var reactAppUrl = process && process.env && process.env.REACT_APP_BASE_URL;
+// var reactAppUrl = process && process.env && process.env.REACT_APP_BASE_URL;
 var reactAppointyUrl = process && process.env && process.env.REACT_APPOINTY_BASE_URL;
 module.exports = {
   loginService: async (req, res, next) => {
@@ -53,13 +53,14 @@ module.exports = {
     let statusCode = response && response.status || 400
     res.status(statusCode).send(response && response.data);
   }, 
+
   getAllLocations: async (req, res, next) => {
   
     
     const pageNo = req.body.page ;
     const limitNo = req.body.limit;
     let finalUrl = `${reactAppointyUrl}${endpoints.locations}?page=${pageNo}&limit=${limitNo}`;
-  
+    // console.log(`===finalUrl`, finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
     res.status(statusCode).send(response && response.data);
@@ -68,12 +69,42 @@ module.exports = {
    getLocationById: async (req, res, next) => {
     console.log('-----------',req);
     const id = req.params.id;
-    let finalUrl = `${reactAppointyUrl}${endpoints.locationById}/${id}`;
+    let finalUrl = `${reactAppointyUrl}${endpoints.locationById}/${id}?expand=true`;
     console.log("finalUrl===",finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
     res.status(statusCode).send(response && response.data);
   },
+
+  getStaffListHours:async (req, res, next) => {
+    console.log('-----------',req);
+    
+    const {id , date} = req.body;
+    let finalUrl = `${reactAppointyUrl}/staff/${id}${endpoints.fetchStaffAvailabilty}?date=${date}`;
+    console.log("getStafflist===",finalUrl);
+    let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
+  },
+
+  postNewAppointment:async (req, res, next) => {
+
+    let finalUrl = `${reactAppointyUrl}${endpoints.newAppointment}`;
+    console.log("getStafflist===",finalUrl);
+    let response = await serviceReq(req,finalUrl, "POST", req.body,req.headers,false);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
+  },
+
+  fetchNewAppointment:async (req, res, next) => {
+  
+    const id = req.params.id;
+    let finalUrl = `${reactAppointyUrl}${endpoints.fetchAppointmentById}/${id}`;
+    console.log("getStafflist===",finalUrl);
+    let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
+  }
 
   
 };

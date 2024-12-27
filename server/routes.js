@@ -12,5 +12,8 @@ routes.get("/supplierConfig", serverController.supplierConfig);
 routes.get("/configList", serverController.configList);
 routes.post("/getAllLocations", serverController.getAllLocations);
 routes.get("/getLocationById/:id" , serverController.getLocationById);
+routes.post("/getStaffListHours",serverController.getStaffListHours);
+routes.post("/postNewAppointment", serverController.postNewAppointment);
+routes.get("/fetchAppointmentById/:id",serverController.fetchNewAppointment);
 
 module.exports = routes;
