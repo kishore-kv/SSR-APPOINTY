@@ -1,9 +1,9 @@
 
-import {  cilCalendar, cilCircle, cilEnvelopeClosed, cilHandPointRight, cilUser } from '@coreui/icons';
+import {  cilCalendar, cilCircle, cilClock, cilEnvelopeClosed, cilHandPointRight, cilUser } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import { CDropdown, CForm, CFormInput,CDropdownDivider, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol, CSpinner, CContainer } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
- import { MapPin,CurrencyDollar } from "@phosphor-icons/react";
+ import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple } from "@phosphor-icons/react";
  import Select from 'react-select';
  import './CustomForm.css';
  import "flatpickr/dist/themes/material_green.css";
@@ -13,7 +13,6 @@ import { CButton } from '@coreui/react';
  
  
 
- 
 
 /*  This component consists of two children 1.dropDown for location and 2.formInputs
  */
@@ -127,9 +126,9 @@ const CustomAppointmentForm = () => {
 
       <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "2px solid yellow" }}>
         <h1 className='custom_appointment_font'>Nueva Cita</h1>
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span><MapPin className='responsive-icon' /> {location}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='' size={'7%'}/> {location}</span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
 
               { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
@@ -140,20 +139,20 @@ const CustomAppointmentForm = () => {
               }
             </CDropdownMenu>
           </CDropdown>
-          {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>}
+          {/* {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>} */}
         </CCol>
 
         {/* SErVICE */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <Select 
            placeholder = "Seleccionar ubicación"
           />
           
           </CCol>
         {/* staff */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span><MapPin className='responsive-icon' /> {`Seleccionar Personal`}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin size={'7%'} /> {`Seleccionar Personal`}</span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
               {/* {
                 locations?.map((location, index) => {
@@ -165,11 +164,11 @@ const CustomAppointmentForm = () => {
 
         </CCol>
         {/* Calendar */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
-          <CRow className='d-flex custom_row_inputs'>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+          <CRow className='d-flex custom_row_inputs h-100'>
             <CCol lg={2} xs={2}>
               <span class="avatar-icon avatar-icon--has-img">
-                <CIcon icon={cilCalendar} className={`form-icon`} />
+              <CalendarDots size={"1.5rem"} />
               </span>
             </CCol>
             <CCol lg={10} xs={10}>
@@ -180,11 +179,11 @@ const CustomAppointmentForm = () => {
           </CRow>
         </CCol>
         {/* TIME */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
-          <CRow className='d-flex custom_row_inputs'>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+          <CRow className='d-flex custom_row_inputs h-100'>
             <CCol lg={2} xs={2}>
               <span class="avatar-icon avatar-icon--has-img">
-                <CIcon icon={cilCalendar} className={`form-icon`} />
+              <Clock size={"1.5rem"} />
               </span>
             </CCol>
             <CCol lg={10} xs={10}>
@@ -195,11 +194,11 @@ const CustomAppointmentForm = () => {
           </CRow>
         </CCol>
         {/* PRICE */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
               <span class="avatar-icon avatar-icon--has-img">
-                <CurrencyDollar size={24} />
+                <CurrencyDollar size={"1.5rem"} />
               </span>
             </CCol>
             <CCol lg={10} xs={10}>
@@ -211,11 +210,11 @@ const CustomAppointmentForm = () => {
         </CCol>
         {/* CUTOMER NAME */}
 
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}>
+        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
             <span class="avatar-icon avatar-icon--has-img">
-              <CIcon icon={cilEnvelopeClosed} className={`form-icon`} />
+            <EnvelopeSimple size={"1.5rem"} />
             </span>
             </CCol>
             <CCol lg={10} xs={10}>
@@ -226,7 +225,7 @@ const CustomAppointmentForm = () => {
           </CRow>
         </CCol>
         <CCol lg={4} className='d-flex justify-content-center'>
-          <CButton type='submit' className='w-100'>Reservar</CButton>
+          <CButton type='submit' className='w-100 reserver_btn'>Reservar</CButton>
         </CCol>
       </CContainer>
 

@@ -1,9 +1,70 @@
 
+
+
+.custom_col {
+  box-shadow: 0px 4px 6px 0px rgba(50,50,93,0.11) , 0px 1px 3px 0px rgba(0,0,0,0.08);
+}
+@media (min-width: 768px){
+  .custom_col {
+      height: 2.5em;
+  }
+  }
+
+  .row.d-flex.custom_row_inputs {
+    height: 100%;
+    align-items: center;
+}
+
+input.form-control.input-minimal {
+    padding-inline-start:0;
+    border: 0;
+    outline: none;
+    color: none;
+}
+input.form-control.input-minimal:focus {
+    border: 0;
+    outline: none;
+    color: none;
+    box-shadow:none;
+}
+input.selected_flatpicky {
+  border: 0;
+  outline:none;
+}
+
+input.selected_flatpicky:focus {
+  box-shadow:none;
+}
+  
+.reserver_btn{
+  background: #5E5DF0;
+  border-radius: 999px;
+  box-shadow: #5E5DF0 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}
 .custom_appointment_font{
   font-size: 1.4em;
 }
 
 .container.custom_section{
+    
+    background:#fff;
+   box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
   width:50%;
 }
 
@@ -36,7 +97,15 @@
     flex:1
 }
 .custom_section{
-  gap:1rem;
+  box-shadow: 7px 7px 15px #bbcfda,-4px -4px 13px #fff, inset 4px 4px 8px rgba(209, 217, 230, 0.2),  inset -8px -8px 8px rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  background: #e8eff5;
+  gap:1.225rem;
+}
+
+span.custom_span_sz{
+  display: flex;
+  gap: 10%;
 }
 @media (max-width: 550px) {
     .responsive-icon {
