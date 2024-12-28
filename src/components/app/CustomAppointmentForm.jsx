@@ -17,15 +17,16 @@ import { CButton } from '@coreui/react';
 
 const CustomAppointmentForm = () => {
   //APPOINTMENT FORM DATA
-  // const formData = {
-  //     "customerEmail": "",
-  //     "locationId": 0,
-  //     "staffId": 0,
-  //     "serviceId": 0,
-  //     "date": "2024-12-27T10:56:01.227Z",
-  //     "startTime": "2024-12-27T10:56:01.227Z"
-  //   }
-  // const [formData , setF]
+  const initialData = {
+      customerEmail: "",
+      locationId:'' ,
+      staffId: '',
+      serviceId: '',
+      date: '',
+      startTime: ''
+    }
+  
+  const [formData , setFormData] = useState(initialData);
     //fetching locations data
     const [locations , setLocations] = useState([ ]);
 
