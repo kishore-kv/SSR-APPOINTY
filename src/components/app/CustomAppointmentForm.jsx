@@ -48,6 +48,17 @@ const CustomAppointmentForm = () => {
     /*++++++++++STAFF STATE TRACKER+++++++*/
     const [staff , setStaff] = useState("Seleccionar Personal");
     const [staffOptions ,setStaffOptions] = useState([ ]);
+    /*+++++++++DATE TRACKER +++++++++++*/
+    const [disabledDays, setDisabledDays] = useState([]);
+    const dayNameToNumber = {
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    }; 
   /* APIS calls*/
   //locations
     const fetchLocations = async () => {
@@ -138,10 +149,27 @@ const CustomAppointmentForm = () => {
       }
       //setting the staffNumber on dropdow
       const handleSelectStaff = (index , staff) =>{
+        console.log(`stafd`,staff);
+        
+         const updateAvailableDays = staff.availability?.map((availble) => dayNameToNumber[availble.availableDay.toLowerCase()]);
+         console.log(`uad`,updateAvailableDays);
+         
+         setDisabledDays(updateAvailableDays)
         setStaff(`${staff.firstName} ${staff.lastName}`);
       }
 
       //FLATPICKR HANDLERS
+      const enableOptions = {
+        minDate:new Date(),
+        dateFormat: "d-m-Y",
+        disable: [
+          function (date) {
+            // Return true to disable the date
+            return !disabledDays.includes(date.getDay());
+          },
+        ]
+
+      };
       const handleFlatPicker = (index , location ) =>{
          
       }
@@ -164,7 +192,7 @@ const CustomAppointmentForm = () => {
               { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
               { !isLoading &&
                 locations?.map((location, index) => {
-                  return <CDropdownItem key={location.id} onClick={() => handleSelectLocation(index, location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
+                  return <CDropdownItem key={index} onClick={() => handleSelectLocation(index, location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
                 })
               }
             </CDropdownMenu>
@@ -190,7 +218,7 @@ const CustomAppointmentForm = () => {
               { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
               { !isLoading &&
                 serviceOptions?.map((service, index) => {
-                  return <CDropdownItem key={service.id} onClick={() => handleSelectService(index, service)}>{`${service.serviceName} (${service.durationMins}mins)`}</CDropdownItem>
+                  return <CDropdownItem key={index} onClick={() => handleSelectService(index, service)}>{`${service.serviceName} (${service.durationMins}mins)`}</CDropdownItem>
                 })
               }
             </CDropdownMenu>
@@ -207,7 +235,7 @@ const CustomAppointmentForm = () => {
             <CDropdownMenu style={{ width: '100%' }} className="">
               {
                 staffOptions?.map((staff, index) => {
-                  return <CDropdownItem key={staff.id} onClick={() => handleSelectStaff(index, staff)}>{`${staff.firstName} ${staff.lastName}`}</CDropdownItem>
+                  return <CDropdownItem key={index} onClick={() => handleSelectStaff(index, staff)}>{`${staff.firstName} ${staff.lastName}`}</CDropdownItem>
                 })
               }
             </CDropdownMenu>
@@ -224,7 +252,7 @@ const CustomAppointmentForm = () => {
             </CCol>
             <CCol lg={10} xs={10}>
               <span className="meeting__card__name">
-                <Flatpickr options={{ minDate: new Date(), disable:[0,1] }} onChange={(value) => handleFlatPicker(value)} className={`selected_flatpicky w-100`} />
+                <Flatpickr options={enableOptions} onChange={(value) => handleFlatPicker(value)} className={`selected_flatpicky w-100`} />
               </span>
             </CCol>
           </CRow>

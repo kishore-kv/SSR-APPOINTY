@@ -19,7 +19,7 @@ export const serviceReq = async(reqObject,reqUrl,reqMethod,reqPayload,reqHeaders
         mode: 'cors',
         
     }
-    debugger;
+    // debugger;
     if(enableAuthCookie){
         options['headers']['Authorization'] = 'Bearer' + ' ' + getCookie("token",reqObject["headers"]['cookie'])
     }

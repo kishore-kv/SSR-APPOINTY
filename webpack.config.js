@@ -3,9 +3,11 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
+const { buffer } = require('stream/consumers');
 
 /*-------------------------------------------------*/
-
+console.log('FORCE_COLOR in Webpack:', process.env.FORCE_COLOR);
 module.exports = {
     // webpack optimization mode
     mode: ( 'development' === process.env.NODE_ENV ? 'development' : 'production' ),
@@ -93,6 +95,15 @@ module.exports = {
                 }
             ]
         }),
+            new webpack.ProvidePlugin({
+              process: 'process/browser',
+            }),
+            new webpack.DefinePlugin({
+                'process.env': JSON.stringify({
+                  FORCE_COLOR: process.env.FORCE_COLOR || '1',
+                  NODE_ENV: process.env.NODE_ENV || 'development',
+                }),
+              })
     ],
 
     // resolve files configuration
@@ -105,6 +116,17 @@ module.exports = {
             '@layout': path.resolve(__dirname, 'src/layout/'),
             'react-router-dom': path.resolve('./node_modules/react-router-dom')
         },
+        fallback: {
+            os: require.resolve('os-browserify/browser'),
+            process: require.resolve('process/browser'),
+                fs: false,
+                path: false,
+                zlib: false,
+                http: false,
+                https:false,
+                util:false,
+                buffer:false
+              }
     },
 
     optimization: {

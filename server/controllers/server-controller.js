@@ -6,6 +6,7 @@ const logger = require("../logger");
 
 // var reactAppUrl = process && process.env && process.env.REACT_APP_BASE_URL;
 var reactAppointyUrl = process && process.env && process.env.REACT_APPOINTY_BASE_URL;
+
 module.exports = {
   loginService: async (req, res, next) => {
     res.send({message:'Welcome to my world'})

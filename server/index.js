@@ -1,4 +1,6 @@
 const path = require( 'path' );
+console.log('FORCE_COLOR:', process.env.FORCE_COLOR);
+
 
 require( 'ignore-styles' );
 
