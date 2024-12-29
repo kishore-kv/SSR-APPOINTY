@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import Flatpickr from "react-flatpickr";
 import { request , requestPost} from '../../services/request';
 import { CButton } from '@coreui/react';
+import TimePickerCalendarStyle from './TimePickerCalendarStyle';
  
  
 
@@ -60,6 +61,12 @@ const CustomAppointmentForm = () => {
       friday: 5,
       saturday: 6,
     }; 
+    /*++++TIMEPICKR AVAILABILITY STAFF +++++++++++++=*/
+    const [availabilityArray , setAvailabilityArray] = useState([]);
+    const [availabilityObj , setAvailabilityObj] = useState({});
+     /*+++++++++PRICE+++++++++++++*/
+     const [price , setPrice] = useState('');
+    /*+++++++++++++EMAIL OF CUSTOMER*/
   /* APIS calls*/
   //locations
     const fetchLocations = async () => {
@@ -139,6 +146,7 @@ const CustomAppointmentForm = () => {
     const handleSelectLocation = (indx , location) => {
             const updateID = location.id;
             setIsLocationID(updateID);
+            setFormData({ ...formData, locationId:updateID });
             setLocation(`${location.branchName},${location.city}`);
     }
        //setting the new service on dropdown
@@ -147,16 +155,19 @@ const CustomAppointmentForm = () => {
           const updateStaffList = service.staffList;
         setService(`${service.serviceName} (${service.durationMins}mins)`);
         setStaffOptions(updateStaffList);
+        setPrice(service.price);
+        setFormData({ ...formData, serviceId:service.id});
       }
       //setting the staffNumber on dropdow
       const handleSelectStaff = (index , staff) =>{
         console.log(`stafd`,staff);
-        
+        setAvailabilityArray(staff.availability);
          const updateAvailableDays = staff.availability?.map((availble) => dayNameToNumber[availble.availableDay.toLowerCase()]);
-         console.log(`uad`,updateAvailableDays);
+        //  console.log(`uad`,updateAvailableDays);
          
          setDisabledDays(updateAvailableDays)
         setStaff(`${staff.firstName} ${staff.lastName}`);
+        setFormData({ ...formData, staffId:staff.id});
       }
 
       //FLATPICKR HANDLERS
@@ -171,10 +182,55 @@ const CustomAppointmentForm = () => {
         ]
 
       };
-      const handleFlatPicker = (index , location ) =>{
+
+       // Format date as dd-mm-yyyy
+           const formatDate = (date) => {
+               const day = String(date.getDate()).padStart(2, "0");
+               const month = String(date.getMonth() + 1).padStart(2, "0");
+               const year = date.getFullYear();
+                return `${day}-${month}-${year}`;
+       };
+      const handleFlatPicker = (selectedDates) =>{
+        const updateAvailableObj = availabilityArray.find((ele) => ele.availableDay.includes(String(selectedDates[0]).split(' ')[0].toUpperCase()))
+           console.log(`zzzzzz`,updateAvailableObj);
+           
+        setAvailabilityObj(updateAvailableObj)
+        console.log(`selected` , selectedDates[0]);
+        // console.log(`zzzzzzzzz`,zzz);
+        
+        if (selectedDates.length > 0) {
+          const formattedDate = formatDate(selectedDates[0]);
+          setFormData({ ...formData, date: formattedDate });
+        }
          
       }
-     
+      // Email handlechange handler
+      const handleInputChange = (e) =>{
+         const { name, value } = e.target;
+         setFormData((prevData) => ({
+           ...prevData,
+           [name]: value, // Update the corresponding field in formData
+         }));
+      }
+
+      //TIMPICKR HANDLER TO UPDATE FORM DATA
+       // Handler to update formData.startTime
+   const handleTimeChange = (selectedTime) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      startTime: selectedTime, // Update startTime with the selected time
+    }));
+  };
+     //form submit handler
+     const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Form Data:", formData);
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+      }
+    };
 
   return ( 
     <CContainer className='py-lg-5 custom_container'
@@ -182,8 +238,9 @@ const CustomAppointmentForm = () => {
         height: '80%',
         border: '1px solid red'
       }}>
-
+       <CForm onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
       <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "2px solid yellow" }}>
+        
         <h1 className='custom_appointment_font'>Nueva Cita</h1>
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
@@ -253,25 +310,21 @@ const CustomAppointmentForm = () => {
             </CCol>
             <CCol lg={10} xs={10}>
               <span className="meeting__card__name">
-                <Flatpickr options={enableOptions} onChange={(value) => handleFlatPicker(value)} className={`selected_flatpicky w-100`} />
+                <Flatpickr options={enableOptions} 
+                           onChange={(value) => handleFlatPicker(value)} 
+                           value={formData.date}
+                           className={`selected_flatpicky w-100`} />
               </span>
             </CCol>
           </CRow>
         </CCol>
         {/* TIME */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
-          <CRow className='d-flex custom_row_inputs h-100'>
-            <CCol lg={2} xs={2}>
-              <span class="avatar-icon avatar-icon--has-img">
-              <Clock size={"1.5rem"} />
-              </span>
-            </CCol>
-            <CCol lg={10} xs={10}>
-              <span className="meeting__card__name">
-                <Flatpickr options={{ minDate: "2017-01-01" }} onChange={(value) => handleFlatPicker(value)} className={`selected_flatpicky w-100`} />
-              </span>
-            </CCol>
-          </CRow>
+           <TimePickerCalendarStyle 
+             availableTime ={availabilityObj}
+            value={formData.startTime} // Pass the current startTime as value
+        onTimeChange={handleTimeChange} // Pass handler to update startTime
+        />
         </CCol>
         {/* PRICE */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }}className='custom_col'>
@@ -283,7 +336,7 @@ const CustomAppointmentForm = () => {
             </CCol>
             <CCol lg={10} xs={10}>
               <span className="meeting__card__name">
-                <CFormInput className={`input-minimal`} value={'200'} type={'text'} />
+                <CFormInput className={`input-minimal`} value={price} type={'text'} />
               </span>
             </CCol>
           </CRow>
@@ -299,7 +352,7 @@ const CustomAppointmentForm = () => {
             </CCol>
             <CCol lg={10} xs={10}>
             <span className="meeting__card__name">
-              <CFormInput className={`input-minimal`} value={'200'} type={'text'} />
+              <CFormInput className={`input-minimal`} autoComplete='off' name="customerEmail" value={formData.customerEmail} type={'text'} onChange={handleInputChange}/>
             </span>
             </CCol>
           </CRow>
@@ -307,8 +360,9 @@ const CustomAppointmentForm = () => {
         <CCol lg={4} className='d-flex justify-content-center'>
           <CButton type='submit' className='w-100 reserver_btn'>Reservar</CButton>
         </CCol>
+     
       </CContainer>
-
+      </CForm>
     </CContainer>
         
 

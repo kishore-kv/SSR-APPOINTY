@@ -1,29 +1,17 @@
 import React, { useState } from "react";
 import { Clock } from "@phosphor-icons/react";
+import { CFormInput } from "@coreui/react";
+import './Timpickr.css';
 
-const TimePickerCalendarStyle = () => {
+const TimePickerCalendarStyle = ({value , onTimeChange , availableTime}) => {
+  console.log(`available`, availableTime);
+  
+  
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [inputValue, setInputValue] = useState("");
-
-  // Define disabled times
-  const disabledTimes = ["12:15 AM", "3:30 AM", "6:45 PM"]; // Add specific times to disable
+  // const [inputValue, setInputValue] = useState("");
 
   // Generate time slots from 12:00 AM to 11:45 PM in 15-min intervals
-  const generateTimeSlots = () => {
-    const slots = [];
-    const startTime = new Date();
-    startTime.setHours(0, 0, 0, 0);
-
-    for (let i = 0; i < 24 * 4; i++) {
-      const time = new Date(startTime);
-      slots.push(time);
-      startTime.setMinutes(startTime.getMinutes() + 15);
-    }
-    return slots;
-  };
-
-  const timeSlots = generateTimeSlots();
 
   const formatTime = (date) => {
     return date.toLocaleTimeString("en-US", {
@@ -32,36 +20,60 @@ const TimePickerCalendarStyle = () => {
       hour12: true,
     });
   };
+  const generateTimeSlots = (startTime , endTime) => {
+    const slots = [];
+     if(!startTime || !endTime) return slots;
+    const [startHour, startMinute, startSecond] = startTime.split(':').map(Number);
+    const [endHour, endMinute, endSecond] = endTime.split(':').map(Number);
+    const start = new Date();
+  start.setHours(startHour, startMinute, startSecond, 0);
 
-  const isTimeDisabled = (time) => {
-    const formattedTime = formatTime(time);
-    return disabledTimes.includes(formattedTime);
+  const end = new Date();
+  end.setHours(endHour, endMinute, endSecond, 0);
+
+
+
+  while (start <= end) {
+    // console.log(`start`,start);
+    
+    slots.push(formatTime(start));
+    start.setMinutes(start.getMinutes() + 15);
+  }
+    return slots;
   };
 
+  const timeSlots = availableTime && generateTimeSlots(availableTime.startTime , availableTime.endTime);
+  // console.log(`slots`,timeSlots);
+  
+
+  
   const handleTimeSelect = (time) => {
-    if (isTimeDisabled(time)) return; // Prevent selection of disabled times
     setSelectedTime(time);
-    setInputValue(formatTime(time));
+    onTimeChange(time);
     setIsOpen(false);
   };
 
   return (
-    <div className="position-relative" style={{ width: "18rem" }}>
+    <div className="position-relative px-3">
       {/* Input field with calendar icon */}
-      <div className="position-relative">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Select time"
-          value={inputValue}
-          readOnly
-          onClick={() => setIsOpen(!isOpen)}
-        />
-        <Clock
-          className="position-absolute top-50 end-0 translate-middle-y me-2 text-muted"
+      <div className="d-flex align-items-center"
+      // className="position-relative"
+      >
+
+       <Clock
+          // className="position-absolute top-50 end-0 translate-middle-y me-2 text-muted"
+          size={"1.5rem"}
           style={{ cursor: "pointer" }}
           onClick={() => setIsOpen(!isOpen)}
         />
+        <CFormInput
+          type="text"
+          className="form-control timepickr"
+          value={value}
+          readOnly
+          onClick={() => setIsOpen(!isOpen)}
+        />
+       
       </div>
 
       {/* Time picker dropdown */}
@@ -78,29 +90,20 @@ const TimePickerCalendarStyle = () => {
             className="d-grid p-2 overflow-auto"
             style={{ gridTemplateColumns: "repeat(4, 1fr)", maxHeight: "16rem" }}
           >
-            {timeSlots.map((time, index) => {
-              const disabled = isTimeDisabled(time);
-              return (
-                <div
-                  key={index}
-                  className={`p-2 text-center small rounded ${
-                    disabled
-                      ? "bg-secondary text-white"
-                      : selectedTime &&
-                        selectedTime.getTime() === time.getTime()
-                      ? "bg-primary text-white"
-                      : "text-body hover-bg-light"
-                  }`}
-                  style={{
-                    cursor: disabled ? "not-allowed" : "pointer",
-                    opacity: disabled ? 0.6 : 1,
-                  }}
-                  onClick={() => handleTimeSelect(time)}
-                >
-                  {formatTime(time)}
-                </div>
-              );
-            })}
+            {timeSlots.map((time, index) => (
+              <div
+                key={index}
+                className={`p-2 text-center small rounded cursor-pointer ${
+                  selectedTime && selectedTime === time
+                    ? "bg-primary text-white"
+                    : "text-body hover-bg-light"
+                }`}
+                style={{ cursor: "pointer" }}
+                onClick={() => handleTimeSelect(time)}
+              >
+                {time}
+              </div>
+            ))}
           </div>
         </div>
       )}
