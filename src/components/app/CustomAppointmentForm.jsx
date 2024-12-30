@@ -45,6 +45,7 @@ const CustomAppointmentForm = () => {
        /*++++++++++++ REACT SELECT +++++++++++++++++++++++*/
    //diplaying servicesOptionlist
    //displaying service
+    const [isServiceLoading , setServiceLoading] = useState(false);
    const [ service , setService] = useState("Seleccionar ubicación")
     const [serviceOptions , setServiceOptions] = useState([{}]);
 
@@ -98,9 +99,10 @@ const CustomAppointmentForm = () => {
     //Function to call the API based on the location
   const fetchServiceData = async (location) => {
     // console.log(location);
-    
+    setServiceLoading(true);
     try {
       const response = await request(`/getLocationById/${location}`);
+     
       if (response && response.data.status === "Success") {
         const { data } = response.data;
         const updtaeServiceList = data?.servicesList
@@ -112,6 +114,8 @@ const CustomAppointmentForm = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    }finally{
+      setServiceLoading(false);
     }
   };  
 
@@ -266,11 +270,11 @@ const CustomAppointmentForm = () => {
         <h1 className='custom_appointment_font'>Nueva Cita</h1>
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='' size={'7%'}/> {location}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card" disabled={true}> <span className='custom_span_sz'><MapPin className='' size={'7%'}/> {location}</span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
 
               { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
-              { !isLoading &&
+              { !isLoading && locations.length > 0 &&
                 locations?.map((location, index) => {
                   return <CDropdownItem key={index} onClick={() => handleSelectLocation(index, location)}>{`${location.branchName},${location.city}`}</CDropdownItem>
                 })
@@ -295,8 +299,8 @@ const CustomAppointmentForm = () => {
             <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><CallBell className='' size={'7%'}/> {service}</span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
 
-              { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
-              { !isLoading &&
+              { isServiceLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
+              { !isServiceLoading &&
                 serviceOptions?.map((service, index) => {
                   return <CDropdownItem key={index} onClick={() => handleSelectService(index, service)}>{`${service.serviceName} (${service.durationMins}mins)`}</CDropdownItem>
                 })
