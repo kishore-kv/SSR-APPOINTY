@@ -9,6 +9,7 @@ import Flatpickr from "react-flatpickr";
 import { request , requestPost} from '../../services/request';
 import { CButton } from '@coreui/react';
 import TimePickerCalendarStyle from './TimePickerCalendarStyle';
+import { convertTo24HourFormat } from '../../utils/storage/index';
  
  
 
@@ -67,6 +68,10 @@ const CustomAppointmentForm = () => {
      /*+++++++++PRICE+++++++++++++*/
      const [price , setPrice] = useState('');
     /*+++++++++++++EMAIL OF CUSTOMER*/
+
+    /*+++++++++++ params for staffAvaialability*/
+    const [staffId , setStaffId] = useState('');
+    const [ dateParams , setDateParams] = useState('');
   /* APIS calls*/
   //locations
     const fetchLocations = async () => {
@@ -111,10 +116,10 @@ const CustomAppointmentForm = () => {
   };  
 
    //Fuction to call the API based on the date
-    const fetchStaffHoursData = async( ) =>{
+    const fetchStaffHoursData = async(id , date ) =>{
       const payLoad = {
-        id:'2',
-        date:'23-12-2024'
+        id,
+        date
       }
       try {
         const response = await requestPost(`/getStaffListHours`,payLoad);
@@ -139,8 +144,15 @@ const CustomAppointmentForm = () => {
         fetchServiceData(locationID);
       }
     }, [locationID]);
-
-
+    //useEffect for fetching the existing availability upon staffid
+     useEffect(() => {
+        if(staffId && dateParams){
+          console.log(`stadd`,staffId);
+          console.log(`stadd`,dateParams);
+          
+          fetchStaffHoursData(staffId,dateParams);
+        }
+     },[staffId,dateParams])
        /*++++++++++Handlers++++++++++++++++++++*/
     //Displaying the locations location handler;
     const handleSelectLocation = (indx , location) => {
@@ -164,7 +176,7 @@ const CustomAppointmentForm = () => {
         setAvailabilityArray(staff.availability);
          const updateAvailableDays = staff.availability?.map((availble) => dayNameToNumber[availble.availableDay.toLowerCase()]);
         //  console.log(`uad`,updateAvailableDays);
-         
+         setStaffId(staff.id);
          setDisabledDays(updateAvailableDays)
         setStaff(`${staff.firstName} ${staff.lastName}`);
         setFormData({ ...formData, staffId:staff.id});
@@ -192,14 +204,15 @@ const CustomAppointmentForm = () => {
        };
       const handleFlatPicker = (selectedDates) =>{
         const updateAvailableObj = availabilityArray.find((ele) => ele.availableDay.includes(String(selectedDates[0]).split(' ')[0].toUpperCase()))
-           console.log(`zzzzzz`,updateAvailableObj);
+          //  console.log(`zzzzzz`,updateAvailableObj);
            
         setAvailabilityObj(updateAvailableObj)
-        console.log(`selected` , selectedDates[0]);
+        // console.log(`selected============` , selectedDates[0].getDate());
         // console.log(`zzzzzzzzz`,zzz);
         
         if (selectedDates.length > 0) {
           const formattedDate = formatDate(selectedDates[0]);
+          setDateParams(formattedDate);
           setFormData({ ...formData, date: formattedDate });
         }
          
@@ -218,13 +231,22 @@ const CustomAppointmentForm = () => {
    const handleTimeChange = (selectedTime) => {
     setFormData((prevData) => ({
       ...prevData,
-      startTime: selectedTime, // Update startTime with the selected time
+      startTime: convertTo24HourFormat(selectedTime), // Update startTime with the selected time
     }));
   };
      //form submit handler
-     const handleSubmit = (e) => {
+     const handleSubmit = async (e) => {
       e.preventDefault();
       console.log("Form Data:", formData);
+      try {
+         const responseBookingStatus = await requestPost("/postNewAppointment",formData);
+         if(responseBookingStatus && responseBookingStatus.ok){
+          console.log(`data`,responseBookingStatus);
+          
+         }
+      } catch (error) {
+        
+      }
     };
     const handleKeyDown = (e) => {
       if (e.key === "Enter") {

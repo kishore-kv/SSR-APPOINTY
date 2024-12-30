@@ -42,3 +42,20 @@ export const getCookie = (cname) => {
   }
   return ''
 }
+
+
+export function convertTo24HourFormat(timeStr) {
+  // Create a new Date object with the time
+  const [time, modifier] = timeStr.split(" ");
+  let [hours, minutes] = time.split(":").map(Number);
+
+  // Convert to 24-hour format
+  if (modifier.toLowerCase() === "pm" && hours !== 12) {
+    hours += 12;
+  } else if (modifier.toLowerCase() === "am" && hours === 12) {
+    hours = 0;
+  }
+
+  // Format the hours and minutes as HH:mm
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:00`;
+}

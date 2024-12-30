@@ -4,12 +4,12 @@ import { CFormInput } from "@coreui/react";
 import './Timpickr.css';
 
 const TimePickerCalendarStyle = ({value , onTimeChange , availableTime}) => {
-  console.log(`available`, availableTime);
+  // console.log(`available`, availableTime);
   
   
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
-  // const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   // Generate time slots from 12:00 AM to 11:45 PM in 15-min intervals
 
@@ -20,6 +20,7 @@ const TimePickerCalendarStyle = ({value , onTimeChange , availableTime}) => {
       hour12: true,
     });
   };
+
   const generateTimeSlots = (startTime , endTime) => {
     const slots = [];
      if(!startTime || !endTime) return slots;
@@ -31,11 +32,7 @@ const TimePickerCalendarStyle = ({value , onTimeChange , availableTime}) => {
   const end = new Date();
   end.setHours(endHour, endMinute, endSecond, 0);
 
-
-
   while (start <= end) {
-    // console.log(`start`,start);
-    
     slots.push(formatTime(start));
     start.setMinutes(start.getMinutes() + 15);
   }
@@ -48,6 +45,7 @@ const TimePickerCalendarStyle = ({value , onTimeChange , availableTime}) => {
 
   
   const handleTimeSelect = (time) => {
+    setInputValue(time)
     setSelectedTime(time);
     onTimeChange(time);
     setIsOpen(false);
@@ -57,9 +55,7 @@ const TimePickerCalendarStyle = ({value , onTimeChange , availableTime}) => {
     <div className="position-relative px-3">
       {/* Input field with calendar icon */}
       <div className="d-flex align-items-center"
-      // className="position-relative"
       >
-
        <Clock
           // className="position-absolute top-50 end-0 translate-middle-y me-2 text-muted"
           size={"1.5rem"}
@@ -69,7 +65,7 @@ const TimePickerCalendarStyle = ({value , onTimeChange , availableTime}) => {
         <CFormInput
           type="text"
           className="form-control timepickr"
-          value={value}
+          value={inputValue}
           readOnly
           onClick={() => setIsOpen(!isOpen)}
         />
