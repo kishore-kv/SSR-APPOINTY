@@ -34,11 +34,11 @@ export const requestPdf = async (url) => {
 
 export const requestPost = async (url, formData = {}, method = "post") => {
   // console.log(`===============url`, url);
-  
+  // {
+  //   headers: getHeaders(),
+  // }
   try {
-    const data = await axios[method](url, formData, {
-      headers: getHeaders(),
-    });
+    const data = await axios[method](url, formData);
     return data;
   } catch (error) {
     return error;

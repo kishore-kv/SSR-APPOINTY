@@ -1,6 +1,6 @@
 export const getCookie=(cname,cookies)=>{
     let name = cname + "=";
-    let decodedCookie = cookies;
+    let decodedCookie = cookies || '';
     let ca = decodedCookie.split(';');
     for(let i = 0; i <ca.length; i++) {
       let c = ca[i];

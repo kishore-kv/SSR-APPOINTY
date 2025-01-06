@@ -44,18 +44,57 @@ export const getCookie = (cname) => {
 }
 
 
-export function convertTo24HourFormat(timeStr) {
-  // Create a new Date object with the time
-  const [time, modifier] = timeStr.split(" ");
-  let [hours, minutes] = time.split(":").map(Number);
+export const convertToAMPM = (timeString) => {
+  // Split the timeString into components
+  const [hours, minutes, seconds] = timeString.split(':').map(Number);
 
-  // Convert to 24-hour format
-  if (modifier.toLowerCase() === "pm" && hours !== 12) {
-    hours += 12;
-  } else if (modifier.toLowerCase() === "am" && hours === 12) {
-    hours = 0;
+  // Determine whether it's AM or PM
+  const period = hours >= 12 ? 'PM' : 'AM';
+
+  // Convert 24-hour format to 12-hour format
+  const adjustedHours = hours % 12 || 12; // Convert 0 to 12 for AM (12:00)
+  
+  // Format the time in hh:mm:ss AM/PM format
+  const formattedTime = `${adjustedHours}:${String(minutes).padStart(2, '0')} ${period}`;
+
+  return formattedTime;
+};
+
+
+
+// Validate form fields
+export const validate = (formData , validationErrors) => {
+  // let validationErrors = {};
+  if (!formData.date) {
+    validationErrors.date = 'Name is required';
   }
+  if (!formData.customerEmail) {
+    validationErrors.email = 'Email is required';
+  } else if (!/\S+@\S+\.\S+/.test(formData.customerEmail)) {
+    validationErrors.email = 'Email is invalid';
+  }
+  if (!formData.locationId) {
+    validationErrors.location = 'Location is required';
+  } 
 
-  // Format the hours and minutes as HH:mm
-  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:00`;
-}
+  if (!formData.serviceId) {
+    validationErrors.service = 'Service is required';
+  }
+  if (!formData.staffId) {
+    validationErrors.staff = 'Staff is required';
+  }
+  if (!formData.startTime) {
+    validationErrors.time = 'Time is required';
+  }
+  return validationErrors;
+};
+
+
+
+export const formatTime = (isoString) => {
+  const date = new Date(isoString); // Parse the ISO string into a Date object
+  const hours = String(date.getHours()).padStart(2, '0'); // Get hours in 2-digit format
+  const minutes = String(date.getMinutes()).padStart(2, '0'); // Get minutes in 2-digit format
+  const seconds = String(date.getSeconds()).padStart(2, '0'); // Get seconds in 2-digit format
+  return `${hours}:${minutes}:${seconds}`; // Return formatted time
+};

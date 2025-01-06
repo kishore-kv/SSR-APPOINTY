@@ -63,6 +63,7 @@ const CustomAppointmentForm = () => {
       friday: 5,
       saturday: 6,
     }; 
+    const [blockedAppointments , setBlockedAppointments] = useState([ ]);
     /*++++TIMEPICKR AVAILABILITY STAFF +++++++++++++=*/
     const [availabilityArray , setAvailabilityArray] = useState([]);
     const [availabilityObj , setAvailabilityObj] = useState({});
@@ -127,9 +128,12 @@ const CustomAppointmentForm = () => {
       }
       try {
         const response = await requestPost(`/getStaffListHours`,payLoad);
-        if (response && response.data.status === "Success") {
+        console.log(`-------------`,response);
+        
+        if (response && response.status === 200) {
           const { data } = response.data;
-          // console.log(`servicedata`,data);
+          setBlockedAppointments(data.appointments);
+          // console.log(`servicedata booked`,response);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -235,7 +239,7 @@ const CustomAppointmentForm = () => {
    const handleTimeChange = (selectedTime) => {
     setFormData((prevData) => ({
       ...prevData,
-      startTime: convertTo24HourFormat(selectedTime), // Update startTime with the selected time
+      startTime:selectedTime, // Update startTime with the selected time
     }));
   };
      //form submit handler
@@ -270,7 +274,7 @@ const CustomAppointmentForm = () => {
         <h1 className='custom_appointment_font'>Nueva Cita</h1>
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card" disabled={true}> <span className='custom_span_sz'><MapPin className='' size={'7%'}/> {location}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='resp_img' size={'7%'}/> <p className='text_resp'>{location}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
 
               { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
@@ -296,7 +300,7 @@ const CustomAppointmentForm = () => {
 
           <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><CallBell className='' size={'7%'}/> {service}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><CallBell className='resp_img' size={'7%'}/> <p className='text_resp'>{service}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
 
               { isServiceLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
@@ -315,7 +319,7 @@ const CustomAppointmentForm = () => {
         {/* staff */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><User size={'7%'} /> {staff}</span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><User size={'7%'} className='resp_img' /> <p className='text_resp'>{staff}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
               {
                 staffOptions?.map((staff, index) => {
@@ -347,6 +351,7 @@ const CustomAppointmentForm = () => {
         {/* TIME */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
            <TimePickerCalendarStyle 
+             blockedAppointments={blockedAppointments}
              availableTime ={availabilityObj}
             value={formData.startTime} // Pass the current startTime as value
         onTimeChange={handleTimeChange} // Pass handler to update startTime

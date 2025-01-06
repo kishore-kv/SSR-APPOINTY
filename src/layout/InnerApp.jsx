@@ -3,14 +3,21 @@
 import BookingDetails from '../components/app/BookingDetails';
 import CustomAppointmentForm from '../components/app/CustomAppointmentForm';
 import './innerapp.css';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
 import React from 'react';
 
 const InnerApp = () => {
   return (
     <div className='innerapp'>
-      <CustomAppointmentForm/>
+      
+      
       {/* <BookingDetails/> */} 
+      <Switch>
+          <Route exact path="/" component={CustomAppointmentForm} />
+          <Route  path="/about" component={BookingDetails} />
+          
+        </Switch>
       
     </div>
   )
