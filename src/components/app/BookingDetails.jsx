@@ -2,10 +2,18 @@ import { CContainer } from '@coreui/react';
 import { CCard, CCardBody, CCardHeader, CCardFooter, CButton } from '@coreui/react';
 import React from 'react'
 import './CustomBooking.css'
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useLocation, useHistory } from 'react-router-dom';
+ 
+ 
+
 
 function BookingDetails() {
 
+   
+    const location = useLocation();
+    const data = location.state?.data; // Access the passed data
+    console.log(`dataaaaa`,data);
+     
     const navigateBack = useHistory();
       const handleBtnClick = () =>{
           navigateBack.push('/')
@@ -19,9 +27,12 @@ function BookingDetails() {
 
             <CCard className='custom_card'>
                 
-                <CCardBody>
+                <CCardBody className='d-flex justify-content-between flex-column align-items-center'>
                     <h6>Detalles de la cita</h6>
-                    <p>This is some text within a card body.</p>
+                    <p>Servicio : {data?.data?.service?.name || ''}</p>
+                    <p>hora de inicio: {data?.data?.startTime || ''}</p>
+                    <p>ubicación: {data?.data?.location?.name || ''}</p>
+                    <p>equipo: {data?.data?.staff?.email || ''}</p>
                     
                 </CCardBody>
                 <CCardFooter>Card Footer</CCardFooter>

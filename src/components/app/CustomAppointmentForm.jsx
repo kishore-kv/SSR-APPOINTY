@@ -11,7 +11,7 @@ import { CButton } from '@coreui/react';
 import TimePickerCalendarStyle from './TimePickerCalendarStyle';
 import { convertTo24HourFormat } from '../../utils/storage/index';
 import { useHistory } from 'react-router-dom';
-import { Toaster, toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
  
  
 
@@ -29,6 +29,10 @@ const CustomAppointmentForm = () => {
       date: '',
       startTime: ''
     }
+    /** EDge cases */
+    //first dropdown
+    const [disableService , setEnableService] = useState(true);
+    const [disableStaff , setEnableStaff] = useState(true);
   
   const [formData , setFormData] = useState(initialData);
     //fetching locations data
@@ -69,6 +73,8 @@ const CustomAppointmentForm = () => {
     /*++++TIMEPICKR AVAILABILITY STAFF +++++++++++++=*/
     const [availabilityArray , setAvailabilityArray] = useState([]);
     const [availabilityObj , setAvailabilityObj] = useState({});
+
+    const [inputValue, setInputValue] = useState("");
      /*+++++++++PRICE+++++++++++++*/
      const [price , setPrice] = useState('');
     /*+++++++++++++EMAIL OF CUSTOMER*/
@@ -96,6 +102,7 @@ const CustomAppointmentForm = () => {
           // console.log(`data`,data);
           
           setLocations(data);
+          setIsDisabled(true)
         }
       } catch (error) {
         setIsError(true);
@@ -111,6 +118,7 @@ const CustomAppointmentForm = () => {
   const fetchServiceData = async (location) => {
     // console.log(location);
     setServiceLoading(true);
+    setEnableService(false);
     try {
       const response = await request(`/getLocationById/${location}`);
      
@@ -174,10 +182,16 @@ const CustomAppointmentForm = () => {
        /*++++++++++Handlers++++++++++++++++++++*/
     //Displaying the locations location handler;
     const handleSelectLocation = (indx , location) => {
+        
             const updateID = location.id;
             setIsLocationID(updateID);
-            setFormData({ ...formData, locationId:updateID });
+            setFormData({ ...formData, locationId:updateID , date:'' ,startTime:'',serviceId:'',staffId:'' });
             setLocation(`${location.branchName},${location.city}`);
+            setService("Seleccionar ubicación");
+            setStaff("Seleccionar Personal");
+            setEnableStaff(true);
+            setPrice('');
+            setInputValue('');
     }
        //setting the new service on dropdown
       const handleSelectService=(indx,service) => {
@@ -185,8 +199,11 @@ const CustomAppointmentForm = () => {
           const updateStaffList = service.staffList;
         setService(`${service.serviceName} (${service.durationMins}mins)`);
         setStaffOptions(updateStaffList);
+        setEnableStaff(false);
         setPrice(service.price);
-        setFormData({ ...formData, serviceId:service.id});
+        setFormData({ ...formData, serviceId:service.id , date:'',startTime:'',staffId:''});
+        setInputValue('');
+        setStaff("Seleccionar Personal");
       }
       //setting the staffNumber on dropdow
       const handleSelectStaff = (index , staff) =>{
@@ -197,7 +214,7 @@ const CustomAppointmentForm = () => {
          setStaffId(staff.id);
          setDisabledDays(updateAvailableDays)
         setStaff(`${staff.firstName} ${staff.lastName}`);
-        setFormData({ ...formData, staffId:staff.id});
+        setFormData({ ...formData, staffId:staff.id, date:'',startTime:''});
       }
 
       //FLATPICKR HANDLERS
@@ -231,7 +248,7 @@ const CustomAppointmentForm = () => {
         if (selectedDates.length > 0) {
           const formattedDate = formatDate(selectedDates[0]);
           setDateParams(formattedDate);
-          setFormData({ ...formData, date: formattedDate });
+          setFormData({ ...formData, date: formattedDate,startTime:'' });
         }
          
       }
@@ -269,7 +286,7 @@ const CustomAppointmentForm = () => {
           try {
             const getDetailsResponse = await request(`/fetchAppointmentById/${id}`);
             const data = getDetailsResponse.data;
-            navigate.push('/details',{data})   
+              navigate.push('/details',{data})   
           } catch (error) {
             
           }
@@ -329,7 +346,7 @@ const CustomAppointmentForm = () => {
 
           <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><CallBell className='resp_img' size={'7%'}/> <p className='text_resp'>{service}</p></span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card" disabled={disableService}> <span className='custom_span_sz'><CallBell className='resp_img' size={'7%'}/> <p className='text_resp'>{service}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
 
               { isServiceLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
@@ -348,7 +365,7 @@ const CustomAppointmentForm = () => {
         {/* staff */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
-            <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><User size={'7%'} className='resp_img' /> <p className='text_resp'>{staff}</p></span> <span className="ms-2"></span></CDropdownToggle>
+            <CDropdownToggle className="dropdown_card" disabled={disableStaff}> <span className='custom_span_sz'><User size={'7%'} className='resp_img' /> <p className='text_resp'>{staff}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }} className="">
               {
                 staffOptions?.map((staff, index) => {
@@ -384,6 +401,8 @@ const CustomAppointmentForm = () => {
              availableTime ={availabilityObj}
             value={formData.startTime} // Pass the current startTime as value
         onTimeChange={handleTimeChange} // Pass handler to update startTime
+          inputValue={inputValue}
+          setInputValue={setInputValue}
         />
         </CCol>
         {/* PRICE */}
@@ -423,7 +442,6 @@ const CustomAppointmentForm = () => {
         </>}
       </CContainer>
       </CForm>
-      <Toaster/>
     </CContainer>
         
 

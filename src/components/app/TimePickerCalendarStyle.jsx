@@ -4,10 +4,10 @@ import { CFormInput } from "@coreui/react";
 import "./Timpickr.css";
 import { formatTime , convertToAMPM} from "../../utils/storage";
 
-const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedAppointments }) => {
+const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedAppointments , inputValue , setInputValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  // const [inputValue, setInputValue] = useState("");
 
   const generateTimeSlots = (startTime, endTime) => {
     const slots = [];
@@ -104,7 +104,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
           style={{ width: "100%", zIndex: 1050 }}
         >
           <div className="bg-light border-bottom p-2">
-            <h3 className="h6 text-muted mb-0">Select Time</h3>
+            <h3 className="h6 text-muted mb-0">Seleccionar hora</h3>
           </div>
 
           <div
