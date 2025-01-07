@@ -1,5 +1,21 @@
+/* spiinner */
+
+.spinner {
+  border: 4px solid #f3f3f3; /* Light background color */
+  border-top: 4px solid #3498db; /* Spinner color */
+  border-radius: 50%;
+  width: 40px; /* Size of the spinner */
+  height: 40px; /* Size of the spinner */
+  animation: spin 2s linear infinite; /* Rotation animation */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 
+/*  */
 @media (max-width: 768px){
  .custom_col{
   height: 42px;

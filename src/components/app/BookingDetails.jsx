@@ -2,9 +2,14 @@ import { CContainer } from '@coreui/react';
 import { CCard, CCardBody, CCardHeader, CCardFooter, CButton } from '@coreui/react';
 import React from 'react'
 import './CustomBooking.css'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function BookingDetails() {
 
+    const navigateBack = useHistory();
+      const handleBtnClick = () =>{
+          navigateBack.push('/')
+      }
     return (
         <CContainer className='custom_booking_container'>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background:"hsl(82 84.5% 67.1%)" }}>
@@ -21,6 +26,7 @@ function BookingDetails() {
                 </CCardBody>
                 <CCardFooter>Card Footer</CCardFooter>
             </CCard>
+            <CButton type='reset' onClick={handleBtnClick}>New cita</CButton>
         </CContainer>
     );
 };

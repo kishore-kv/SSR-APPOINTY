@@ -71,7 +71,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
 
   const handleTimeSelect = (slot) => {
     // if (isDisabled(time)) return; // Prevent selection if time is disabled
-     console.log(`time`,slot.status);
+    //  console.log(`time`,slot.status);
      if(slot.status === 'blocked') return;
     setInputValue(convertToAMPM(slot.time));
     setSelectedTime(slot.time);

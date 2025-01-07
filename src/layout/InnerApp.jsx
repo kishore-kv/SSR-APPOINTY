@@ -15,7 +15,7 @@ const InnerApp = () => {
       {/* <BookingDetails/> */} 
       <Switch>
           <Route exact path="/" component={CustomAppointmentForm} />
-          <Route  path="/about" component={BookingDetails} />
+          <Route  path="/details" component={BookingDetails} />
           
         </Switch>
       

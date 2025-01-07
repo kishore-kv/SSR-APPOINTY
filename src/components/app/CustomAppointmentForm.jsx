@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react'
  import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple, CallBell, User } from "@phosphor-icons/react";
  import Select from 'react-select';
  import './CustomForm.css';
- import "flatpickr/dist/themes/material_green.css";
+ import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 import { request , requestPost} from '../../services/request';
 import { CButton } from '@coreui/react';
 import TimePickerCalendarStyle from './TimePickerCalendarStyle';
 import { convertTo24HourFormat } from '../../utils/storage/index';
+import { useHistory } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
  
  
 
@@ -74,6 +76,14 @@ const CustomAppointmentForm = () => {
     /*+++++++++++ params for staffAvaialability*/
     const [staffId , setStaffId] = useState('');
     const [ dateParams , setDateParams] = useState('');
+
+    /*++++form -loader*/
+    const [pageLoader , setPageLoader] = useState(false);
+
+    /**
+     *  new appointment navigation
+     */
+    const navigate = useHistory();
   /* APIS calls*/
   //locations
     const fetchLocations = async () => {
@@ -128,7 +138,7 @@ const CustomAppointmentForm = () => {
       }
       try {
         const response = await requestPost(`/getStaffListHours`,payLoad);
-        console.log(`-------------`,response);
+        // console.log(`-------------`,response);
         
         if (response && response.status === 200) {
           const { data } = response.data;
@@ -155,8 +165,8 @@ const CustomAppointmentForm = () => {
     //useEffect for fetching the existing availability upon staffid
      useEffect(() => {
         if(staffId && dateParams){
-          console.log(`stadd`,staffId);
-          console.log(`stadd`,dateParams);
+          // console.log(`stadd`,staffId);
+          // console.log(`stadd`,dateParams);
           
           fetchStaffHoursData(staffId,dateParams);
         }
@@ -171,7 +181,7 @@ const CustomAppointmentForm = () => {
     }
        //setting the new service on dropdown
       const handleSelectService=(indx,service) => {
-          console.log(`service`, service);
+          // console.log(`service`, service);
           const updateStaffList = service.staffList;
         setService(`${service.serviceName} (${service.durationMins}mins)`);
         setStaffOptions(updateStaffList);
@@ -180,7 +190,7 @@ const CustomAppointmentForm = () => {
       }
       //setting the staffNumber on dropdow
       const handleSelectStaff = (index , staff) =>{
-        console.log(`stafd`,staff);
+        // console.log(`stafd`,staff);
         setAvailabilityArray(staff.availability);
          const updateAvailableDays = staff.availability?.map((availble) => dayNameToNumber[availble.availableDay.toLowerCase()]);
         //  console.log(`uad`,updateAvailableDays);
@@ -245,15 +255,34 @@ const CustomAppointmentForm = () => {
      //form submit handler
      const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log("Form Data:", formData);
+      // console.log("Form Data:", formData);
+        setPageLoader(true);
       try {
          const responseBookingStatus = await requestPost("/postNewAppointment",formData);
-         if(responseBookingStatus && responseBookingStatus.ok){
+
+
+        
+         if(responseBookingStatus && responseBookingStatus.status === 200){
+              toast.success( responseBookingStatus.data.data.message);
+              const id = responseBookingStatus.data.data.appointmentId;
           console.log(`data`,responseBookingStatus);
-          
+          try {
+            const getDetailsResponse = await request(`/fetchAppointmentById/${id}`);
+            const data = getDetailsResponse.data;
+            navigate.push('/details',{data})   
+          } catch (error) {
+            
+          }
+                
+         }else if(responseBookingStatus && responseBookingStatus.response.status === 400){
+        
+          toast.error(responseBookingStatus.response.data.message || '¡Algo salió mal!');
          }
       } catch (error) {
+        console.log(`failure err`, error);
         
+      }finally{
+        setPageLoader(false);
       }
     };
     const handleKeyDown = (e) => {
@@ -270,7 +299,7 @@ const CustomAppointmentForm = () => {
       }}>
        <CForm onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
       <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "2px solid yellow" }}>
-        
+      {pageLoader ?<div class="spinner"></div>: <>
         <h1 className='custom_appointment_font'>Nueva Cita</h1>
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
@@ -391,9 +420,10 @@ const CustomAppointmentForm = () => {
         <CCol lg={4} className='d-flex justify-content-center'>
           <CButton type='submit' className='w-100 reserver_btn'>Reservar</CButton>
         </CCol>
-     
+        </>}
       </CContainer>
       </CForm>
+      <Toaster/>
     </CContainer>
         
 
