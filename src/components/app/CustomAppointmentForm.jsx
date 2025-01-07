@@ -86,6 +86,9 @@ const CustomAppointmentForm = () => {
     /*++++form -loader*/
     const [pageLoader , setPageLoader] = useState(false);
 
+    /**  ===================== Handling Form Errors */
+    const [formErrors , setFormErrors] = useState({});
+
     /**
      *  new appointment navigation
      */
@@ -180,6 +183,33 @@ const CustomAppointmentForm = () => {
         }
      },[staffId,dateParams])
        /*++++++++++Handlers++++++++++++++++++++*/
+       //handling and validate form fields
+     const validate = () => {
+        let validationErrors = {};
+        if (!formData.date) {
+          validationErrors.date = 'Date is required';
+        }
+        if (!formData.customerEmail) {
+          validationErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(formData.customerEmail)) {
+          validationErrors.email = 'Email is invalid';
+        }
+        if (!formData.locationId) {
+          validationErrors.location = 'Location is required';
+        } 
+      
+        if (!formData.serviceId) {
+          validationErrors.service = 'Service is required';
+        }
+        if (!formData.staffId) {
+          validationErrors.staff = 'Staff is required';
+        }
+        if (!formData.startTime) {
+          validationErrors.time = 'Time is required';
+        }
+        return validationErrors;
+      };
+
     //Displaying the locations location handler;
     const handleSelectLocation = (indx , location) => {
         
@@ -192,6 +222,7 @@ const CustomAppointmentForm = () => {
             setEnableStaff(true);
             setPrice('');
             setInputValue('');
+            setFormErrors((prev) => ({...prev , location:""}))
     }
        //setting the new service on dropdown
       const handleSelectService=(indx,service) => {
@@ -204,6 +235,7 @@ const CustomAppointmentForm = () => {
         setFormData({ ...formData, serviceId:service.id , date:'',startTime:'',staffId:''});
         setInputValue('');
         setStaff("Seleccionar Personal");
+        setFormErrors((prev) => ({...prev , service:""}))
       }
       //setting the staffNumber on dropdow
       const handleSelectStaff = (index , staff) =>{
@@ -215,6 +247,7 @@ const CustomAppointmentForm = () => {
          setDisabledDays(updateAvailableDays)
         setStaff(`${staff.firstName} ${staff.lastName}`);
         setFormData({ ...formData, staffId:staff.id, date:'',startTime:''});
+        setFormErrors((prev) => ({...prev , staff:""}))
       }
 
       //FLATPICKR HANDLERS
@@ -250,6 +283,7 @@ const CustomAppointmentForm = () => {
           setDateParams(formattedDate);
           setFormData({ ...formData, date: formattedDate,startTime:'' });
         }
+        setFormErrors((prev) => ({...prev , date:""}))
          
       }
       // Email handlechange handler
@@ -259,6 +293,7 @@ const CustomAppointmentForm = () => {
            ...prevData,
            [name]: value, // Update the corresponding field in formData
          }));
+         setFormErrors((prev) => ({...prev , email:""}))
       }
 
       //TIMPICKR HANDLER TO UPDATE FORM DATA
@@ -268,12 +303,16 @@ const CustomAppointmentForm = () => {
       ...prevData,
       startTime:selectedTime, // Update startTime with the selected time
     }));
+    setFormErrors((prev) => ({...prev , time:""}))
   };
      //form submit handler
      const handleSubmit = async (e) => {
       e.preventDefault();
       // console.log("Form Data:", formData);
-        setPageLoader(true);
+        const errors = validate();
+        setFormErrors(errors);
+        if (Object.keys(errors).length === 0) {
+           setPageLoader(true);
       try {
          const responseBookingStatus = await requestPost("/postNewAppointment",formData);
 
@@ -301,6 +340,8 @@ const CustomAppointmentForm = () => {
       }finally{
         setPageLoader(false);
       }
+
+    }
     };
     const handleKeyDown = (e) => {
       if (e.key === "Enter") {
@@ -333,7 +374,7 @@ const CustomAppointmentForm = () => {
           </CDropdown>
           {/* {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>} */}
         </CCol>
-
+        {formErrors.location && <span className="error">{formErrors.location}</span>}
         {/* SErVICE */}
         {/* <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <Select 
@@ -359,7 +400,7 @@ const CustomAppointmentForm = () => {
           </CDropdown>
           {/* {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>} */}
         </CCol>
-
+        {formErrors.service && <span className="error">{formErrors.service}</span>}
 
           {/* /?++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
         {/* staff */}
@@ -376,6 +417,7 @@ const CustomAppointmentForm = () => {
           </CDropdown>
 
         </CCol>
+         {formErrors.staff && <span className="error">{formErrors.staff}</span>}
         {/* Calendar */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
           <CRow className='d-flex custom_row_inputs h-100'>
@@ -394,6 +436,7 @@ const CustomAppointmentForm = () => {
             </CCol>
           </CRow>
         </CCol>
+        {formErrors.date && <span className="error">{formErrors.date}</span>}
         {/* TIME */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
            <TimePickerCalendarStyle 
@@ -405,6 +448,7 @@ const CustomAppointmentForm = () => {
           setInputValue={setInputValue}
         />
         </CCol>
+        {formErrors.time && <span className="error">{formErrors.time}</span>}
         {/* PRICE */}
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }}className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
@@ -420,6 +464,7 @@ const CustomAppointmentForm = () => {
             </CCol>
           </CRow>
         </CCol>
+       
         {/* CUTOMER NAME */}
 
         <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
@@ -436,9 +481,11 @@ const CustomAppointmentForm = () => {
             </CCol>
           </CRow>
         </CCol>
+        {formErrors.email && <span className="error">{formErrors.email}</span>}
         <CCol lg={4} className='d-flex justify-content-center'>
           <CButton type='submit' className='w-100 reserver_btn'>Reservar</CButton>
         </CCol>
+        
         </>}
       </CContainer>
       </CForm>

@@ -4,7 +4,7 @@ import BookingDetails from '../components/app/BookingDetails';
 import CustomAppointmentForm from '../components/app/CustomAppointmentForm';
 import './innerapp.css';
 import '../components/app/CustomBooking.css';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import React from 'react';
 import { Toaster} from 'react-hot-toast';
 const InnerApp = () => {
