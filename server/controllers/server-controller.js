@@ -80,8 +80,8 @@ module.exports = {
   getStaffListHours:async (req, res, next) => {
     console.log('-----------',req);
     
-    const {id , date} = req.body;
-    let finalUrl = `${reactAppointyUrl}/staff/${id}${endpoints.fetchStaffAvailabilty}?date=${date}`;
+    const {id , date , minutes} = req.body;
+    let finalUrl = `${reactAppointyUrl}/staff/${id}${endpoints.fetchStaffAvailabilty}?date=${date}&duration=${minutes}`;
     console.log("getStafflist===",finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400

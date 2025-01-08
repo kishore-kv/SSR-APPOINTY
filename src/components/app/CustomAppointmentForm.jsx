@@ -82,6 +82,7 @@ const CustomAppointmentForm = () => {
     /*+++++++++++ params for staffAvaialability*/
     const [staffId , setStaffId] = useState('');
     const [ dateParams , setDateParams] = useState('');
+    const [duration , setDuration] = useState(' ');
 
     /*++++form -loader*/
     const [pageLoader , setPageLoader] = useState(false);
@@ -102,10 +103,8 @@ const CustomAppointmentForm = () => {
         const response = await requestPost('/getAllLocations', payload);
         if (response && response.data.status === "Success") {
           const { data } = response.data;
-          // console.log(`data`,data);
-          
+          // console.log(`data`,data);          
           setLocations(data);
-          setIsDisabled(true)
         }
       } catch (error) {
         setIsError(true);
@@ -142,10 +141,11 @@ const CustomAppointmentForm = () => {
   };  
 
    //Fuction to call the API based on the date
-    const fetchStaffHoursData = async(id , date ) =>{
+    const fetchStaffHoursData = async(id , date , minutes) =>{
       const payLoad = {
         id,
-        date
+        date,
+        minutes
       }
       try {
         const response = await requestPost(`/getStaffListHours`,payLoad);
@@ -175,13 +175,13 @@ const CustomAppointmentForm = () => {
     }, [locationID]);
     //useEffect for fetching the existing availability upon staffid
      useEffect(() => {
-        if(staffId && dateParams){
+        if(staffId && dateParams && duration){
           // console.log(`stadd`,staffId);
           // console.log(`stadd`,dateParams);
           
-          fetchStaffHoursData(staffId,dateParams);
+          fetchStaffHoursData(staffId,dateParams,duration);
         }
-     },[staffId,dateParams])
+     },[staffId,dateParams,duration])
        /*++++++++++Handlers++++++++++++++++++++*/
        //handling and validate form fields
      const validate = () => {
@@ -226,9 +226,10 @@ const CustomAppointmentForm = () => {
     }
        //setting the new service on dropdown
       const handleSelectService=(indx,service) => {
-          // console.log(`service`, service);
+          console.log(`service`, service);
           const updateStaffList = service.staffList;
         setService(`${service.serviceName} (${service.durationMins}mins)`);
+        setDuration(service.durationMins);
         setStaffOptions(updateStaffList);
         setEnableStaff(false);
         setPrice(service.price);

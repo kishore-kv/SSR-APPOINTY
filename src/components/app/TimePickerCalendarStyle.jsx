@@ -36,7 +36,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
     return slots;
   };
        const timeSlots = generateTimeSlots(availableTime.startTime , availableTime.endTime)
-     
+        
        // Mark blocked slots
       //  / Function to mark blocked time slots with 'b'
        const markBlockedSlots = (timeSlots, blockedSlots) => {
@@ -48,7 +48,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
            // Check if the slot falls within any of the blocked intervals
            const isBlocked = blockedSlots.some(interval => {
              const intervalStart = new Date();
-             const [startHour, startMinute, startSecond] = interval.startTime.split(":").map(Number);
+             const [startHour, startMinute, startSecond] = interval.bufferStartTime.split(":").map(Number);
              intervalStart.setHours(startHour, startMinute, startSecond, 0);
        
              const intervalEnd = new Date();
@@ -66,7 +66,8 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
       
   
       const updatedSlots = markBlockedSlots(timeSlots , blockedAppointments)
-
+ console.log(`updated_________slots`, updatedSlots);
+ 
   
 
   const handleTimeSelect = (slot) => {
