@@ -117,7 +117,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
                 key={index}
                 className={`p-2 text-center small rounded ${
                   slot.status === 'blocked'
-                    ? "text-muted bg-light"
+                    ? "blocked-slot"
                     : selectedTime === slot.time
                     ? "bg-primary text-white"
                     : "text-body hover-bg-light"

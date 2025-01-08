@@ -6,3 +6,12 @@ input.form-control.form-control.timepickr {
 input.form-control.form-control.timepickr:focus {
     box-shadow:none;
 }
+
+
+
+.blocked-slot {
+    /* background-color: #ffe6e6; */
+    cursor: not-allowed;
+    text-decoration: line-through;
+    opacity: 0.7;
+  }

@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+
+
 *,
 *::before,
 *::after {
@@ -13,7 +17,8 @@ html {
 }
 
 body{
-  background-color: #f3f3f3 !important
+  background-color: #f3f3f3 !important;
+  font-family: "Merriweather", serif;
 }
 
 .ant-layout-content {
@@ -30,3 +35,19 @@ body{
   font-size: 16px;
   border-radius: 40px;
  }
+
+
+ .custom_booking_container{
+  background:#fff;
+  display: flex;
+  justify-content: center;
+  border: 2px solid pink;
+  padding-block: 5%;
+  align-items: center;
+   flex-direction: column;
+}
+
+.custom_card{
+  min-width: 50%;
+}
+

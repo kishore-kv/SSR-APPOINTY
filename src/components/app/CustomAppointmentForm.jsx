@@ -2,7 +2,6 @@
 import { CDropdown, CForm, CFormInput,CDropdownDivider, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol, CSpinner, CContainer } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
  import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple, CallBell, User } from "@phosphor-icons/react";
- import Select from 'react-select';
  import './CustomForm.css';
  import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
@@ -184,31 +183,31 @@ const CustomAppointmentForm = () => {
      },[staffId,dateParams,duration])
        /*++++++++++Handlers++++++++++++++++++++*/
        //handling and validate form fields
-     const validate = () => {
+       const validate = () => {
         let validationErrors = {};
         if (!formData.date) {
-          validationErrors.date = 'Date is required';
+          validationErrors.date = 'La fecha es obligatoria';
         }
         if (!formData.customerEmail) {
-          validationErrors.email = 'Email is required';
+          validationErrors.email = 'El correo electrónico es obligatorio';
         } else if (!/\S+@\S+\.\S+/.test(formData.customerEmail)) {
-          validationErrors.email = 'Email is invalid';
+          validationErrors.email = 'El correo electrónico no es válido';
         }
         if (!formData.locationId) {
-          validationErrors.location = 'Location is required';
-        } 
-      
+          validationErrors.location = 'La ubicación es obligatoria';
+        }
         if (!formData.serviceId) {
-          validationErrors.service = 'Service is required';
+          validationErrors.service = 'El servicio es obligatorio';
         }
         if (!formData.staffId) {
-          validationErrors.staff = 'Staff is required';
+          validationErrors.staff = 'El personal es obligatorio';
         }
         if (!formData.startTime) {
-          validationErrors.time = 'Time is required';
+          validationErrors.time = 'La hora es obligatoria';
         }
         return validationErrors;
       };
+      
 
     //Displaying the locations location handler;
     const handleSelectLocation = (indx , location) => {
@@ -244,6 +243,7 @@ const CustomAppointmentForm = () => {
         setAvailabilityArray(staff.availability);
          const updateAvailableDays = staff.availability?.map((availble) => dayNameToNumber[availble.availableDay.toLowerCase()]);
         //  console.log(`uad`,updateAvailableDays);
+        setInputValue('');
          setStaffId(staff.id);
          setDisabledDays(updateAvailableDays)
         setStaff(`${staff.firstName} ${staff.lastName}`);
@@ -278,7 +278,7 @@ const CustomAppointmentForm = () => {
         setAvailabilityObj(updateAvailableObj)
         // console.log(`selected============` , selectedDates[0].getDate());
         // console.log(`zzzzzzzzz`,zzz);
-        
+        setInputValue('');
         if (selectedDates.length > 0) {
           const formattedDate = formatDate(selectedDates[0]);
           setDateParams(formattedDate);
@@ -354,16 +354,16 @@ const CustomAppointmentForm = () => {
     <CContainer className='py-lg-5 custom_container'
       style={{
         height: '80%',
-        border: '1px solid red'
+        border: ''
       }}>
        <CForm onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-      <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "2px solid yellow" }}>
-      {pageLoader ?<div class="spinner"></div>: <>
+      <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "" }}>
+     
         <h1 className='custom_appointment_font'>Nueva Cita</h1>
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='resp_img' size={'7%'}/> <p className='text_resp'>{location}</p></span> <span className="ms-2"></span></CDropdownToggle>
-            <CDropdownMenu style={{ width: '100%' }} className="">
+            <CDropdownMenu style={{ width: '100%' }}  className="custom_menu">
 
               { isLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
               { !isLoading && locations.length > 0 &&
@@ -373,23 +373,15 @@ const CustomAppointmentForm = () => {
               }
             </CDropdownMenu>
           </CDropdown>
-          {/* {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>} */}
+          {formErrors.location && <span className="error">{formErrors.location}</span>}
         </CCol>
-        {formErrors.location && <span className="error">{formErrors.location}</span>}
-        {/* SErVICE */}
-        {/* <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
-          <Select 
-           placeholder = "Seleccionar ubicación"
-           options={serviceOptions}
-          />
-          </CCol> */}
-
+      
           {/*alternate service*/}
 
-          <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+          <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card" disabled={disableService}> <span className='custom_span_sz'><CallBell className='resp_img' size={'7%'}/> <p className='text_resp'>{service}</p></span> <span className="ms-2"></span></CDropdownToggle>
-            <CDropdownMenu style={{ width: '100%' }} className="">
+            <CDropdownMenu style={{ width: '100%' }}  className="custom_menu">
 
               { isServiceLoading && <div className='d-flex justify-content-center'><CSpinner/></div>}
               { !isServiceLoading &&
@@ -399,16 +391,16 @@ const CustomAppointmentForm = () => {
               }
             </CDropdownMenu>
           </CDropdown>
-          {/* {isError && <span className='text-danger'>{"* Error al obtener ubicaciones"}</span>} */}
+          {formErrors.service && <span className="error">{formErrors.service}</span>}
         </CCol>
-        {formErrors.service && <span className="error">{formErrors.service}</span>}
+       
 
           {/* /?++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
         {/* staff */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card" disabled={disableStaff}> <span className='custom_span_sz'><User size={'7%'} className='resp_img' /> <p className='text_resp'>{staff}</p></span> <span className="ms-2"></span></CDropdownToggle>
-            <CDropdownMenu style={{ width: '100%' }} className="">
+            <CDropdownMenu style={{ width: '100%' }}  className="custom_menu">
               {
                 staffOptions?.map((staff, index) => {
                   return <CDropdownItem key={index} onClick={() => handleSelectStaff(index, staff)}>{`${staff.firstName} ${staff.lastName}`}</CDropdownItem>
@@ -416,11 +408,11 @@ const CustomAppointmentForm = () => {
               }
             </CDropdownMenu>
           </CDropdown>
-
+          {formErrors.staff && <span className="error">{formErrors.staff}</span>}
         </CCol>
-         {formErrors.staff && <span className="error">{formErrors.staff}</span>}
+        
         {/* Calendar */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CRow className='d-flex custom_row_inputs h-100'>
             <CCol lg={2} xs={2}>
               <span class="avatar-icon avatar-icon--has-img">
@@ -436,10 +428,11 @@ const CustomAppointmentForm = () => {
               </span>
             </CCol>
           </CRow>
+          {formErrors.date && <span className="error">{formErrors.date}</span>}
         </CCol>
-        {formErrors.date && <span className="error">{formErrors.date}</span>}
+       
         {/* TIME */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
            <TimePickerCalendarStyle 
              blockedAppointments={blockedAppointments}
              availableTime ={availabilityObj}
@@ -448,10 +441,11 @@ const CustomAppointmentForm = () => {
           inputValue={inputValue}
           setInputValue={setInputValue}
         />
+         {formErrors.time && <span className="error">{formErrors.time}</span>}
         </CCol>
-        {formErrors.time && <span className="error">{formErrors.time}</span>}
+
         {/* PRICE */}
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }}className='custom_col'>
+        <CCol xs={12} lg={8} style={{ border: "" }}className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
               <span class="avatar-icon avatar-icon--has-img">
@@ -468,7 +462,7 @@ const CustomAppointmentForm = () => {
        
         {/* CUTOMER NAME */}
 
-        <CCol xs={12} lg={8} style={{ border: "2px solid green" }} className='custom_col'>
+        <CCol xs={12} lg={8} style={{ border:"" }} className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
             <span class="avatar-icon avatar-icon--has-img">
@@ -481,13 +475,18 @@ const CustomAppointmentForm = () => {
             </span>
             </CCol>
           </CRow>
+          {formErrors.email && <span className="error">{formErrors.email}</span>}
         </CCol>
-        {formErrors.email && <span className="error">{formErrors.email}</span>}
+       
         <CCol lg={4} className='d-flex justify-content-center'>
           <CButton type='submit' className='w-100 reserver_btn'>Reservar</CButton>
         </CCol>
         
-        </>}
+        {pageLoader && (
+        <div className="overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       </CContainer>
       </CForm>
     </CContainer>

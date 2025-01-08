@@ -1,4 +1,6 @@
 /* Reset and normalize styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +10,7 @@
   html, body {
     width: 100%;
     height: 100%;
-    font-family: Arial, sans-serif; /* Fallback font */
+     font-family: "Merriweather", serif;; /* Fallback font */
     font-size: 16px; /* Base font size */
     color: #333; /* Base text color */
     background-color: #f4f4f9; /* Soft background color */
@@ -78,4 +80,20 @@
     width: 100vw;
     height: 100vh;
   }
+
+
+  
+.custom_booking_container{
+  background:#fff;
+  display: flex;
+  justify-content: center;
+  border: 2px solid pink;
+  padding-block: 5%;
+  align-items: center;
+   flex-direction: column;
+}
+
+.custom_card{
+  min-width: 50%;
+}
   

@@ -1,8 +1,23 @@
 .error {
   color: red;
-  font-size: 0.9em;
+  font-size: 0.75em;
 }
-
+.custom_menu{
+  text-align: center;
+  font-size: 0.8em;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
 
 /* spiinner */
 .spinner {
@@ -113,6 +128,7 @@ input.selected_flatpicky:focus {
   padding-inline: 1rem;
 }
 .custom_dropdown_locations {
+   margin-bottom: 0 !important;
     background:#fff;
     width:100%; 
     /* box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em; */
@@ -161,4 +177,24 @@ span.custom_span_sz{
     width:100%;
   }
   
+}
+
+
+
+.custom_booking_container{
+  background:#fff;
+  display: flex;
+  justify-content: center;
+  border: 2px solid pink;
+  padding-block: 5%;
+  align-items: center;
+   flex-direction: column;
+}
+
+.custom_card{
+  min-width: 50%;
+}
+
+.dropdown_card.disabled {
+  border: none;
 }
