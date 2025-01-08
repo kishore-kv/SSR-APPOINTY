@@ -1,7 +1,7 @@
 
 import { CDropdown, CForm, CFormInput,CDropdownDivider, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol, CSpinner, CContainer } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
- import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple, CallBell, User } from "@phosphor-icons/react";
+ import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple, CallBell, User, DeviceMobile } from "@phosphor-icons/react";
  import './CustomForm.css';
  import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
@@ -26,7 +26,8 @@ const CustomAppointmentForm = () => {
       staffId: '',
       serviceId: '',
       date: '',
-      startTime: ''
+      startTime: '',
+      customerPhone:''
     }
     /** EDge cases */
     //first dropdown
@@ -204,6 +205,10 @@ const CustomAppointmentForm = () => {
         }
         if (!formData.startTime) {
           validationErrors.time = 'La hora es obligatoria';
+        }if (!formData.customerPhone) {
+          validationErrors.phone = "El número de teléfono es obligatorio.";
+        }else if (!/^[0-9]{10}$/.test(formData.customerPhone)) {
+          validationErrors.phone = "El número de teléfono debe tener 10 dígitos.";
         }
         return validationErrors;
       };
@@ -250,11 +255,13 @@ const CustomAppointmentForm = () => {
         setFormData({ ...formData, staffId:staff.id, date:'',startTime:''});
         setFormErrors((prev) => ({...prev , staff:""}))
       }
-
+     console.log(`disabke`, disabledDays);
+     
       //FLATPICKR HANDLERS
       const enableOptions = {
         minDate:new Date(),
         dateFormat: "d-m-Y",
+        maxDate:new Date().fp_incr(30),
         disable: [
           function (date) {
             // Return true to disable the date
@@ -292,9 +299,16 @@ const CustomAppointmentForm = () => {
          const { name, value } = e.target;
          setFormData((prevData) => ({
            ...prevData,
-           [name]: value, // Update the corresponding field in formData
+           [name]: name === 'customerPhone'
+             ? value.replace(/[^0-9]/g, '') // Only allow numbers for phone
+             : value// Update the corresponding field in formData
          }));
+         if(name === 'customerEmail'){
          setFormErrors((prev) => ({...prev , email:""}))
+         }
+         if(name === 'customerPhone'){
+          setFormErrors((prev) => ({...prev , phone:""}))
+         }
       }
 
       //TIMPICKR HANDLER TO UPDATE FORM DATA
@@ -476,6 +490,23 @@ const CustomAppointmentForm = () => {
             </CCol>
           </CRow>
           {formErrors.email && <span className="error">{formErrors.email}</span>}
+        </CCol>
+             {/* MOBILE NUMBER */}
+
+        <CCol xs={12} lg={8} style={{ border:"" }} className='custom_col'>
+          <CRow className='d-flex custom_row_inputs'>
+            <CCol lg={2} xs={2}>
+            <span class="avatar-icon avatar-icon--has-img">
+            <DeviceMobile size={"1.5rem"} />
+            </span>
+            </CCol>
+            <CCol lg={10} xs={10}>
+            <span className="meeting__card__name">
+              <CFormInput className={`input-minimal`} autoComplete='off' name="customerPhone" value={formData.customerPhone} type={'text'} onChange={handleInputChange}/>
+            </span>
+            </CCol>
+          </CRow>
+          {formErrors.phone && <span className="error">{formErrors.phone}</span>}
         </CCol>
        
         <CCol lg={4} className='d-flex justify-content-center'>

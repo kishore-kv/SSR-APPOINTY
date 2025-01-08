@@ -66,7 +66,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
       
   
       const updatedSlots = markBlockedSlots(timeSlots , blockedAppointments)
- console.log(`updated_________slots`, updatedSlots);
+//  console.log(`updated_________slots`, updatedSlots);
  
   
 
