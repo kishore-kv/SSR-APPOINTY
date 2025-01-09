@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import './CustomBooking.css'
 import { useLocation, useHistory} from 'react-router-dom';
 import { Copy } from '@phosphor-icons/react';
+import { convertToAMPM } from '../../utils/storage';
  
  
 
@@ -30,6 +31,8 @@ function BookingDetails() {
 
       // Async function to copy text to clipboard
       const handleCopy = async () => {
+        console.log(`clickef`);
+        
         try {
           await navigator.clipboard.writeText(textToCopy);
           setCopied(true);
@@ -65,34 +68,34 @@ function BookingDetails() {
               Detalles de la cita
             </h6>
             <CRow>
-            <CCol sm={6}>
+            <CCol sm={6} className='col-6'>
               <strong>Número de cita:</strong>
             </CCol>
-            <CCol sm={6}>
+            <CCol sm={6}  className='col-6'>
             {data?.data?.appointmentId || ''}
             </CCol>
           </CRow>
           <CRow>
-            <CCol sm={6}>
+            <CCol sm={6}  className='col-6'>
               <strong>Servicio:</strong>
             </CCol>
-            <CCol sm={6}>
+            <CCol sm={6}  className='col-6'>
             {data?.data?.service?.name || ''}
             </CCol>
           </CRow>
           <CRow>
-            <CCol sm={6}>
+            <CCol sm={6}  className='col-6'>
               <strong>Hora de inicio:</strong>
             </CCol>
-            <CCol sm={6}>
-            {data?.data?.startTime || ''}
+            <CCol sm={6}  className='col-6'>
+            {convertToAMPM(data?.data?.startTime) || ''}
             </CCol>
           </CRow>
           <CRow>
-            <CCol sm={6}>
+            <CCol sm={6}  className='col-6'>
               <strong>Ubicación:</strong>
             </CCol>
-            <CCol sm={6} className='navigator_copy'>
+            <CCol sm={6} className='navigator_copy col-6'>
             <CRow>
             <div className='address_ui col-lg-6 col-md-6'>
             {data?.data?.location?.name || ''}
@@ -108,17 +111,17 @@ function BookingDetails() {
         content={copied ? 'Copied!' : 'Copy to clipboard'} 
         placement="top-end"  // Tooltip placed at the top-right corner
       >
-          <Copy className='resp_img_er col-lg-4 my-lg-4 col-md-6' size={'1.5em'} onClick={handleCopy}/>
+        <Copy className='resp_img_er col-lg-4 my-lg-4 col-md-6' size={'1.5em'} onClick={handleCopy}/>
         </CTooltip>
         </CRow>
   
             </CCol>
           </CRow>
           <CRow>
-            <CCol sm={6}>
+            <CCol sm={6} className='col-6'>
               <strong>Equipo:</strong>
             </CCol>
-            <CCol sm={6}>
+            <CCol sm={6} className='col-6'>
             {data?.data?.staff?.email || ''}
             </CCol>
           </CRow>

@@ -2,6 +2,10 @@
   color: red;
   font-size: 0.75em;
 }
+
+.header_img{
+  width: 3.5em;
+}
 .custom_menu{
   text-align: center;
   font-size: 0.8em;
@@ -114,7 +118,7 @@ input.selected_flatpicky:focus {
   border: 0;
 }
 .custom_appointment_font{
-  font-size: 1.4em;
+  font-size: 1.25em;
 }
 
 .container.custom_section{

@@ -379,7 +379,14 @@ const CustomAppointmentForm = () => {
        <CForm onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
       <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "" }}>
      
-        <CRow> <img src='../../assets/background_img.jpg' alt='header_logo' className='header_img'/><h1 className='custom_appointment_font'>Nueva Cita</h1> </CRow>
+        <CRow> 
+          <CCol lg={4} md={4}>
+          <img src='../../assets/header_logo.png' alt='header_logo' className='header_img'/>
+          </CCol>
+          <CCol lg={8} md={8}>
+        <h3 className='custom_appointment_font'>Nueva Cita</h3>
+        </CCol>
+        </CRow>
         <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='resp_img' size={'7%'}/> <p className='text_resp'>{location}</p></span> <span className="ms-2"></span></CDropdownToggle>

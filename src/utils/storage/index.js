@@ -46,6 +46,7 @@ export const getCookie = (cname) => {
 
 export const convertToAMPM = (timeString) => {
   // Split the timeString into components
+  if(!timeString) return
   const [hours, minutes, seconds] = timeString.split(':').map(Number);
 
   // Determine whether it's AM or PM
