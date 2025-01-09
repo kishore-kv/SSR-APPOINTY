@@ -1,6 +1,6 @@
 
 import { CDropdown, CForm, CFormInput,CDropdownDivider, CRow, CDropdownToggle, CDropdownMenu, CDropdownItem, CCol, CSpinner, CContainer } from '@coreui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
  import { MapPin,CurrencyDollar,CalendarDots,Clock,EnvelopeSimple, CallBell, User, DeviceMobile } from "@phosphor-icons/react";
  import './CustomForm.css';
  import "flatpickr/dist/themes/material_blue.css";
@@ -370,6 +370,34 @@ const CustomAppointmentForm = () => {
       }
     };
 
+
+    const flatpickrRef = useRef(null); // Reference to Flatpickr
+    const inputRef = useRef(null); // Reference to input element
+
+  
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        // Check if the click is outside Flatpickr or input
+        if (
+          inputRef.current &&
+          !inputRef.current.contains(event.target) &&
+          flatpickrRef.current &&
+          !flatpickrRef.current.contains(event.target)
+        ) {
+          // Manually close the Flatpickr calendar if clicked outside
+          if (flatpickrRef.current && flatpickrRef.current.close) {
+            flatpickrRef.current.close();
+          }
+        }
+      };
+  
+      document.addEventListener("click", handleClickOutside);
+  
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, []);
+
   return ( 
     <CContainer className='py-lg-5 custom_container'
       style={{
@@ -451,7 +479,10 @@ const CustomAppointmentForm = () => {
                 <Flatpickr options={enableOptions} 
                            onChange={(value) => handleFlatPicker(value)} 
                            value={formData.date}
-                           className={`selected_flatpicky w-100`} />
+                           className={`selected_flatpicky w-100`} 
+                           ref={flatpickrRef}
+                           inputRef={inputRef}
+                           />
               </span>
             </CCol>
           </CRow>
