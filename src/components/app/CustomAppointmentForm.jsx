@@ -19,6 +19,10 @@ import { toast } from 'react-hot-toast';
  */
 
 const CustomAppointmentForm = () => {
+  
+  
+
+  // const headerLogo = require('/assets/header_logo.png')
   //APPOINTMENT FORM DATA
   const initialData = {
       customerEmail: "",
@@ -73,6 +77,7 @@ const CustomAppointmentForm = () => {
     /*++++TIMEPICKR AVAILABILITY STAFF +++++++++++++=*/
     const [availabilityArray , setAvailabilityArray] = useState([]);
     const [availabilityObj , setAvailabilityObj] = useState({});
+    // const [timeSlots , setTimeSlots] = useState([ ]);
 
     const [inputValue, setInputValue] = useState("");
      /*+++++++++PRICE+++++++++++++*/
@@ -226,7 +231,7 @@ const CustomAppointmentForm = () => {
             setEnableStaff(true);
             setPrice('');
             setInputValue('');
-            setFormErrors((prev) => ({...prev , location:""}))
+            setFormErrors((prev) => ({...prev , location:""}));
     }
        //setting the new service on dropdown
       const handleSelectService=(indx,service) => {
@@ -253,9 +258,9 @@ const CustomAppointmentForm = () => {
          setDisabledDays(updateAvailableDays)
         setStaff(`${staff.firstName} ${staff.lastName}`);
         setFormData({ ...formData, staffId:staff.id, date:'',startTime:''});
-        setFormErrors((prev) => ({...prev , staff:""}))
+        setFormErrors((prev) => ({...prev , staff:""}));
+        
       }
-     console.log(`disabke`, disabledDays);
      
       //FLATPICKR HANDLERS
       const enableOptions = {
@@ -291,7 +296,8 @@ const CustomAppointmentForm = () => {
           setDateParams(formattedDate);
           setFormData({ ...formData, date: formattedDate,startTime:'' });
         }
-        setFormErrors((prev) => ({...prev , date:""}))
+        setFormErrors((prev) => ({...prev , date:""}));
+  
          
       }
       // Email handlechange handler
@@ -373,7 +379,7 @@ const CustomAppointmentForm = () => {
        <CForm onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
       <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "" }}>
      
-        <h1 className='custom_appointment_font'>Nueva Cita</h1>
+        <CRow> <img src='../../assets/background_img.jpg' alt='header_logo' className='header_img'/><h1 className='custom_appointment_font'>Nueva Cita</h1> </CRow>
         <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='resp_img' size={'7%'}/> <p className='text_resp'>{location}</p></span> <span className="ms-2"></span></CDropdownToggle>
@@ -448,12 +454,14 @@ const CustomAppointmentForm = () => {
         {/* TIME */}
         <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
            <TimePickerCalendarStyle 
+            duration={duration}
              blockedAppointments={blockedAppointments}
              availableTime ={availabilityObj}
             value={formData.startTime} // Pass the current startTime as value
         onTimeChange={handleTimeChange} // Pass handler to update startTime
           inputValue={inputValue}
           setInputValue={setInputValue}
+          
         />
          {formErrors.time && <span className="error">{formErrors.time}</span>}
         </CCol>

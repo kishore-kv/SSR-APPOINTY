@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Clock } from "@phosphor-icons/react";
 import { CFormInput } from "@coreui/react";
 import "./Timpickr.css";
 import { formatTime , convertToAMPM} from "../../utils/storage";
 
-const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedAppointments , inputValue , setInputValue }) => {
+const TimePickerCalendarStyle = ({ value, duration, onTimeChange, availableTime,blockedAppointments , inputValue , setInputValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   // const [inputValue, setInputValue] = useState("");
 
-  const generateTimeSlots = (startTime, endTime) => {
+  const generateTimeSlots = (startTime, endTime, duration) => {
     const slots = [];
     if (!startTime || !endTime) return slots;
   
@@ -19,8 +19,12 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
     const start = new Date();
     start.setHours(startHour, startMinute, startSecond, 0);
   
-    const end = new Date();
-    end.setHours(endHour, endMinute, endSecond, 0);
+    let end = new Date();
+     end.setHours(endHour, endMinute, endSecond, 0);
+    
+      end = end - duration*60*1000;
+    
+
   
     // Handle case when the start time is after the end time (next day)
     if (start > end) {
@@ -35,7 +39,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
   
     return slots;
   };
-       const timeSlots = generateTimeSlots(availableTime.startTime , availableTime.endTime)
+       const timeSlots = generateTimeSlots(availableTime.startTime , availableTime.endTime , duration)
         
        // Mark blocked slots
       //  / Function to mark blocked time slots with 'b'
@@ -67,7 +71,24 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
   
       const updatedSlots = markBlockedSlots(timeSlots , blockedAppointments)
 //  console.log(`updated_________slots`, updatedSlots);
- 
+const handleClickOutside = (event) => {
+  if (containerRef.current && !containerRef.current.contains(event.target)) {
+    setIsOpen(false); // Close the container if the click is outside
+  }
+};
+  
+
+
+const containerRef = useRef(null);
+
+useEffect(() => {
+  // Attach event listener to the document
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    // Clean up the event listener
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
   
 
   const handleTimeSelect = (slot) => {
@@ -102,7 +123,7 @@ const TimePickerCalendarStyle = ({ value, onTimeChange, availableTime,blockedApp
       {isOpen && (
         <div
           className="position-absolute mt-1 bg-white border rounded shadow"
-          style={{ width: "100%", zIndex: 1050 }}
+          style={{ width: "100%", zIndex: 1050 }}  ref={containerRef} 
         >
           <div className="bg-light border-bottom p-2">
             <h3 className="h6 text-muted mb-0">Seleccionar hora</h3>
