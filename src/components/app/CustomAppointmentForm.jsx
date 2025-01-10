@@ -476,7 +476,7 @@ const CustomAppointmentForm = () => {
         <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CRow className='d-flex custom_row_inputs h-100'>
             <CCol lg={2} xs={2}>
-              <span class="avatar-icon avatar-icon--has-img">
+              <span className="avatar-icon avatar-icon--has-img">
               <CalendarDots size={"1.5rem"} />
               </span>
             </CCol>
@@ -514,7 +514,7 @@ const CustomAppointmentForm = () => {
         <CCol xs={12} lg={8} style={{ border: "" }}className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
-              <span class="avatar-icon avatar-icon--has-img">
+              <span className="avatar-icon avatar-icon--has-img">
                 <CurrencyDollar size={"1.5rem"} />
               </span>
             </CCol>
@@ -531,7 +531,7 @@ const CustomAppointmentForm = () => {
         <CCol xs={12} lg={8} style={{ border:"" }} className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
-            <span class="avatar-icon avatar-icon--has-img">
+            <span className="avatar-icon avatar-icon--has-img">
             <EnvelopeSimple size={"1.5rem"} />
             </span>
             </CCol>
@@ -548,7 +548,7 @@ const CustomAppointmentForm = () => {
         <CCol xs={12} lg={8} style={{ border:"" }} className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
-            <span class="avatar-icon avatar-icon--has-img">
+            <span className="avatar-icon avatar-icon--has-img">
             <DeviceMobile size={"1.5rem"} />
             </span>
             </CCol>
