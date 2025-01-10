@@ -31,7 +31,6 @@ function BookingDetails() {
 
       // Async function to copy text to clipboard
       const handleCopy = async () => {
-        console.log(`clickef`);
         
         try {
           await navigator.clipboard.writeText(textToCopy);
@@ -97,7 +96,7 @@ function BookingDetails() {
             </CCol>
             <CCol sm={6} className='navigator_copy col-6'>
             <CRow>
-            <div className='address_ui col-lg-6 col-md-6'>
+            <div className='address_ui col-lg-6 col-md-6 col-10'>
             {data?.data?.location?.name || ''}
             {data?.data?.location?.postalCode || ''}
             {data?.data?.location?.address1 || ''}
@@ -108,10 +107,12 @@ function BookingDetails() {
             
        
             <CTooltip 
-        content={copied ? 'Copied!' : 'Copy to clipboard'} 
-        placement="top-end"  // Tooltip placed at the top-right corner
+        content={copied ? 'Copied!' : 'Copied!'} 
+        placement="top"
+        trigger={'click'}
       >
-        <Copy className='resp_img_er col-lg-4 my-lg-4 col-md-6' size={'1.5em'} onClick={handleCopy}/>
+        <Copy className='resp_img_er col-lg-4 my-lg-4 my-4
+         col-md-6 col-2' style={{cursor:"pointer"}}size={'1.5em'} onClick={handleCopy}/>
         </CTooltip>
         </CRow>
   

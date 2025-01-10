@@ -8,11 +8,13 @@ import Flatpickr from "react-flatpickr";
 import { request , requestPost} from '../../services/request';
 import { CButton } from '@coreui/react';
 import TimePickerCalendarStyle from './TimePickerCalendarStyle';
-import { convertTo24HourFormat } from '../../utils/storage/index';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+
+// import backgroundImage from '../../../public/asset/background_img.jpg';
+
  
- 
+
 
 
 /*  This component consists of two children 1.dropDown for location and 2.formInputs
@@ -187,6 +189,16 @@ const CustomAppointmentForm = () => {
           fetchStaffHoursData(staffId,dateParams,duration);
         }
      },[staffId,dateParams,duration])
+
+
+     //preselect single option
+    //  useEffect(() => {
+    //    if(staffOptions.length === 1){
+    //     console.log(`11111111`, staffOptions);
+        
+    //     setStaff(`${staffOptions[0]?.firstName} ${staffOptions[0]?.lastName}`)
+    //    }
+    //  },[staffOptions])
        /*++++++++++Handlers++++++++++++++++++++*/
        //handling and validate form fields
        const validate = () => {
@@ -399,22 +411,16 @@ const CustomAppointmentForm = () => {
     }, []);
 
   return ( 
-    <CContainer className='py-lg-5 custom_container'
-      style={{
-        height: '80%',
-        border: ''
-      }}>
+    <CContainer className='py-lg-4 custom_container'>
        <CForm onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-      <CContainer className='custom_section py-lg-4 d-flex justify-content-center align-items-center flex-column' style={{ border: "" }}>
+      <CContainer className='custom_section py-lg-4 py-2 d-flex justify-content-center align-items-center flex-column' style={{ border: "" }}>
      
-        <CRow> 
-          <CCol lg={4} md={4}>
-          <img src='../../assets/header_logo.png' alt='header_logo' className='header_img'/>
-          </CCol>
-          <CCol lg={8} md={8}>
-        <h3 className='custom_appointment_font'>Nueva Cita</h3>
-        </CCol>
-        </CRow>
+        
+         
+          
+          <h1 className='custom_appointment_font'>Nueva Cita</h1>
+        
+    
         <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='resp_img' size={'7%'}/> <p className='text_resp'>{location}</p></span> <span className="ms-2"></span></CDropdownToggle>
@@ -514,7 +520,7 @@ const CustomAppointmentForm = () => {
             </CCol>
             <CCol lg={10} xs={10}>
               <span className="meeting__card__name">
-                <CFormInput className={`input-minimal`} value={price} type={'text'} />
+                <CFormInput className={`input-minimal`} value={price} type={'text'} readOnly/>
               </span>
             </CCol>
           </CRow>

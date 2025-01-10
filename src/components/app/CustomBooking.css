@@ -3,7 +3,6 @@
     background:#fff;
     display: flex;
     justify-content: center;
-    border: 2px solid pink;
     padding-block: 5%;
     align-items: center;
      flex-direction: column;
@@ -11,4 +10,17 @@
 
 .custom_card{
     min-width: 50%;
+}
+
+@media (max-width: 500px){
+.resp_img_er{
+ padding: 0;
+}
+}
+
+.custom_booking_container{
+    background-image: url("https://ardorcomm-media.com/wp-content/uploads/2023/07/News-on-Health-28th-July-2023.webp") !important;
+    background-size: 120% 120%;
+  background-position: center;
+  background-repeat: no-repeat;
 }

@@ -54,7 +54,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[hash].[ext]',
+                            name: '[name].[ext]',
                             outputPath: 'assets/images/', // output path for images
                         }
                     },
@@ -67,7 +67,7 @@ module.exports = {
                         loader: 'url-loader',
                         options: {
                             limit: 8192, // Convert images smaller than 8 KB to base64 strings
-                            name: '[name].[hash].[ext]',
+                            name: '[name].[ext]',
                             outputPath: 'assets/images/',
                         }
                     },

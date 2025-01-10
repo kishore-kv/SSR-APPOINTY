@@ -4,6 +4,7 @@ import BookingDetails from '../components/app/BookingDetails';
 import CustomAppointmentForm from '../components/app/CustomAppointmentForm';
 import { Toaster } from 'react-hot-toast';
 import './innerapp.css';
+import { CHeader ,CRow} from '@coreui/react';
 
 const InnerApp = () => {
   const [loading, setLoading] = useState(false);
@@ -18,12 +19,18 @@ const InnerApp = () => {
 
   return (
     <div className="innerapp">
+      <CHeader className='header_custom'> 
+          <CRow className='justify-content-center'>
+                <img src='../../assets/header_logo.png' alt='header_logo' className='header_img'/>
+          </CRow>
+        </CHeader>
       {loading && (
         <div className="loader-overlay">
           <div className="spinner"></div>
         </div>
       )}
       <Switch>
+        {/* <div>header image</div> */}
         <Route exact path="/">
           <CustomAppointmentForm />
           <Toaster />

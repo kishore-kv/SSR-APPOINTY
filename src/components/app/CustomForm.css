@@ -3,9 +3,7 @@
   font-size: 0.75em;
 }
 
-.header_img{
-  width: 3.5em;
-}
+
 .custom_menu{
   text-align: center;
   font-size: 0.8em;
@@ -52,6 +50,12 @@
  }
 }
 
+@media (max-width: 576px) {
+  .resp_img {
+      margin-inline: 5px;
+      width: 7%;
+  }
+}
 
 p.text_resp {
   font-size: 0.85rem;
@@ -157,6 +161,14 @@ input.selected_flatpicky:focus {
 .custom_section {
     flex:1
 }
+.custom_container{
+  background-image: url("https://ardorcomm-media.com/wp-content/uploads/2023/07/News-on-Health-28th-July-2023.webp");
+  background-size: 120% 120%;  /* Increase the image size by 20% */
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 80%;
+  
+}
 .custom_section{
   box-shadow: 7px 7px 15px #bbcfda,-4px -4px 13px #fff, inset 4px 4px 8px rgba(209, 217, 230, 0.2),  inset -8px -8px 8px rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3); 
@@ -189,7 +201,6 @@ span.custom_span_sz{
   background:#fff;
   display: flex;
   justify-content: center;
-  border: 2px solid pink;
   padding-block: 5%;
   align-items: center;
    flex-direction: column;
