@@ -11,10 +11,10 @@ const InnerApp = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Show loader briefly on route change
+  
     setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 500); // Simulate loading time
-    return () => clearTimeout(timer); // Cleanup timeout on unmount
+    const timer = setTimeout(() => setLoading(false), 500); 
+    return () => clearTimeout(timer);
   }, [location]);
 
   return (

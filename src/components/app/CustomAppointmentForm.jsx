@@ -383,16 +383,19 @@ const CustomAppointmentForm = () => {
     };
 
 
-    const flatpickrRef = useRef(null); // Reference to Flatpickr
-    const inputRef = useRef(null); // Reference to input element
+    const flatpickrRef = useRef(null); 
+    const inputref
+      = useRef(null); 
 
   
     useEffect(() => {
       const handleClickOutside = (event) => {
         // Check if the click is outside Flatpickr or input
         if (
-          inputRef.current &&
-          !inputRef.current.contains(event.target) &&
+          inputref
+          .current &&
+          !inputref
+          .current.contains(event.target) &&
           flatpickrRef.current &&
           !flatpickrRef.current.contains(event.target)
         ) {
@@ -413,7 +416,7 @@ const CustomAppointmentForm = () => {
   return ( 
     <CContainer className='py-lg-4 custom_container'>
        <CForm onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-      <CContainer className='custom_section py-lg-4 py-2 d-flex justify-content-center align-items-center flex-column' style={{ border: "" }}>
+      <CContainer className='custom_section py-lg-4 py-2 d-flex justify-content-center align-items-center flex-column'>
      
         
          
@@ -421,7 +424,7 @@ const CustomAppointmentForm = () => {
           <h1 className='custom_appointment_font'>Nueva Cita</h1>
         
     
-        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
+        <CCol xs={12} lg={8}  className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card"> <span className='custom_span_sz'><MapPin className='resp_img' size={'7%'}/> <p className='text_resp'>{location}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }}  className="custom_menu">
@@ -439,7 +442,7 @@ const CustomAppointmentForm = () => {
       
           {/*alternate service*/}
 
-          <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
+          <CCol xs={12} lg={8}  className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card" disabled={disableService}> <span className='custom_span_sz'><CallBell className='resp_img' size={'7%'}/> <p className='text_resp'>{service}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }}  className="custom_menu">
@@ -458,7 +461,7 @@ const CustomAppointmentForm = () => {
 
           {/* /?++++++++++++++++++++++++++++++++++++++++++++++++++++++ */}
         {/* staff */}
-        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
+        <CCol xs={12} lg={8}  className='custom_col'>
           <CDropdown className='mb-2 custom_dropdown_locations'>
             <CDropdownToggle className="dropdown_card" disabled={disableStaff}> <span className='custom_span_sz'><User size={'7%'} className='resp_img' /> <p className='text_resp'>{staff}</p></span> <span className="ms-2"></span></CDropdownToggle>
             <CDropdownMenu style={{ width: '100%' }}  className="custom_menu">
@@ -473,7 +476,7 @@ const CustomAppointmentForm = () => {
         </CCol>
         
         {/* Calendar */}
-        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
+        <CCol xs={12} lg={8}  className='custom_col'>
           <CRow className='d-flex custom_row_inputs h-100'>
             <CCol lg={2} xs={2}>
               <span className="avatar-icon avatar-icon--has-img">
@@ -487,7 +490,10 @@ const CustomAppointmentForm = () => {
                            value={formData.date}
                            className={`selected_flatpicky w-100`} 
                            ref={flatpickrRef}
-                           inputRef={inputRef}
+                           inputref
+                           ={inputref
+
+                           }
                            />
               </span>
             </CCol>
@@ -496,7 +502,7 @@ const CustomAppointmentForm = () => {
         </CCol>
        
         {/* TIME */}
-        <CCol xs={12} lg={8} style={{ border: "" }} className='custom_col'>
+        <CCol xs={12} lg={8}  className='custom_col'>
            <TimePickerCalendarStyle 
             duration={duration}
              blockedAppointments={blockedAppointments}
@@ -511,7 +517,7 @@ const CustomAppointmentForm = () => {
         </CCol>
 
         {/* PRICE */}
-        <CCol xs={12} lg={8} style={{ border: "" }}className='custom_col'>
+        <CCol xs={12} lg={8} className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
               <span className="avatar-icon avatar-icon--has-img">
@@ -528,7 +534,7 @@ const CustomAppointmentForm = () => {
        
         {/* CUTOMER NAME */}
 
-        <CCol xs={12} lg={8} style={{ border:"" }} className='custom_col'>
+        <CCol xs={12} lg={8}  className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
             <span className="avatar-icon avatar-icon--has-img">
@@ -545,7 +551,7 @@ const CustomAppointmentForm = () => {
         </CCol>
              {/* MOBILE NUMBER */}
 
-        <CCol xs={12} lg={8} style={{ border:"" }} className='custom_col'>
+        <CCol xs={12} lg={8}  className='custom_col'>
           <CRow className='d-flex custom_row_inputs'>
             <CCol lg={2} xs={2}>
             <span className="avatar-icon avatar-icon--has-img">
