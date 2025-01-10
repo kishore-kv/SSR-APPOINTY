@@ -162,7 +162,7 @@ input.selected_flatpicky:focus {
     flex:1
 }
 .custom_container{
-  background-image: url("../../assets/images/background_img.png");
+  background-image: url("../../assets/images/background_img.png"); 
   background-size: 120% 120%;  /* Increase the image size by 20% */
   background-position: center;
   background-repeat: no-repeat;
