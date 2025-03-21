@@ -68,7 +68,7 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 8192, // Convert images smaller than 8 KB to base64 strings
+                            limit: 8192,
                             name: '[name].[ext]',
                             outputPath: 'assets/images/',
                         }

@@ -7,6 +7,7 @@
 .custom_menu{
   text-align: center;
   font-size: 0.8em;
+  cursor: pointer;
 }
 .overlay {
   position: absolute;
@@ -197,15 +198,7 @@ span.custom_span_sz{
 
 
 
-.custom_booking_container{
-  background:#fff;
-  display: flex;
-  justify-content: center;
-  padding-block: 5%;
-  align-items: center;
-   flex-direction: column;
-}
-
+ 
 .custom_card{
   min-width: 50%;
 }

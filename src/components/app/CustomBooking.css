@@ -2,7 +2,7 @@
 .custom_booking_container{
     background:#fff;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     padding-block: 5%;
     align-items: center;
      flex-direction: column;
@@ -19,6 +19,8 @@
 }
 
 .custom_booking_container{
+   height: 100vh;
+
     background-image: url("https://ardorcomm-media.com/wp-content/uploads/2023/07/News-on-Health-28th-July-2023.webp") !important;
     background-size: 120% 120%;
   background-position: center;
