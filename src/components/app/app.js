@@ -1,17 +1,17 @@
-import React, { Suspense } from 'react';
-import InnerApp from '../../InnerApp';
-import { Provider } from 'react-redux';
-import store from './store';
+import React, { Suspense } from 'react'
+// import {
+//     BrowserRouter
+// } from "react-router-dom";
+// import RootProvider from "../../Context/RootProvider";
+import InnerApp from "../InnerApp.js"
 
 export class App extends React.Component {
     constructor() {
         super();
     }
     render() {
-        return (
-            <Provider store={store}>     
-                        <InnerApp />
-            </Provider>
-        );
+        return (<div>
+                <InnerApp />
+        </div>)
     }
 }

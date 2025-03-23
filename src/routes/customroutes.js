@@ -1,5 +1,5 @@
 
- import  DefaultLayout from "./src/layout/DefaultLayout"
+ import  DefaultLayout from "../layout/DefaultLayout"
  import Login  from "./src/views/pages/login/Login"
  import Register  from "./src/views/pages/register/Register"
  import Page404 from "./src/views/pages/page404/Page404"
