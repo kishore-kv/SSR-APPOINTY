@@ -49,9 +49,9 @@ class InnerApp extends React.Component {
     this.setState({ isLogout: true })
   }
 
-  // triggerLogout = () => {
-  //   this.setState({ isLogout: false })
-  // }
+  triggerLogout = () => {
+    this.setState({ isLogout: false })
+  }
 
   // setIsExpanded = (isExpanded) => {
   //   this.setState({ isExpanded });

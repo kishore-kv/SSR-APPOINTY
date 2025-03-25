@@ -1,0 +1,115 @@
+.custom_left_side_bar {
+    // z-index: 10000;
+    // width: 216px;
+    background: #FFFFFF;
+    // position: absolute;
+    // top: 64px;
+    // left: 0;
+    height: calc(100vh - 64px);
+  }
+  
+  .custom_left_reduced {
+    background-color: #FFFFFF;
+    // max-width: 72px;
+    width: 100%;
+    // z-index: 10000;
+    // position: absolute;
+    // top: 64px;
+    // left: 0;
+    height: calc(100vh - 64px);
+  }
+  
+  .custom_list_item {
+    /* display: flex;
+    justify-content: space-around;
+    // border: 2px solid red; */
+    cursor: pointer;
+    border-inline-start: 4px solid #fff !important;
+    width: 100%;
+    max-width: 72px;
+    height: auto;
+    padding: 8px 16px 8px 16px;
+    opacity: 0px;
+  }
+  
+  .customListItmIconContainer {
+    height: 24px;
+    width: 24px;
+    margin: auto;
+  }
+  
+  .custom_arrow_container_expanded {
+    position: absolute;
+    right: 3%;
+    bottom: 3%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+  
+  .custom_arrow_container {
+    position: absolute;
+    right: 30%;
+    bottom: 3%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+  
+  .custom_arrowchevron {
+    width: 1rem !important;
+    height: 2rem !important;
+  }
+  
+  /* toggle on arrow expanded  css to list items*/
+  /* unselected */
+  .custom_list_items {
+    cursor: pointer;
+    border-inline-start: 4px solid #FFFFFF;
+    width: 100%;
+    height: auto;
+    opacity: 0px;
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+  }
+  
+  .customListItemText {
+    line-height: 18.2px !important;
+    font-weight: 400 !important;
+    width: 152px;
+    height: 19px;
+    font-size: 14px !important;
+  }
+  
+  /* selected */
+  .custom_list_items_selected {
+    color: $primary-color;
+    border-left: 4px solid $primary-color;
+    background: #EBEBEB;
+    width: 100%;
+    height: auto;
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+  }
+  
+  .text_font_selected {
+    font-weight: 600 !important
+  }
+  
+  .custom_list_border {
+    border-inline-start: 4px solid $primary-color !important;
+  }
+  
+  @media (min-width: 768px) and (max-width: 1200px) {
+    .custom_arrow_container {
+      right: 20%;
+    }
+  }

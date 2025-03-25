@@ -1,0 +1,24 @@
+.headerContainer {
+    display: flex;
+    // padding: 0px 24px 0px 24px;
+    justify-content: space-between;
+    background-color: #17679b;
+    height: 64px;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+}
+
+.headerLogo {
+    width: 179px;
+    height: 64px;
+    padding: 7.03px 5.5px 10.79px 5.5px;
+}
+
+.logoutContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+    cursor: pointer;
+}
