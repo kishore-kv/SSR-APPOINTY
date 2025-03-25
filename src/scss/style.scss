@@ -12,6 +12,10 @@
 @import "button";
 @import "header";
 @import "left-sidebar";
+
+.margin-top-header {
+    margin-top: 64px;
+}
 .app_wrapper {
     max-width: 100vw;
     min-height: 100vh;

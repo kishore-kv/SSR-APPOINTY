@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import { useHistory, useLocation } from 'react-router-dom';
 // import { handleDecode } from "../../utils/utility";
 // import { getUserRole } from "../../lib/auth/index";
 // import { role_Admin_Master } from "../../Constants/constants";
 
-const LeftSideNavbar = ({ isExpanded, setIsExpanded }) => {
+const LeftSideNavbar = () => {
   const [selectedItem, setSelectedItem] = useState(0);
   const history = useHistory();
   const location = useLocation();
 
   const items = [
-    { text: "Gestión de vehículos", icon: <DirectionsCarFilledOutlinedIcon className="custom_svg_icon" />, link: "/vehicle-summary" },
+    { text: "Locations", icon: <LocationOnOutlinedIcon className="custom_svg_icon" />, link: "/locations" },
+    { text: "Staff", icon:<PermIdentityOutlinedIcon  className="custom_svg_icon" />, link:"/staff" },
+    { text: "Service", icon: <CircleOutlinedIcon  className="custom_svg_icon" />, link: "/service" }
   ];
 
   // Conditionally add "Gestión de usuarios" based on user role
@@ -28,26 +29,16 @@ const LeftSideNavbar = ({ isExpanded, setIsExpanded }) => {
   };
 
   const handleListItem = (index) => {
-    // setSelectedItem(index);
-    // history.push(items[index].link);
+    setSelectedItem(index);
+    history.push(items[index].link);
   };
 
   return (
-    <Box className={`${isExpanded ? 'custom_left_side_bar' : 'custom_left_reduced'}`}>
+    <Box className={`custom_left_side_bar`}>
       <Box>
         {items?.map((item, index) => {
           const selected = location.pathname === item.link; // Check if the current path matches the item's link
-          return !isExpanded ? (
-            <Box
-              component="div"
-              key={item.link}
-              className={`custom_list_item ${selected && 'custom_list_border'} ${selected ? "custom_list_items_selected" : "custom_list_items"}`}
-              onClick={() => handleListItem(index)}
-            >
-              <Box className="customListItmIconContainer">{item.icon}</Box>
-            </Box>
-          ) : (
-            <Box
+          return (<Box
               component="div"
               key={item.link}
               className={`${selected ? "custom_list_items_selected" : "custom_list_items"}`}
@@ -59,9 +50,9 @@ const LeftSideNavbar = ({ isExpanded, setIsExpanded }) => {
           );
         })}
       </Box>
-      <div className={isExpanded ? "custom_arrow_container_expanded" : "custom_arrow_container"} onClick={handleOnClick}>
+      {/* <div className={isExpanded ? "custom_arrow_container_expanded" : "custom_arrow_container"} onClick={handleOnClick}>
         {isExpanded ? <ArrowBackIosIcon className="custom_arrowchevron" /> : <ArrowForwardIosIcon className="custom_arrowchevron" />}
-      </div>
+      </div> */}
     </Box>
   );
 };
