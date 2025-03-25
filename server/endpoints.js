@@ -6,5 +6,6 @@ module.exports = {
   staticKeys:"/global-config/config/staticKeys",
   supplierConfig:"/global-config/config/supplierConfig",
   configList:"/global-config/config/configList",
+  citasLogin: "/staff/login",
   //config:"/global-config/config"
 };

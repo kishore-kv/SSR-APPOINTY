@@ -1,4 +1,5 @@
 const express = require("express");
+const compression = require('compression');
 const fs = require("fs");
 var cors = require('cors')
 const { get } = require("lodash");
@@ -21,13 +22,14 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+app.use(compression());
 
 // import App component
 // const { App } = require( '../src/components' );
 // import App from '../src/component'
 
 app.get(
-  /\.(js|css|map|ico|png|jsx)$/,
+  /\.(js|css|map|ico|png|jsx|woff|woff2|eot|ttf|otf|png|jpg|jpeg|gif|svg)$/,
   express.static(path.resolve(__dirname, "../dist"))
 );
 
@@ -62,6 +64,9 @@ app.use("*", async (req, res) => {
 });
 
 // run express server on port 9000
-app.listen("9000", () => {
-  logger.info("Express server started at http://localhost:9000");
+const PORT = 9000;
+
+app.listen(PORT, () => {
+  logger.info(`Express server started at http://localhost:${PORT}`);
 });
+ 

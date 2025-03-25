@@ -1,8 +1,19 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
- 
+ import React from 'react';
+ import { ThemeProvider } from '@mui/material/styles';
+import { theme } from '../theme/theme.js';
+import { Skeleton } from '@mui/material';
+import Header from './Header/Header';
+import LeftSideNavbar from './leftNavBar/LeftSideNavBar';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { routes } from "../routes";
+import PublicRoute from '../routes/PublicRoute';
+import PrivateRoute from '../routes/PrivateRoute';
+import Page404 from '../../src/pages/page404';
 
-class App extends React.Component {
+// Pages
+
+
+class InnerApp extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -13,53 +24,112 @@ class App extends React.Component {
     };
   }
 
-//   componentDidMount() {
-//     const token = sessionStorage.getItem('token');
-//     if (token) {
-//       this.setState({
-//         isAuthorized: true,
-//         isLogout: true,
-//       });
-//     }
+  componentDidMount() {
+    // const token = sessionStorage.getItem('token');
+    // if (token) {
+    //   this.setState({
+    //     isAuthorized: true,
+    //     isLogout: true,
+    //   });
+    // }
 
-//     setTimeout(() => {
-//       this.setState({ loading: false });
-//     }, 1000);
-//   }
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 1000);
+  }
 
-//   componentDidUpdate() {
-//     const isAuthorized = verifyLogin();
-//     if (this.state.isAuthorized !== isAuthorized) {
-//       this.setState({ isAuthorized });
-//     }
-//   }
+  // componentDidUpdate() {
+  //   const isAuthorized = verifyLogin();
+  //   if (this.state.isAuthorized !== isAuthorized) {
+  //     this.setState({ isAuthorized });
+  //   }
+  // }
 
-//   triggerLogin = () => {
-//     this.setState({ isLogout: true })
-//   }
+  triggerLogin = () => {
+    this.setState({ isLogout: true })
+  }
 
-//   triggerLogout = () => {
-//     this.setState({ isLogout: false })
-//   }
+  // triggerLogout = () => {
+  //   this.setState({ isLogout: false })
+  // }
 
-//   setIsExpanded = (isExpanded) => {
-//     this.setState({ isExpanded });
-//   };
+  // setIsExpanded = (isExpanded) => {
+  //   this.setState({ isExpanded });
+  // };
 
   render() {
-    // const { loading, isAuthorized, isLogout, isExpanded } = this.state;
+    const { loading, isAuthorized, isLogout, isExpanded } = this.state;
     // const { location } = this.props; // Access current route from props
     // const isFullWidthRoute = ['/', '/login', '/technico-pdi'].includes(location.pathname) || location.pathname.startsWith('/technico-pdi/'); // List routes where LeftNav shouldn't be shown
-
+       const isFullWidthRoute = false;
     return (
       <div className="app_wrapper">
-       
-                 <h1>innerapp</h1>
+        {
+          loading ? (
+            <Skeleton variant="rectangular" width="100vw" height="100vh" animation="wave" />
+          ) : (
+            <ThemeProvider theme={theme}>
+              <Header
+                isAuthorized={isAuthorized}
+                isLogout={isLogout}
+                triggerLogout={this.triggerLogout}
+              />
+              <div className="d-flex">
+                {/* Conditionally render LeftSideNavbar */}
+                {!isFullWidthRoute && (
+                  <div className={`left-side-navbar-wrapper margin-top-header   ${isExpanded ? 'left-side-navbar-expanded' : 'left-side-navbar-collapsed'}`}>
+                    <LeftSideNavbar isExpanded={isExpanded} setIsExpanded={this.setIsExpanded} />
+                  </div>
+                )}
+                <div
+                  className={`main-content  margin-top-header  ${isFullWidthRoute ? 'full-width-route' : isExpanded ? 'expanded-content' : 'collapsed-content'}`}
+                >
+                  <Switch>
+                    {routes.map(
+                      ({ component, exact, path, isProtected, isRedirect, redirectUrl }, index) => {
+                        return isProtected && isRedirect === true ? (
+                          <PrivateRoute
+                            exact={exact}
+                            path={path}
+                            key={index}
+                            component={() => <Redirect to={redirectUrl} />}
+                            triggerLogout={this.triggerLogout}
+                            triggerLogin={this.triggerLogin}
+                            isAuthorized={isAuthorized}
+                          />
+                        ) : isProtected ? (
+                          <PrivateRoute
+                            exact={exact}
+                            path={path}
+                            key={index}
+                            component={component}
+                            triggerLogout={this.triggerLogout}
+                            triggerLogin={this.triggerLogin}
+                            isAuthorized={isAuthorized}
+                          />
+                        ) : (
+                          <PublicRoute
+                            exact={exact}
+                            path={path}
+                            key={index}
+                            component={component}
+                            triggerLogout={this.triggerLogout}
+                            triggerLogin={this.triggerLogin}
+                            isAuthorized={isAuthorized}
+                          />
+                        );
+                      }
+                    )}
+                    <Route path="*" component={Page404} />
+                  </Switch>
+                </div>
               </div>
-             
-        
+              {/* {!isAuthorized && <Footer />} */}
+            </ThemeProvider>
+          )}
+      </div>
     );
   }
 }
 
-export default App
+export default withRouter(InnerApp);

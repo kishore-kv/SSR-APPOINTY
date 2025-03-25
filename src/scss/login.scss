@@ -1,0 +1,61 @@
+.login_wrapper {
+    width: 550px;
+    display: inline-flex;
+    padding: 40px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 0px 15px 0px rgba(21, 21, 21, 0.12);
+    margin: 15% auto;
+}
+
+.login_container {
+    // background: url('../assets/images/BannersLogin.png') no-repeat;
+    display: flex;
+    background-size: contain;
+}
+
+.login_div {
+    display: flex;
+    padding: 16px 0px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_form {
+    display: flex;
+    width: 470px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.login_div_1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.login_incia_sesion {
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.login_campos {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18.2px;
+}
+
+.error-text {
+    color:red
+}

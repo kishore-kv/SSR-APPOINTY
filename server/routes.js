@@ -10,4 +10,5 @@ routes.get("/configMap", serverController.configMap);
 routes.get("/staticKeys", serverController.staticKeys);
 routes.get("/supplierConfig", serverController.supplierConfig);
 routes.get("/configList", serverController.configList);
+routes.post("/kv-citas-login", serverController.citasLogin);
 module.exports = routes;

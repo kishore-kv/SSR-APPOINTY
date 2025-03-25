@@ -1,4 +1,4 @@
-// Save data to sessionStorage
+ // Save data to sessionStorage
 export const setToSession = (key, value) => sessionStorage.setItem(key, value)
 
 // Get saved data from sessionStorage

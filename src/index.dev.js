@@ -5,6 +5,11 @@ import { BrowserRouter } from 'react-router-dom'
 
 // import App components
 import { App } from './components/app'
+ 
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+ 
+// import styles
+import '../src/scss/style.scss'
 
 // compile App component in `#app` HTML element
 ReactDOM.hydrate(

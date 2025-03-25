@@ -1,10 +1,11 @@
 const endpoints = require("../endpoints");
 const { serviceReq, loginToken } = require("../axios-calls");
+const { handleDecode, generateSignedUrl, deleteFolder } = require("../utils");
 const FormData = require('form-data');
 const logger = require("../logger");
 
 
-var reactAppUrl = process && process.env && process.env.REACT_APP_BASE_URL;
+var reactAppUrl = process && process.env && process.env.API_BASE_URL
 debugger;
 module.exports = {
   loginService: async (req, res, next) => {
@@ -58,5 +59,21 @@ module.exports = {
     let statusCode = response && response.status || 400
     res.status(statusCode).send(response && response.data);
   },
+  citasLogin: async (req, res, next) => {
+    try {
+      if (req.body.password) {
+        req.body.password = handleDecode(req.body.password);
+      }
+      let finalUrl = `${reactAppUrl}${endpoints.citasLogin}`;
+      console.log(`final logon`,finalUrl);
+      
+
+      let response = await serviceReq(req, finalUrl, "POST", req.body, req.headers, false);
+      let statusCode = response && response.status || 400
+      res.status(statusCode).send(response && response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
 };
