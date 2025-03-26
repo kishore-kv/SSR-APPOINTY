@@ -58,9 +58,9 @@ class InnerApp extends React.Component {
 
   render() {
     const { loading, isAuthorized, isLogout } = this.state;
-    // const { location } = this.props; // Access current route from props
-    // const isFullWidthRoute = ['/', '/login', '/technico-pdi'].includes(location.pathname) || location.pathname.startsWith('/technico-pdi/'); // List routes where LeftNav shouldn't be shown
-       const isFullWidthRoute = false;
+    const { location } = this.props; // Access current route from props
+    const isFullWidthRoute = ['/', '/login'].includes(location.pathname); // List routes where LeftNav shouldn't be shown
+      //  const isFullWidthRoute = false;
     return (
       <div className="app_wrapper">
         {
@@ -81,7 +81,7 @@ class InnerApp extends React.Component {
                   </div>
                 )}
                 <div
-                  className={`main-content  margin-top-header  expanded-content ${isFullWidthRoute && 'full-width-route'}`}
+                  className={`margin-top-header  expanded-content ${isFullWidthRoute ? 'full-width-route' : "main-content" }`}
                 >
                   <Switch>
                     {routes.map(

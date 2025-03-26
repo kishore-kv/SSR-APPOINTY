@@ -1,52 +1,135 @@
-import React from 'react'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React, { useState } from 'react';
+import { Box, Typography,TextField, IconButton } from '@mui/material';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import Button from '../../components/atoms/button/Button';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CustomModal from '../../components/modal/CustomModal';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(cityname, address) {
+  return { cityname, address };
 }
+const locationFields = [
+  { name: "cityname", label: "City Name" },
+  { name: "address", label: "Address" }
+];
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+const initialRows = [
+  createData('Frozen yoghurt', 159),
+  createData('Ice cream sandwich', 23),
+  createData('Eclair', 262),
+  createData('Cupcake', 305),
+  createData('Gingerbread', 356)
 ];
 
 export default function  LocationsList() {
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [rows, setRows] = useState(initialRows);
+  const [filteredRows, setFilteredRows] = useState(initialRows);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(null); // For editing
+
+  // Search logic
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchTerm(query);
+
+    if (query.trim() === "") {
+      setFilteredRows(rows);
+    } else {
+      const filtered = rows.filter((row) =>
+        row.cityname.toLowerCase().includes(query)
+      );
+      setFilteredRows(filtered);
+    }
+  };
+
+  // Delete function
+  const handleDelete = (cityname) => {
+    const updatedRows = rows.filter((row) => row.cityname !== cityname);
+    setRows(updatedRows);
+    setFilteredRows(updatedRows);
+  };
+
+  // Open modal for adding or updating location
+  const handleOpenModal = (location = null) => {
+    setCurrentLocation(location);
+    setModalOpen(true);
+  };
+
+  // Save data from modal (add or update)
+  const handleSave = (data) => {
+    if (currentLocation) {
+      // Update existing
+      const updatedRows = rows.map((row) =>
+        row.cityname === currentLocation.cityname ? data : row
+      );
+      setRows(updatedRows);
+      setFilteredRows(updatedRows);
+    } else {
+      // Add new location
+      setRows([...rows, data]);
+      setFilteredRows([...rows, data]);
+    }
+    setModalOpen(false);
+  };
+
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow sx={{ backgroundColor: 'black' }}>
-            <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Dessert (100g serving)</TableCell>
-            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Calories</TableCell>
-            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Fat&nbsp;(g)</TableCell>
-            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow 
-              key={row.name} 
-              sx={{ backgroundColor: index % 2 ? 'action.hover' : 'inherit' }}
-            >
-              <TableCell component="th" scope="row">{row.name}</TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box className="locations-container">
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+        <div className="d-flex location-header">
+          <LocationOnIcon sx={{ fontSize: 40, color: '#17679b', margin: 2 }} />
+          <Typography variant="h4" align="center" gutterBottom className="location-heading m-0">
+            Locations
+          </Typography>
+        </div>
+        <Typography variant="subtitle1" align="center" gutterBottom>
+          Choose a location
+        </Typography>
+      </Box>
+
+      {/* Search and Add Button */}
+      <Box className="search-location-container">
+        <TextField
+          placeholder="Search for"
+          variant="outlined"
+          fullWidth
+          className="w-75"
+          sx={{ "& .MuiFormHelperText-root": { margin: 0 } }}
+          helperText="You can enter up to 100 characters for your search"
+          onChange={handleSearch}
+          value={searchTerm}
+        />
+        <Button className="location-btn" sx={{ margin: 1 }} onClick={() => handleOpenModal()}>
+         <AddIcon /> Add location 
+        </Button>
+      </Box>
+
+      {/* Locations List */}
+      <Box className="locations-list-container">
+        {filteredRows.length > 0 ? filteredRows.map((row, index) => (
+          <Box className="locations-list-item my-4" key={index}>
+            <img src={"errtr"} alt={`Image`} className="location-img" />
+            <Box className="d-flex location-name">
+              <Typography variant="h4" gutterBottom onClick={() => handleOpenModal(row)} style={{ cursor: "pointer" }}>
+                {row.cityname}
+              </Typography>
+              <Typography variant="h6" gutterBottom>{row.address}</Typography>
+            </Box>
+            <Button className="location-chos-btn">Choose</Button>
+            <IconButton onClick={() => handleDelete(row.cityname)}>
+              <DeleteIcon />
+            </IconButton>
+          </Box>
+        )):<Typography variant="h6" align="center" sx={{ mt: 2, color: "gray" }}>
+        No results found
+      </Typography>}
+      </Box>
+
+      {/* Reusable Modal */}
+      
+      <CustomModal open={modalOpen} onClose={() => setModalOpen(false)} onSave={handleSave} data={currentLocation} fields={locationFields}/>
+    </Box>
   );
 }

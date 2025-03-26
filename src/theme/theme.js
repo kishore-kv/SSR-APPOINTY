@@ -4,7 +4,7 @@ export const theme = createTheme({
   cssVariables: true,
   palette: {
     primary: {
-      main: '#1E5E6D',
+      main: '#17679b',
     },
     secondary: {
       main: '#FFFFFF',
@@ -57,7 +57,7 @@ export const theme = createTheme({
             backgroundColor: 'transparent',
           },
           '&.Mui-checked': {
-            color: '#1E5E6D',
+            color: '#17679b',
             '&.Mui-disabled': {
               color: '#767676',
             },

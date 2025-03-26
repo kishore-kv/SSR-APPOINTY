@@ -1,0 +1,6 @@
+.services-container {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    margin-block: 2.5em;
+}
