@@ -19,12 +19,15 @@ function createData(service, duration, price, timeslot, visibilty) {
 }
 
 const initialRows =  [
-  createData("Haircut", "30 mins", "$20", "10:00 AM - 10:30 AM", "true"),
-  createData("Shaving", "15 mins", "$10", "11:00 AM - 11:15 AM", "true"),
-  createData("Facial", "45 mins", "$35", "12:00 PM - 12:45 PM", "false"),
-  createData("Massage", "60 mins", "$50", "02:00 PM - 03:00 PM", "true"),
-  createData("Manicure", "40 mins", "$25", "03:30 PM - 04:10 PM", "false"),
-  createData("Pedicure", "50 mins", "$30", "05:00 PM - 05:50 PM", "true"),
+  createData("General Consultation", "30 mins", "$50", "09:00 AM - 09:30 AM", "true"),
+  createData("Pediatrics", "45 mins", "$70", "10:00 AM - 10:45 AM", "true"),
+  createData("Cardiology", "60 mins", "$150", "11:00 AM - 12:00 PM", "false"),
+  createData("Dermatology", "40 mins", "$90", "01:00 PM - 01:40 PM", "true"),
+  createData("Orthopedics", "50 mins", "$130", "02:30 PM - 03:20 PM", "false"),
+  createData("Gynecology", "45 mins", "$120", "05:00 PM - 05:45 PM", "true"),
+  createData("Ophthalmology (Eye Care)", "30 mins", "$80", "06:00 PM - 06:30 PM", "false"),
+  createData("Dental Care", "40 mins", "$100", "07:00 PM - 07:40 PM", "true"),
+  createData("ENT (Ear, Nose, and Throat)", "35 mins", "$90", "08:00 PM - 08:35 PM", "false"),
 ];
 
 export default function  ServicesList() {
