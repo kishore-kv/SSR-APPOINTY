@@ -4,10 +4,12 @@ import { CFormInput } from "@coreui/react";
 import "./Timpickr.css";
 import { formatTime , convertToAMPM} from "../../utils/storage";
 
-const TimePickerCalendarStyle = ({ value, duration, onTimeChange, availableTime,blockedAppointments , inputValue , setInputValue }) => {
+const TimePickerCalendarStyle = ({ value,dateParams,duration, onTimeChange, availableTime,blockedAppointments , inputValue , setInputValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   // const [inputValue, setInputValue] = useState("");
+  // console.log(`dafa`,dateParams);
+  
 
   const generateTimeSlots = (startTime, endTime, duration) => {
     const slots = [];
@@ -70,6 +72,35 @@ const TimePickerCalendarStyle = ({ value, duration, onTimeChange, availableTime,
       
   
       const updatedSlots = markBlockedSlots(timeSlots , blockedAppointments)
+
+
+      const markPastTimesAsNA = (timeSlots, selectedDate) => {
+        const now = new Date(); // Current date & time
+        const today = now.toDateString(); // Get today's date in string format
+        const [day, month, year] = selectedDate.split("-");
+        const formattedDate = `${year}-${month}-${day}`;
+        const selectedDay = new Date(formattedDate).toDateString(); // Convert selected date to string
+        // console.log(`selectedDay`, selectedDate);
+        
+        // Only update statuses if the selected date is today
+        if (today !== selectedDay) return timeSlots; 
+      
+        return timeSlots.map(slot => {
+          const slotTime = new Date();
+          const [hour, minute] = slot.time.split(":").map(Number);
+          slotTime.setHours(hour, minute, 0, 0); // Set slot time
+      
+          // Check if the slot is in the past
+          const isPast = slotTime < now;
+      
+          return isPast && slot.status === "available" 
+            ? { ...slot, status: "na" } 
+            : slot;
+        });
+      };
+      
+      const NAUpdatedSlots = markPastTimesAsNA(updatedSlots , dateParams)
+      // console.log(`NAUpdatedSlots`, NAUpdatedSlots);
 //  console.log(`updated_________slots`, updatedSlots);
 const handleClickOutside = (event) => {
   if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -133,11 +164,11 @@ useEffect(() => {
             className="d-grid p-2 overflow-auto"
             style={{ gridTemplateColumns: "repeat(4, 1fr)", maxHeight: "16rem" }}
           >
-            {updatedSlots.map((slot, index) => (
+            {NAUpdatedSlots.map((slot, index) => (
               <div
                 key={index}
                 className={`p-2 text-center small rounded ${
-                  slot.status === 'blocked'
+                  (slot.status === 'blocked' || slot.status === "na")
                     ? "blocked-slot"
                     : selectedTime === slot.time
                     ? "bg-primary text-white"

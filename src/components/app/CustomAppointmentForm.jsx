@@ -504,6 +504,7 @@ const CustomAppointmentForm = () => {
         {/* TIME */}
         <CCol xs={12} lg={8}  className='custom_col'>
            <TimePickerCalendarStyle 
+           dateParams={dateParams}
             duration={duration}
              blockedAppointments={blockedAppointments}
              availableTime ={availabilityObj}
