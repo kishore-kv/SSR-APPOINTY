@@ -14,13 +14,14 @@ const locationFields = [
   { name: "address", label: "Address" }
 ];
 
-const initialRows = [
-  createData('Frozen yoghurt', 159),
-  createData('Ice cream sandwich', 23),
-  createData('Eclair', 262),
-  createData('Cupcake', 305),
-  createData('Gingerbread', 356)
+const initialRows =  [
+  createData("New York", "123 Main St, NY 10001"),
+  createData("Los Angeles", "456 Sunset Blvd, CA 90028"),
+  createData("Chicago", "789 Lakeshore Dr, IL 60611"),
+  createData("Houston", "101 Texas Ave, TX 77002"),
+  createData("Miami", "202 Ocean Dr, FL 33139")
 ];
+
 
 export default function  LocationsList() {
 

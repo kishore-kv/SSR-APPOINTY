@@ -11,20 +11,20 @@ import AddIcon from '@mui/icons-material/Add';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import { useState } from 'react';
 import { Box, TextField , IconButton,Typography} from '@mui/material';
-import SearchOutlined from '@mui/icons-material/AddCircleOutlined';
-import ClearOutlined  from '@mui/icons-material/AddCircleOutlined';
+ 
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function createData(service, duration, price, timeslot, visibilty) {
   return { service, duration, price, timeslot, visibilty };
 }
 
-const initialRows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+const initialRows =  [
+  createData("Haircut", "30 mins", "$20", "10:00 AM - 10:30 AM", "true"),
+  createData("Shaving", "15 mins", "$10", "11:00 AM - 11:15 AM", "true"),
+  createData("Facial", "45 mins", "$35", "12:00 PM - 12:45 PM", "false"),
+  createData("Massage", "60 mins", "$50", "02:00 PM - 03:00 PM", "true"),
+  createData("Manicure", "40 mins", "$25", "03:30 PM - 04:10 PM", "false"),
+  createData("Pedicure", "50 mins", "$30", "05:00 PM - 05:50 PM", "true"),
 ];
 
 export default function  ServicesList() {
