@@ -4,6 +4,7 @@ import Login from "../pages/Login";
 import LocationsList from "../components/organisms/LocationsList";
 import ServicesList from "../components/organisms/ServicesList";
 import StaffList from "../components/organisms/StaffList";
+import Logout from "../pages/Logout";
 // import Logout from "../pages/Logout";
 // import VehicleSummary from "../pages/VehicleSummary";
 // import Users from "../pages/Users";
@@ -38,5 +39,11 @@ export const routes = [
     component:StaffList,
     exact:true, 
     isProtected:false
+  },
+  {
+    path: '/logout',
+    component: Logout,
+    exact: true,
+    isProtected: false
   }
 ]

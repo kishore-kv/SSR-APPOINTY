@@ -10,7 +10,9 @@
 }
 
 .headerLogo {
-    width: 179px;
+   
+    margin-inline-end: 366px;
+    width: 150px;
     height: 64px;
     padding: 7.03px 5.5px 10.79px 5.5px;
 }
@@ -21,4 +23,18 @@
     align-items: center;
     color: $white;
     cursor: pointer;
+}
+
+.header_title_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* gap: 9%; */
+}
+
+ 
+.header_Title {
+    color:#fff;
+    font-weight:800;
+    font-size: 2rem !important;
 }

@@ -56,6 +56,8 @@ const Login = (props) => {
             username: userName,
             password: handleEncode(password)
         }
+        console.log(`formData`,formData);
+        
         try {
             const result = await authLogin(formData);
             setPassword('');
@@ -65,7 +67,7 @@ const Login = (props) => {
             } else {
                 if (isMounted) setIsLoginFailed(false); // Check if component is mounted before updating state
                 props.triggerLogin();
-                history.push('/page404');
+                history.push('/locations');
             }
         }
         catch (error) {
@@ -81,7 +83,7 @@ const Login = (props) => {
     }
 
     // useEffect(() => {
-    //     props.isAuthorized && history.push('/vehicle-summary');
+    //     props.isAuthorized && history.push('/locations');
     // }, [props.isAuthorized]);
 
     // // Cleanup function to set isMounted to false when the component is unmounted

@@ -4,11 +4,12 @@ import { handleEncode } from '../../utils/utility';
 const { setCookie } = require("../../utils/storage/index")
 
 export async function authLogin({ username, password }) {
-    const {data} = await loginRequest({ username, password });
+
+    const resp = await loginRequest({ username, password });
     console.log(`respies`,resp);
     
 
-    const token = data?.data?.token;
+    const token = resp?.data?.data?.token;
     if (token) {
         const decoded = jwt_decode(token)
         store('token', token)

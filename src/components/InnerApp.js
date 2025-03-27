@@ -9,6 +9,7 @@ import { routes } from "../routes";
 import PublicRoute from '../routes/PublicRoute';
 import PrivateRoute from '../routes/PrivateRoute';
 import Page404 from '../../src/pages/page404';
+import { verifyLogin } from "../lib/auth";
 
 // Pages
 
@@ -24,25 +25,25 @@ class InnerApp extends React.Component {
   }
 
   componentDidMount() {
-    // const token = sessionStorage.getItem('token');
-    // if (token) {
-    //   this.setState({
-    //     isAuthorized: true,
-    //     isLogout: true,
-    //   });
-    // }
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      this.setState({
+        isAuthorized: true,
+        isLogout: true,
+      });
+    }
 
     setTimeout(() => {
       this.setState({ loading: false });
     }, 1000);
   }
 
-  // componentDidUpdate() {
-  //   const isAuthorized = verifyLogin();
-  //   if (this.state.isAuthorized !== isAuthorized) {
-  //     this.setState({ isAuthorized });
-  //   }
-  // }
+  componentDidUpdate() {
+    const isAuthorized = verifyLogin();
+    if (this.state.isAuthorized !== isAuthorized) {
+      this.setState({ isAuthorized });
+    }
+  }
 
   triggerLogin = () => {
     this.setState({ isLogout: true })

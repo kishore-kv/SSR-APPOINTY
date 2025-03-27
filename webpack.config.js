@@ -50,27 +50,17 @@ module.exports = {
                 test: /\.(png|jpg|jpeg|gif|webp)$/i,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: 'url-loader',
                         options: {
+                            limit: 8192, // Files smaller than 8KB will be inlined as Base64
                             name: '[name].[hash].[ext]',
-                            outputPath: 'assets/images/', // output path for images
+                            outputPath: 'assets/images/',
+                            esModule: false, // Important for React to properly handle image imports
                         }
                     },
                 ],
             },
-            {
-                test: /\.(png|jpg|jpeg|gif|webp)$/i,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192, // Convert images smaller than 8 KB to base64 strings
-                            name: '[name].[hash].[ext]',
-                            outputPath: 'assets/images/',
-                        }
-                    },
-                ],
-            }
+            
         ]
     },
 

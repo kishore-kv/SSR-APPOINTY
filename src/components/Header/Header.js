@@ -9,13 +9,14 @@ export default function Header({ isAuthorized, isLogout, triggerLogout }) {
 
   const handleLogout = () => {
     history.push('/logout');
-  }
+  } 
+
 
   return (
     <div className="headerContainer">
       <div className="header_title_container">
-        <img src={logo} className="headerLogo" alt="headerLogo" />
-        <Typography variant="h6" className="header_Title">
+        <img src="../../assets/header_logo.png" className="headerLogo" alt="headerLogo" />
+        <Typography variant="h1" className="header_Title">
           Administrar Citas
         </Typography>
       </div>
