@@ -5,6 +5,9 @@ import Button from '../../components/atoms/button/Button';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CustomModal from '../../components/modal/CustomModal';
+import { requestDelete, requestPost } from '../../services/request';
+
+
 
 function createData(cityname, address) {
   return { cityname, address };
@@ -47,10 +50,24 @@ export default function  LocationsList() {
   };
 
   // Delete function
-  const handleDelete = (cityname) => {
-    const updatedRows = rows.filter((row) => row.cityname !== cityname);
-    setRows(updatedRows);
-    setFilteredRows(updatedRows);
+  const handleDelete = async (location) => {
+    try{
+      const params = { id: location?.id };
+      const response = await requestDelete('/deleteUser', 'delete', params);
+      console.log(`dlete ===response`,response);
+
+      if (response && response.data.status === "success") {
+           fetchLocations();
+      } else {
+        console.error("Error deleting location:", response.data.message);
+      }
+    }catch(error){
+      console.log(error);
+    }
+
+    // const updatedRows = rows.filter((row) => row.cityname !== cityname);
+    // setRows(updatedRows);
+    // setFilteredRows(updatedRows);
   };
 
   // Open modal for adding or updating location
@@ -75,6 +92,33 @@ export default function  LocationsList() {
     }
     setModalOpen(false);
   };
+
+  // Fetch locations from API (mocked here)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [locations, setLocations] = useState([]);
+  const fetchLocations = async () => {
+    const payload = { limit: 10, page: 0 };
+    setIsLoading(true);
+    try {
+      const response = await requestPost('/getAllLocations', payload);
+      if (response && response.data.status === "Success") {
+        const { data } = response.data;
+        // console.log(`data`,data);          
+        setLocations(data);
+      }
+    } catch (error) {
+      setIsError(true);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Call fetchLocations when the component mounts
+  React.useEffect(() => {
+    fetchLocations();
+  }, []);
 
   return (
     <Box className="locations-container">
@@ -109,17 +153,19 @@ export default function  LocationsList() {
 
       {/* Locations List */}
       <Box className="locations-list-container">
-        {filteredRows.length > 0 ? filteredRows.map((row, index) => (
+        {locations.length > 0 ? locations.map((location, index) => (
           <Box className="locations-list-item my-4" key={index}>
             <img src={"errtr"} alt={`Image`} className="location-img" />
             <Box className="d-flex location-name">
-              <Typography variant="h4" gutterBottom onClick={() => handleOpenModal(row)} style={{ cursor: "pointer" }}>
-                {row.cityname}
+              <Typography variant="h4" gutterBottom onClick={() => handleOpenModal(location)} style={{ cursor: "pointer" }}>
+                {location?.branchName}
               </Typography>
-              <Typography variant="h6" gutterBottom>{row.address}</Typography>
+              <Typography variant="h6" gutterBottom>{location?.address1}</Typography>
+              <Typography variant="h6" gutterBottom>{location?.city}, {location?.state}, {location?.postalCode}</Typography>
+              <Typography variant="h6" gutterBottom>{location?.phoneNumber}</Typography>
             </Box>
             <Button className="location-chos-btn">Choose</Button>
-            <IconButton onClick={() => handleDelete(row.cityname)}>
+            <IconButton onClick={() => handleDelete(location)}>
               <DeleteIcon />
             </IconButton>
           </Box>

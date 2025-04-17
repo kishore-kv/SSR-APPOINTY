@@ -11,4 +11,7 @@ routes.get("/staticKeys", serverController.staticKeys);
 routes.get("/supplierConfig", serverController.supplierConfig);
 routes.get("/configList", serverController.configList);
 routes.post("/kv-citas-login", serverController.citasLogin);
+routes.post("/getAllLocations", serverController.getAllLocations);
+routes.delete("/deleteLocation/:id", serverController.deleteLocation);
+
 module.exports = routes;

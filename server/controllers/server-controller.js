@@ -74,6 +74,25 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
+  },
+   
+  getAllLocations: async (req, res, next) => {
+  
+    const pageNo = req.body.page ;
+    const limitNo = req.body.limit;
+    let finalUrl = `${reactAppUrl}${endpoints.locations}?page=${pageNo}&limit=${limitNo}`;
+    console.log(`===finalUrl`, finalUrl);
+    let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
+  },
+  deleteLocation: async (req, res, next) => {
+    console.log(`===request`, req);
+    let finalUrl = `${reactAppUrl}${endpoints.deleteLocation}/${req.body.id}`;
+  
+    let response = await serviceReq(req,finalUrl, "DELETE",req.body,req.headers,true);
+    let statusCode = response && response.status || 400
+    res.status(statusCode).send(response && response.data);
   }
   
 };

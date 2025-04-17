@@ -7,5 +7,10 @@ module.exports = {
   supplierConfig:"/global-config/config/supplierConfig",
   configList:"/global-config/config/configList",
   citasLogin: "/staff/login",
+  locations:"/location/fetchAll",
+  updateLocation:"/location/update",
+  addLocation:"/location/add",
+  locationByStaffId:"/location/fetchServiceStaffDetails",
+  deleteLocation:"/location/delete"
   //config:"/global-config/config"
 };

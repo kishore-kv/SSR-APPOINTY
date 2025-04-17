@@ -69,16 +69,18 @@ export const configRequest = async (url, action, formData) => {
   }
 };
 
-export const requestDelete = async (url, action) => {
+ 
+export const requestDelete = async (url, action, params = {}) => {
   try {
-    const data = await axios[action](`${REACT_APP_BASE_URL}/${url} `, {
-      headers: getHeaders(),
-    });
-    return data;
+      const data = await axios[action](url, params,
+        {
+          headers: getHeaders(),
+      })
+      return data
   } catch (error) {
-    return error;
+      return error
   }
-};
+}
 
 export const createRequest = async (url, action, formData, id) => {
   const idString = id ? `/${id}` : "";
