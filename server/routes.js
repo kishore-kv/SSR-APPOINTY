@@ -13,5 +13,6 @@ routes.get("/configList", serverController.configList);
 routes.post("/kv-citas-login", serverController.citasLogin);
 routes.post("/getAllLocations", serverController.getAllLocations);
 routes.delete("/deleteLocation/:id", serverController.deleteLocation);
+routes.post("/addLocation", serverController.addLocation);
 
 module.exports = routes;
