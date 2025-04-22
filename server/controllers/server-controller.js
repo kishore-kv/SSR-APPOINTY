@@ -87,12 +87,24 @@ module.exports = {
     res.status(statusCode).send(response && response.data);
   },
   deleteLocation: async (req, res, next) => {
-    console.log(`===request`, req);
-    let finalUrl = `${reactAppUrl}${endpoints.deleteLocation}/${req.body.id}`;
-  
-    let response = await serviceReq(req,finalUrl, "DELETE",req.body,req.headers,true);
-    let statusCode = response && response.status || 400
+    const { id } = req.params;  // Extracting the ID from the URL parameter
+
+    let finalUrl = `${reactAppUrl}${endpoints.deleteLocation}/${id}`; 
+    try {
+        let response = await serviceReq(req, finalUrl, "DELETE", null, req.headers, true);
+        let statusCode = (response && response.status) || 400;
+        res.status(statusCode).send(response && response.data);
+    } catch (error) {
+        console.error("Error in deletion:", error);
+        res.status(500).send({ message: "Failed to delete location" });
+    }
+},  
+
+  addLocation: async (req, res, next) => {
+    let finalUrl = `${reactAppUrl}${endpoints.addLocation}`;
+    let response = await serviceReq(req,finalUrl,"POST",req.body,req.headers,true);
+    let statusCode = (response && response.status) || 400;
     res.status(statusCode).send(response && response.data);
-  }
+},
   
 };

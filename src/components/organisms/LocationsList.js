@@ -13,24 +13,20 @@ function createData(cityname, address) {
   return { cityname, address };
 }
 const locationFields = [
-  { name: "cityname", label: "City Name" },
-  { name: "address", label: "Address" }
+    { name: "branchName", label: "Branch Name" },
+    { name: "address1", label: "Address1" },
+    { name: "address2", label: "Address2" },
+    { name: "city", label: "City" },
+    { name: "state", label: "State" },
+    { name: "postalCode", label: "Postal Code" },
+    { name: "phoneNumber", label: "Phone Number" },
 ];
-
-const initialRows =  [
-  createData("New York", "123 Main St, NY 10001"),
-  createData("Los Angeles", "456 Sunset Blvd, CA 90028"),
-  createData("Chicago", "789 Lakeshore Dr, IL 60611"),
-  createData("Houston", "101 Texas Ave, TX 77002"),
-  createData("Miami", "202 Ocean Dr, FL 33139")
-];
-
 
 export default function  LocationsList() {
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [rows, setRows] = useState(initialRows);
-  const [filteredRows, setFilteredRows] = useState(initialRows);
+  const [rows, setRows] = useState(0);
+  const [filteredRows, setFilteredRows] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null); // For editing
 
@@ -50,25 +46,20 @@ export default function  LocationsList() {
   };
 
   // Delete function
-  const handleDelete = async (location) => {
-    try{
-      const params = { id: location?.id };
-      const response = await requestDelete('/deleteUser', 'delete', params);
-      console.log(`dlete ===response`,response);
-
-      if (response && response.data.status === "success") {
-           fetchLocations();
+const handleDelete = async (location) => {
+  try {
+      const response = await requestDelete(`/deleteLocation/${location.id}`, 'delete');
+      
+      if (response.data && response.data.data.status === "success") {
+          fetchLocations();
       } else {
-        console.error("Error deleting location:", response.data.message);
+          console.error("Error deleting location:", response.data.message);
       }
-    }catch(error){
-      console.log(error);
-    }
+  } catch (error) {
+      console.error("Error in deletion:", error);
+  }
+};
 
-    // const updatedRows = rows.filter((row) => row.cityname !== cityname);
-    // setRows(updatedRows);
-    // setFilteredRows(updatedRows);
-  };
 
   // Open modal for adding or updating location
   const handleOpenModal = (location = null) => {
@@ -77,21 +68,22 @@ export default function  LocationsList() {
   };
 
   // Save data from modal (add or update)
-  const handleSave = (data) => {
-    if (currentLocation) {
-      // Update existing
-      const updatedRows = rows.map((row) =>
-        row.cityname === currentLocation.cityname ? data : row
-      );
-      setRows(updatedRows);
-      setFilteredRows(updatedRows);
-    } else {
-      // Add new location
-      setRows([...rows, data]);
-      setFilteredRows([...rows, data]);
-    }
-    setModalOpen(false);
-  };
+  const handleSave = async (data) => {
+    try {
+        let response = await requestPost("/addLocation", data);
+        if (response && response.status === 200) {
+            await fetchLocations();
+            setModalOpen(false);
+        } else {
+            console.error("Failed to save location");
+        }
+    } catch (error) {
+        console.error("Error while saving location:", error);
+    } finally {
+        setModalOpen(false);
+    } 
+};
+
 
   // Fetch locations from API (mocked here)
   const [isLoading, setIsLoading] = useState(false);
