@@ -148,22 +148,26 @@ const handleDelete = async (location) => {
         {locations.length > 0 ? locations.map((location, index) => (
           <Box className="locations-list-item my-4" key={index}>
             <img src={"errtr"} alt={`Image`} className="location-img" />
-            <Box className="d-flex location-name">
-              <Typography variant="h4" gutterBottom onClick={() => handleOpenModal(location)} style={{ cursor: "pointer" }}>
+            <Box className="location-name">
+              <Typography className="text-nowrap branchName" variant="h4" gutterBottom onClick={() => handleOpenModal(location)} style={{ cursor: "pointer" }}>
                 {location?.branchName}
               </Typography>
-              <Typography variant="h6" gutterBottom>{location?.address1}</Typography>
-              <Typography variant="h6" gutterBottom>{location?.city}, {location?.state}, {location?.postalCode}</Typography>
+              <Typography variant="h6" gutterBottom className="truncate-text">{location?.address1}</Typography>
+              <Typography variant="h6" gutterBottom className="truncate-address">{location?.city}, {location?.state}, {location?.postalCode}</Typography>
               <Typography variant="h6" gutterBottom>{location?.phoneNumber}</Typography>
             </Box>
-            <Button className="location-chos-btn">Choose</Button>
-            <IconButton onClick={() => handleDelete(location)}>
-              <DeleteIcon />
-            </IconButton>
+
+            <Box className="location-actions">
+              <Button className="location-chos-btn">Choose</Button>
+              <IconButton onClick={() => handleDelete(location)}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
           </Box>
-        )):<Typography variant="h6" align="center" sx={{ mt: 2, color: "gray" }}>
-        No results found
-      </Typography>}
+
+        )) : <Typography variant="h6" align="center" sx={{ mt: 2, color: "gray" }}>
+          No results found
+        </Typography>}
       </Box>
 
       {/* Reusable Modal */}
