@@ -36,7 +36,7 @@ const CustomModal = ({ open, onClose, onSave, fields = [], data }) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={{ p: 3, bgcolor: "white", mx: "auto", mt: 10, width: 400 }}>
+      <Box sx={{ p: 3, bgcolor: "white", mx: "auto", mt: 3, width: 400 }}>
         {fields.map((field) => (
           <TextField
             key={field.name}

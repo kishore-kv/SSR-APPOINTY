@@ -2,39 +2,56 @@
     display: flex;
     // padding: 0px 24px 0px 24px;
     justify-content: space-between;
+    align-items: center;
     background-color: #17679b;
     height: 64px;
     position: fixed;
     width: 100%;
     z-index: 10;
+    padding: 0 16px;
 }
 
 .headerLogo {
-   
-    margin-inline-end: 366px;
     width: 150px;
     height: 64px;
-    padding: 7.03px 5.5px 10.79px 5.5px;
+    padding: 7px 5.5px 11px 5.5px;
 }
 
 .logoutContainer{
     display: flex;
-    justify-content: center;
     align-items: center;
     color: $white;
     cursor: pointer;
+    white-space: nowrap;
 }
 
-.header_title_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* gap: 9%; */
-}
 
- 
 .header_Title {
     color:#fff;
     font-weight:800;
     font-size: 2rem !important;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.headerCenter {
+    flex: 1;
+    justify-content: center;
+    display: flex;
+}
+
+.headerRight {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    padding-right: 8px;
+}
+
+.headerSection {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.headerLeft {
+    flex: 0 0 auto;
 }

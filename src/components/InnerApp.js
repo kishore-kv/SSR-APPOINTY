@@ -21,6 +21,7 @@ class InnerApp extends React.Component {
       isAuthorized: false,
       isLogout: false,
       loading: true,
+      isExpanded: true,
     };
   }
 
@@ -53,12 +54,12 @@ class InnerApp extends React.Component {
     this.setState({ isLogout: false })
   }
 
-  // setIsExpanded = (isExpanded) => {
-  //   this.setState({ isExpanded });
-  // };
+  setIsExpanded = (isExpanded) => {
+    this.setState({ isExpanded });
+  };
 
   render() {
-    const { loading, isAuthorized, isLogout } = this.state;
+    const { loading, isAuthorized, isLogout, isExpanded } = this.state;
     const { location } = this.props; // Access current route from props
     const isFullWidthRoute = ['/', '/login'].includes(location.pathname); // List routes where LeftNav shouldn't be shown
       //  const isFullWidthRoute = false;
@@ -77,13 +78,13 @@ class InnerApp extends React.Component {
               <div className="d-flex">
                 {/* Conditionally render LeftSideNavbar */}
                 {!isFullWidthRoute && (
-                  <div className={`left-side-navbar-wrapper margin-top-header   left-side-navbar-expanded`}>
-                    <LeftSideNavbar />
+                  <div className={`left-side-navbar-wrapper margin-top-header ${isExpanded ? 'left-side-navbar-expanded' : 'left-side-navbar-collapsed'}`}>
+                    <LeftSideNavbar isExpanded={isExpanded} setIsExpanded={this.setIsExpanded} />
                   </div>
                 )}
-                <div
-                  className={`margin-top-header  expanded-content ${isFullWidthRoute ? 'full-width-route' : "main-content" }`}
-                >
+                  <div
+                    className={`main-content  margin-top-header  ${isFullWidthRoute ? 'full-width-route' : isExpanded ? 'expanded-content' : 'collapsed-content'}`}
+                  >
                   <Switch>
                     {routes.map(
                       ({ component, exact, path, isProtected, isRedirect, redirectUrl }, index) => {

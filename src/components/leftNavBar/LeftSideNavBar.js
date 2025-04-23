@@ -5,10 +5,10 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import { useHistory, useLocation } from 'react-router-dom';
 // import { handleDecode } from "../../utils/utility";
-// import { getUserRole } from "../../lib/auth/index";
-// import { role_Admin_Master } from "../../Constants/constants";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-const LeftSideNavbar = () => {
+const LeftSideNavbar = ({ isExpanded, setIsExpanded}) => {
   const [selectedItem, setSelectedItem] = useState(0);
   const history = useHistory();
   const location = useLocation();
@@ -25,7 +25,7 @@ const LeftSideNavbar = () => {
 //   }
 
   const handleOnClick = () => {
-    // setIsExpanded(!isExpanded);
+    setIsExpanded(!isExpanded);
   };
 
   const handleListItem = (index) => {
@@ -34,11 +34,21 @@ const LeftSideNavbar = () => {
   };
 
   return (
-    <Box className={`custom_left_side_bar`}>
+    <Box className={`${isExpanded ? 'custom_left_side_bar' : 'custom_left_reduced'}`}>
       <Box>
         {items?.map((item, index) => {
           const selected = location.pathname === item.link; // Check if the current path matches the item's link
-          return (<Box
+          return !isExpanded ? (
+            <Box
+              component="div"
+              key={item.link}
+              className={`custom_list_item ${selected && 'custom_list_border'} ${selected ? "custom_list_items_selected" : "custom_list_items"}`}
+              onClick={() => handleListItem(index)}
+            >
+              <Box className="customListItmIconContainer">{item.icon}</Box>
+            </Box>
+          ) : (
+            <Box
               component="div"
               key={item.link}
               className={`${selected ? "custom_list_items_selected" : "custom_list_items"}`}
@@ -50,9 +60,9 @@ const LeftSideNavbar = () => {
           );
         })}
       </Box>
-      {/* <div className={isExpanded ? "custom_arrow_container_expanded" : "custom_arrow_container"} onClick={handleOnClick}>
+      <div className={isExpanded ? "custom_arrow_container_expanded" : "custom_arrow_container"} onClick={handleOnClick}>
         {isExpanded ? <ArrowBackIosIcon className="custom_arrowchevron" /> : <ArrowForwardIosIcon className="custom_arrowchevron" />}
-      </div> */}
+      </div>
     </Box>
   );
 };
