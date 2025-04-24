@@ -6,9 +6,13 @@ const getHeaders = () => {
   };
 };
 
-export const request = async (url) => {
+
+export const request = async (url, method='get' , params={ }) => {
   try {
-    const data = await axios["get"](url);
+    const data = await axios[method](url , {
+      params,
+      headers: getHeaders()
+  });
     if (!data) {
       throw Error("Empty data from get settings");
     }

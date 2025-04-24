@@ -14,5 +14,8 @@ routes.post("/kv-citas-login", serverController.citasLogin);
 routes.post("/getAllLocations", serverController.getAllLocations);
 routes.delete("/deleteLocation/:id", serverController.deleteLocation);
 routes.post("/addLocation", serverController.addLocation);
+routes.get("/getAllServices",serverController.getAllServices);
+routes.post("/addService",serverController.addService);
+routes.delete("/deleteService/:id",serverController.deleteService);
 
 module.exports = routes;

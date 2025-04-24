@@ -11,31 +11,29 @@ import AddIcon from '@mui/icons-material/Add';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import { useState } from 'react';
 import { Box, TextField , IconButton,Typography} from '@mui/material';
- 
+import { requestDelete , request , requestPost} from '../../services/request'; 
 import DeleteIcon from '@mui/icons-material/Delete';
+import CustomModal from '../../components/modal/CustomModal';
+
+
 
 function createData(service, duration, price, timeslot, visibilty) {
   return { service, duration, price, timeslot, visibilty };
 }
 
-const initialRows =  [
-  createData("General Consultation", "30 mins", "$50", "09:00 AM - 09:30 AM", "true"),
-  createData("Pediatrics", "45 mins", "$70", "10:00 AM - 10:45 AM", "true"),
-  createData("Cardiology", "60 mins", "$150", "11:00 AM - 12:00 PM", "false"),
-  createData("Dermatology", "40 mins", "$90", "01:00 PM - 01:40 PM", "true"),
-  createData("Orthopedics", "50 mins", "$130", "02:30 PM - 03:20 PM", "false"),
-  createData("Gynecology", "45 mins", "$120", "05:00 PM - 05:45 PM", "true"),
-  createData("Ophthalmology (Eye Care)", "30 mins", "$80", "06:00 PM - 06:30 PM", "false"),
-  createData("Dental Care", "40 mins", "$100", "07:00 PM - 07:40 PM", "true"),
-  createData("ENT (Ear, Nose, and Throat)", "35 mins", "$90", "08:00 PM - 08:35 PM", "false"),
+const serviceFields = [
+  { name: "serviceName", label: "Service Name" },
+  { name: "description", label: "Description" },
+  { name: "durationMins", label: "Duration (mins)" },
+  { name: "price", label: "Price" }
 ];
 
 export default function  ServicesList() {
 
   const [searchText, setSearchText] = useState('');
-  
-  const [rows, setRows] = useState(initialRows);
-  const [searchResults, setSearchResults] = useState(initialRows);
+   const [modalOpen, setModalOpen] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [currentService, setCurrentService] = useState(null); 
   
     const handleSearchTextChange = (e) => {
       const query = e.target.value.toLowerCase();
@@ -54,11 +52,65 @@ export default function  ServicesList() {
   
 
   //delete
-  const handleDelete = (service) => {
-    const updatedRows = rows.filter((row) => row.service !== service);
-    setRows(updatedRows);
-    setSearchResults(updatedRows);
+const handleDelete = async (service) => {
+  try {
+      console.log(`===service`, service);
+       const id = service?.serviceId; 
+      console.log(`===id`, id);
+      const response = await requestDelete(`/deleteService/${id}`, 'delete');
+      console.log(`===response`, response);
+      
+      if (response.data && response?.data.status === "Success") {
+          fetchServices();
+      } else {
+          console.error("Error deleting location:", response.data.message);
+      }
+  } catch (error) {
+      console.error("Error in deletion:", error);
+  }
+};
+
+  //add
+  const handleOpenModal = (service = null) => {
+    setCurrentService(service);
+    setModalOpen(true);
+  }
+   const [services , setServices] = React.useState([]);
+  const fetchServices = async (pageNo , limit) => {
+    const params = {
+      pageNo: pageNo || 0,
+      limit: limit || 10,
+    };
+    const response = await request('/getAllServices', 'get', params);
+    if (response && response.data.status === "Success") {
+      const { data } = response.data;
+      // console.log(`data`,data);          
+      setServices(data);
+    }
+     
+    
+  }
+
+  //save the service
+    const handleSave = async (data) => {
+    console.log(`===data`, data);
+      try {
+          let response = await requestPost("/addService", data);
+          if (response && response.status === 200) {
+              await fetchServices();
+              setModalOpen(false);
+          } else {
+              console.error("Failed to save location");
+          }
+      } catch (error) {
+          console.error("Error while saving location:", error);
+      } finally {
+          setModalOpen(false);
+      } 
   };
+
+  React.useEffect(() => {  fetchServices() }, []);
+
   return (
     <>
       <Box className="search-location-container my-5">
@@ -77,14 +129,14 @@ export default function  ServicesList() {
         </Button>
       </Box>
 
-      {searchResults.length === 0 && (
+      {services.length === 0 && (
         <Box sx={{ p: 2, textAlign: 'center' }}>
           <Typography variant="h6" gutterBottom>
             No services found
           </Typography>
         </Box>
       )}
-      {searchResults.length > 0 && (
+      {services.length > 0 && (
     <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }} className='table-container'>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
@@ -92,24 +144,22 @@ export default function  ServicesList() {
             <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Service</TableCell>
             <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Duration</TableCell>
             <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
-            <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Timeslot</TableCell>
             <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Visibilty</TableCell>
             <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {searchResults.map((row, index) => (
+          {services.map((service, index) => (
             <TableRow 
-              key={row.name} 
+              key={service.serviceId} 
               sx={{ backgroundColor: index % 2 ? 'action.hover' : 'inherit' }}
             >
-              <TableCell component="th" scope="row">{row.service}</TableCell>
-              <TableCell align="right">{row.duration}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.timeslot}</TableCell>
-              <TableCell align="right">{row.visibilty}</TableCell>
+              <TableCell component="th" scope="row" onClick={() => handleOpenModal(service)}>{service?.serviceName}</TableCell>
+              <TableCell align="right">{service?.durationMins}</TableCell>
+              <TableCell align="right">{service?.price}</TableCell>
+              <TableCell align="right">{service?.isActive}</TableCell>
               <TableCell align="right">
-                <IconButton onClick={() => handleDelete(row.service)}>
+                <IconButton onClick={() => handleDelete(service)}>
                   <DeleteIcon />
                </IconButton>
             </TableCell>
@@ -117,7 +167,10 @@ export default function  ServicesList() {
           ))}
         </TableBody>
       </Table>
+    
+    
     </TableContainer>)}
+    <CustomModal open={modalOpen} onClose={() => setModalOpen(false)} onSave={handleSave} data={currentService} fields={serviceFields}/>
     </>
   );
 }
