@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CustomModal from '../../components/modal/CustomModal';
 import { requestDelete, requestPost } from '../../services/request';
+import Loader from '../../components/atoms/loader/Loader';
 
 
 
@@ -47,16 +48,19 @@ export default function  LocationsList() {
 
   // Delete function
 const handleDelete = async (location) => {
+  setIsLoading(true);
   try {
       const response = await requestDelete(`/deleteLocation/${location.id}`, 'delete');
       
       if (response.data && response.data.data.status === "success") {
-          fetchLocations();
+          await fetchLocations();
       } else {
           console.error("Error deleting location:", response.data.message);
       }
   } catch (error) {
       console.error("Error in deletion:", error);
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -69,17 +73,19 @@ const handleDelete = async (location) => {
 
   // Save data from modal (add or update)
   const handleSave = async (data) => {
+    setIsLoading(true);
     try {
         let response = await requestPost("/addLocation", data);
         if (response && response.status === 200) {
             await fetchLocations();
-            setModalOpen(false);
+            // setModalOpen(false);
         } else {
             console.error("Failed to save location");
         }
     } catch (error) {
         console.error("Error while saving location:", error);
     } finally {
+        setIsLoading(false);
         setModalOpen(false);
     } 
 };
@@ -113,66 +119,141 @@ const handleDelete = async (location) => {
   }, []);
 
   return (
-    <Box className="locations-container">
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-        <div className="d-flex location-header">
-          <LocationOnIcon sx={{ fontSize: 40, color: '#17679b', margin: 2 }} />
-          <Typography variant="h4" align="center" gutterBottom className="location-heading m-0">
-            Locations
-          </Typography>
-        </div>
-        <Typography variant="subtitle1" align="center" gutterBottom>
-          Choose a location
-        </Typography>
-      </Box>
+      <>
+          {isLoading ? (
+              <Loader />
+          ) : (
+              <Box className="locations-container">
+                  <Box
+                      sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexDirection: "column",
+                      }}
+                  >
+                      <div className="d-flex location-header">
+                          <LocationOnIcon
+                              sx={{ fontSize: 40, color: "#17679b", margin: 2 }}
+                          />
+                          <Typography
+                              variant="h4"
+                              align="center"
+                              gutterBottom
+                              className="location-heading m-0"
+                          >
+                              Locations
+                          </Typography>
+                      </div>
+                      <Typography
+                          variant="subtitle1"
+                          align="center"
+                          gutterBottom
+                      >
+                          Choose a location
+                      </Typography>
+                  </Box>
 
-      {/* Search and Add Button */}
-      <Box className="search-location-container">
-        <TextField
-          placeholder="Search for"
-          variant="outlined"
-          fullWidth
-          className="w-75"
-          sx={{ "& .MuiFormHelperText-root": { margin: 0 } }}
-          helperText="You can enter up to 100 characters for your search"
-          onChange={handleSearch}
-          value={searchTerm}
-        />
-        <Button className="location-btn" sx={{ margin: 1 }} onClick={() => handleOpenModal()}>
-         <AddIcon /> Add location 
-        </Button>
-      </Box>
+                  {/* Search and Add Button */}
+                  <Box className="search-location-container">
+                      <TextField
+                          placeholder="Search for"
+                          variant="outlined"
+                          fullWidth
+                          className="w-75"
+                          sx={{ "& .MuiFormHelperText-root": { margin: 0 } }}
+                          helperText="You can enter up to 100 characters for your search"
+                          onChange={handleSearch}
+                          value={searchTerm}
+                      />
+                      <Button
+                          className="location-btn"
+                          sx={{ margin: 1 }}
+                          onClick={() => handleOpenModal()}
+                      >
+                          <AddIcon /> Add location
+                      </Button>
+                  </Box>
 
-      {/* Locations List */}
-      <Box className="locations-list-container">
-        {locations.length > 0 ? locations.map((location, index) => (
-          <Box className="locations-list-item my-4" key={index}>
-            <img src={"errtr"} alt={`Image`} className="location-img" />
-            <Box className="location-name">
-              <Typography className="text-nowrap branchName" variant="h4" gutterBottom onClick={() => handleOpenModal(location)} style={{ cursor: "pointer" }}>
-                {location?.branchName}
-              </Typography>
-              <Typography variant="h6" gutterBottom className="truncate-text">{location?.address1}</Typography>
-              <Typography variant="h6" gutterBottom className="truncate-address">{location?.city}, {location?.state}, {location?.postalCode}</Typography>
-              <Typography variant="h6" gutterBottom>{location?.phoneNumber}</Typography>
-            </Box>
+                  {/* Locations List */}
+                  <Box className="locations-list-container">
+                      {locations.length > 0 ? (
+                          locations.map((location, index) => (
+                              <Box
+                                  className="locations-list-item my-4"
+                                  key={index}
+                              >
+                                  <img
+                                      src={"errtr"}
+                                      alt={`Image`}
+                                      className="location-img"
+                                  />
+                                  <Box className="location-name">
+                                      <Typography
+                                          className="text-nowrap branchName"
+                                          variant="h4"
+                                          gutterBottom
+                                          onClick={() =>
+                                              handleOpenModal(location)
+                                          }
+                                          style={{ cursor: "pointer" }}
+                                      >
+                                          {location?.branchName}
+                                      </Typography>
+                                      <Typography
+                                          variant="h6"
+                                          gutterBottom
+                                          className="truncate-text"
+                                      >
+                                          {location?.address1}
+                                      </Typography>
+                                      <Typography
+                                          variant="h6"
+                                          gutterBottom
+                                          className="truncate-address"
+                                      >
+                                          {location?.city}, {location?.state},{" "}
+                                          {location?.postalCode}
+                                      </Typography>
+                                      <Typography variant="h6" gutterBottom>
+                                          {location?.phoneNumber}
+                                      </Typography>
+                                  </Box>
 
-            <Box className="location-actions">
-              <Button className="location-chos-btn">Choose</Button>
-              <IconButton onClick={() => handleDelete(location)}>
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          </Box>
+                                  <Box className="location-actions">
+                                      <Button className="location-chos-btn">
+                                          Choose
+                                      </Button>
+                                      <IconButton
+                                          onClick={() => handleDelete(location)}
+                                      >
+                                          <DeleteIcon />
+                                      </IconButton>
+                                  </Box>
+                              </Box>
+                          ))
+                      ) : (
+                          <Typography
+                              variant="h6"
+                              align="center"
+                              sx={{ mt: 2, color: "gray" }}
+                          >
+                              No results found
+                          </Typography>
+                      )}
+                  </Box>
 
-        )) : <Typography variant="h6" align="center" sx={{ mt: 2, color: "gray" }}>
-          No results found
-        </Typography>}
-      </Box>
+                  {/* Reusable Modal */}
 
-      {/* Reusable Modal */}
-      
-      <CustomModal open={modalOpen} onClose={() => setModalOpen(false)} onSave={handleSave} data={currentLocation} fields={locationFields}/>
-    </Box>
+                  <CustomModal
+                      open={modalOpen}
+                      onClose={() => setModalOpen(false)}
+                      onSave={handleSave}
+                      data={currentLocation}
+                      fields={locationFields}
+                  />
+              </Box>
+          )}
+      </>
   );
 }
