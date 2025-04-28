@@ -14,6 +14,9 @@ module.exports = {
   deleteLocation:"/location/delete",
   addServie:"/services/add",
   getAllServices:"/services/fetchAll",
-  deleteService:"/services/delete"
+  deleteService:"/services/delete",
+  fetchStaff:"/staff/fetchAll",
+  addStaff:"/staff/add",
+  deleteStaff: "/staff/delete",
   //config:"/global-config/config"
 };

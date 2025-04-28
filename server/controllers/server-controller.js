@@ -136,6 +136,41 @@ getAllServices: async (req, res, next) => {
         console.error("Error in deletion:", error);
         res.status(500).send({ message: "Failed to delete location" });
     }
-  }
+  },
+
+  fetchStaff: async (req, res, next) => {
+    try {
+      const pageNo = req.query.page || 0;
+      const limitNo = req.query.limit || 10;
+      let finalUrl = `${reactAppUrl}${endpoints.fetchStaff}?page=${pageNo}&limit=${limitNo}`;
+      let response = await serviceReq(req, finalUrl, "GET", {}, req.headers, true);
+      let statusCode = (response && response.status) || 400;
+      res.status(statusCode).send(response && response.data);
+    } catch (error) {
+      console.error("Error fetching staff:", error);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  },
+  
+  addStaff: async (req, res, next) => {
+  
+      let finalUrl = `${reactAppUrl}${endpoints.addStaff}`; 
+      let response = await serviceReq(req, finalUrl, "POST", req.body, req.headers, true);
+      let statusCode = (response && response.status) || 400;
+      res.status(statusCode).send(response && response.data);
+    },
+  
+    deleteStaff: async (req, res, next) => {
+    const { id } = req.params;
+    let finalUrl = `${reactAppUrl}${endpoints.deleteStaff}/${id}`; 
+    try {
+        let response = await serviceReq(req, finalUrl, "DELETE", null, req.headers, true);
+        let statusCode = (response && response.status) || 400;
+        res.status(statusCode).send(response && response.data);
+    } catch (error) {
+        console.error("Error in deletion:", error);
+        res.status(500).send({ message: "Failed to delete location" });
+    }
+  },
   
 };
