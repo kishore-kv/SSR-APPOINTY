@@ -20,5 +20,7 @@ routes.delete("/deleteService/:id",serverController.deleteService);
 routes.get("/fetchStaff", serverController.fetchStaff);
 routes.post("/addStaff", serverController.addStaff);
 routes.delete("/deleteStaff/:id", serverController.deleteStaff);
+routes.post("/updateService", serverController.updateService);
+routes.post("/updateLocation", serverController.updateLocation);
 
 module.exports = routes;

@@ -101,23 +101,29 @@ const handleDelete = async (service) => {
   };
 
   //save the service
-    const handleSave = async (data) => {
-      setIsLoading(true);
-    console.log(`===data`, data);
-      try {
-          const response = await requestPost("/addService", data);
-          if (response && response.status === 200) {
-              await fetchServices();
-          } else {
-              console.error("Failed to save location");
-          }
-      } catch (error) {
-          console.error("Error while saving location:", error);
-      } finally {
-          setIsLoading(false);
-          setModalOpen(false);
+  const handleSave = async (data) => {
+    setIsLoading(true);
+    try {
+      let response;
+      if (data.serviceId) {
+        // Update existing service
+        response = await requestPost("/updateService", data);
+      } else {
+        // Add new service
+        response = await requestPost("/addService", data);
       } 
-  };
+      if (response && response.status === 200) {
+        await fetchServices();
+      } else {
+        console.error("Failed to save service");
+      }
+    } catch (error) {
+      console.error("Error while saving service:", error);
+    } finally {
+      setIsLoading(false);
+      setModalOpen(false);
+    }
+  };  
 
   React.useEffect(() => {  fetchServices() }, []);
 

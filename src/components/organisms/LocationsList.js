@@ -75,21 +75,27 @@ const handleDelete = async (location) => {
   const handleSave = async (data) => {
     setIsLoading(true);
     try {
-        let response = await requestPost("/addLocation", data);
-        if (response && response.status === 200) {
-            await fetchLocations();
-            // setModalOpen(false);
-        } else {
-            console.error("Failed to save location");
-        }
+      let response;
+      if (data.id) {
+        // Convert to expected payload
+        const payload = { ...data, locationId: data.id };
+        delete payload.id;  
+        response = await requestPost("/updateLocation", payload);
+      } else {
+        response = await requestPost("/addLocation", data);
+      }
+      if (response && response.status === 200) {
+        await fetchLocations();
+      } else {
+        console.error("Failed to save location");
+      }
     } catch (error) {
-        console.error("Error while saving location:", error);
+      console.error("Error while saving location:", error);
     } finally {
-        setIsLoading(false);
-        setModalOpen(false);
-    } 
-};
-
+      setIsLoading(false);
+      setModalOpen(false);
+    }
+  };
 
   // Fetch locations from API (mocked here)
   const [isLoading, setIsLoading] = useState(false);
@@ -249,7 +255,7 @@ const handleDelete = async (location) => {
                       open={modalOpen}
                       onClose={() => setModalOpen(false)}
                       onSave={handleSave}
-                      data={currentLocation}
+                      data={currentLocation} // contains `id` if editing
                       fields={locationFields}
                   />
               </Box>

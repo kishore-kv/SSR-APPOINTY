@@ -107,6 +107,18 @@ module.exports = {
     res.status(statusCode).send(response && response.data);
 },
 
+updateLocation: async (req, res, next) => {
+  const finalUrl = `${reactAppUrl}${endpoints.updateLocation}`;
+  try {
+    const response = await serviceReq(req, finalUrl, "POST", req.body, req.headers, true);
+    const statusCode = (response && response.status) || 400;
+    res.status(statusCode).send(response && response.data);
+  } catch (error) {
+    console.error("Error updating location:", error);
+    res.status(500).send({ message: "Failed to update location" });
+  }
+},
+
 getAllServices: async (req, res, next) => {
     
       const {pageNo , limit} = req.query
@@ -172,5 +184,18 @@ getAllServices: async (req, res, next) => {
         res.status(500).send({ message: "Failed to delete location" });
     }
   },
+
+  updateService: async (req, res, next) => {
+    const finalUrl = `${reactAppUrl}${endpoints.updateService}`;
+    try {
+      const response = await serviceReq(req, finalUrl, "POST", req.body, req.headers, true);
+      const statusCode = (response && response.status) || 400;
+      res.status(statusCode).send(response && response.data);
+    } catch (error) {
+      console.error("Error updating service:", error);
+      res.status(500).send({ message: "Failed to update service" });
+    }
+  },
+  
   
 };

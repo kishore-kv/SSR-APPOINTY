@@ -15,6 +15,7 @@ module.exports = {
   addServie:"/services/add",
   getAllServices:"/services/fetchAll",
   deleteService:"/services/delete",
+  updateService:"/services/update",
   fetchStaff:"/staff/fetchAll",
   addStaff:"/staff/add",
   deleteStaff: "/staff/delete",
