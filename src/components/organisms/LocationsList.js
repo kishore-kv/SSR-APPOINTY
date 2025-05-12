@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { Box, Typography,TextField, IconButton } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Button from '../../components/atoms/button/Button';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CustomModal from '../../components/modal/CustomModal';
 import { requestDelete, requestPost } from '../../services/request';
 import Loader from '../../components/atoms/loader/Loader';
+import SearchBar from '../../components/molecules/searchBar/SearchBar';
+import LocationsDetails from '../../components/molecules/locationDetails/LocationsDetails';
 
 
 
-function createData(cityname, address) {
-  return { cityname, address };
-}
+// function createData(cityname, address) {
+//   return { cityname, address };
+// }
 const locationFields = [
     { name: "branchName", label: "Branch Name" },
     { name: "address1", label: "Address1" },
@@ -31,20 +29,7 @@ export default function  LocationsList() {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null); // For editing
 
-  // Search logic
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
-    setSearchTerm(query);
-
-    if (query.trim() === "") {
-      setFilteredRows(rows);
-    } else {
-      const filtered = rows.filter((row) =>
-        row.cityname.toLowerCase().includes(query)
-      );
-      setFilteredRows(filtered);
-    }
-  };
+  const addText = "Add Location";
 
   // Delete function
 const handleDelete = async (location) => {
@@ -161,103 +146,24 @@ const handleDelete = async (location) => {
                   </Box>
 
                   {/* Search and Add Button */}
-                  <Box className="search-location-container">
-                      <TextField
-                          placeholder="Search for"
-                          variant="outlined"
-                          fullWidth
-                          className="w-75"
-                          sx={{ "& .MuiFormHelperText-root": { margin: 0 } }}
-                          helperText="You can enter up to 100 characters for your search"
-                          onChange={handleSearch}
-                          value={searchTerm}
-                      />
-                      <Button
-                          className="location-btn"
-                          sx={{ margin: 1 }}
-                          onClick={() => handleOpenModal()}
-                      >
-                          <AddIcon /> Add location
-                      </Button>
-                  </Box>
+                    <SearchBar
+                        searchedData={searchTerm}
+                        setSearchedData={setSearchTerm}
+                        currentData={currentLocation}
+                        setCurrentData={setCurrentLocation}
+                        addText= {addText}
+                        modalOpen={modalOpen}
+                        setModalOpen={setModalOpen}
+                        handleSave={handleSave}
+                        fields={locationFields}
+                    />
 
                   {/* Locations List */}
-                  <Box className="locations-list-container">
-                      {locations.length > 0 ? (
-                          locations.map((location, index) => (
-                              <Box
-                                  className="locations-list-item my-4"
-                                  key={index}
-                              >
-                                  <img
-                                      src={"errtr"}
-                                      alt={`Image`}
-                                      className="location-img"
-                                  />
-                                  <Box className="location-name">
-                                      <Typography
-                                          className="text-nowrap branchName"
-                                          variant="h4"
-                                          gutterBottom
-                                          onClick={() =>
-                                              handleOpenModal(location)
-                                          }
-                                          style={{ cursor: "pointer" }}
-                                      >
-                                          {location?.branchName}
-                                      </Typography>
-                                      <Typography
-                                          variant="h6"
-                                          gutterBottom
-                                          className="truncate-text"
-                                      >
-                                          {location?.address1}
-                                      </Typography>
-                                      <Typography
-                                          variant="h6"
-                                          gutterBottom
-                                          className="truncate-address"
-                                      >
-                                          {location?.city}, {location?.state},{" "}
-                                          {location?.postalCode}
-                                      </Typography>
-                                      <Typography variant="h6" gutterBottom>
-                                          {location?.phoneNumber}
-                                      </Typography>
-                                  </Box>
-
-                                  <Box className="location-actions">
-                                      <Button className="location-chos-btn">
-                                          Choose
-                                      </Button>
-                                      <IconButton
-                                          onClick={() => handleDelete(location)}
-                                      >
-                                          <DeleteIcon />
-                                      </IconButton>
-                                  </Box>
-                              </Box>
-                          ))
-                      ) : (
-                          <Typography
-                              variant="h6"
-                              align="center"
-                              sx={{ mt: 2, color: "gray" }}
-                          >
-                              No results found
-                          </Typography>
-                      )}
-                  </Box>
-
-                  {/* Reusable Modal */}
-
-                  <CustomModal
-                      open={modalOpen}
-                      onClose={() => setModalOpen(false)}
-                      onSave={handleSave}
-                      data={currentLocation} // contains `id` if editing
-                      fields={locationFields}
-                  />
+                      <LocationsDetails
+                            locations={locations}
+                            handleOpenModal={handleOpenModal}
+                            handleDelete={handleDelete}
+                      />
               </Box>
           )}
       </>

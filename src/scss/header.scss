@@ -55,3 +55,15 @@
 .headerLeft {
     flex: 0 0 auto;
 }
+
+@media (max-width: 576px) {
+    .logout-text {
+        display: none;
+    }
+    .headerLogo{
+        width: 100px;
+    }
+    .header_Title{
+        font-size: 1.5rem !important;
+    }
+}

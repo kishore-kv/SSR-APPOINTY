@@ -1,25 +1,11 @@
-import React,{useState} from 'react'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Button from '../../components/atoms/button/Button';
-import AddIcon from '@mui/icons-material/Add';
-import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
-import { Box, TextField , IconButton,Typography} from '@mui/material';
+import React,{useState, useEffect} from 'react';
 import { requestDelete , request , requestPost} from '../../services/request'; 
-import DeleteIcon from '@mui/icons-material/Delete';
-import CustomModal from '../../components/modal/CustomModal';
+import ServiceDetailsTable from '../../components/molecules/serviceDetails/ServiceDetailsTable';
+import SearchBar from '../../components/molecules/searchBar/SearchBar';
 import Loader from '../../components/atoms/loader/Loader';
 
 
-
-function createData(service, duration, price, timeslot, visibilty) {
-  return { service, duration, price, timeslot, visibilty };
-}
+const addText = "Add Service";
 
 const serviceFields = [
   { name: "serviceName", label: "Service Name" },
@@ -30,29 +16,16 @@ const serviceFields = [
 
 export default function  ServicesList() {
 
-  const [searchText, setSearchText] = useState('');
-   const [modalOpen, setModalOpen] = useState(false);
-  const [rows, setRows] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
   const [currentService, setCurrentService] = useState(null); 
   const [services , setServices] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  
-    const handleSearchTextChange = (e) => {
-      const query = e.target.value.toLowerCase();
-      setSearchText(query);
-  
-      if (query.trim() === "") {
-        setSearchResults(rows);
-      } else {
-        const filtered = rows.filter((row) =>
-          row.name.toLowerCase().includes(query)
-        );
-        setSearchResults(filtered);
-      }
-
-  }
-  
-
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(1);
+  const [searchedData, setSearchedData] = useState({ limit: rowsPerPage, page: page });
+  const [totalCount, setTotalCount] = useState(0);
+  const [searchTerm,setSearchTerm] = useState("");
+  const [serviceData, setServicesData] = useState([]);
   //delete
 const handleDelete = async (service) => {
   setIsLoading(true);
@@ -81,17 +54,19 @@ const handleDelete = async (service) => {
     setModalOpen(true);
   }
    
-  const fetchServices = async (pageNo , limit) => {
+  const fetchServices = async (searchedData = {}) => {
     setIsLoading(true);
     try {
-      const params = {
-        pageNo: pageNo || 0,
-        limit: limit || 10,
-      };
-      const response = await request('/getAllServices', 'get', params);
+      const payload = {limit: rowsPerPage, page: page, ...searchedData };
+
+      const response = await request('/getAllServices', payload);
+      console.log("== Response:", response);
+      
       if (response && response.data.status === "Success") {
-        const { data } = response.data;
-        setServices(data);
+        setServicesData(response.data.data);
+        const { results, total } = response.data.data;
+        setServices(results);
+        setTotalCount(total);
     } 
     } catch (error) {
       console.error("Error fetching services:", error);
@@ -125,74 +100,50 @@ const handleDelete = async (service) => {
     }
   };  
 
-  React.useEffect(() => {  fetchServices() }, []);
+  useEffect(() => {
+  if (serviceData) {
+    setRowsPerPage(serviceData.limit || 10);
+    setPage((serviceData.page || 1) - 1);
+  }
+}, [serviceData]);
 
+  useEffect(() => {
+    if (Object.keys(searchedData).length > 0) {
+      fetchServices(searchedData);
+    }
+  }, [searchedData]);
+  
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-        <Box className="search-location-container my-5">
-          <TextField
-            placeholder="Search for"
-            variant="outlined"
-            fullWidth
-            className="w-75"
-            sx={{ "& .MuiFormHelperText-root": { margin: 0 } }}
-            helperText="You can enter up to 100 characters for your search"
-            onChange={handleSearchTextChange}
-            value={searchText}
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            setSearchedData={setSearchedData}
+            currentData={currentService}
+            setCurrentData={setCurrentService}
+            addText={addText}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            handleSave={handleSave}
+            fields={serviceFields}
           />
-          <Button className="location-btn" sx={{ margin: 1 }} onClick={() => handleOpenModal()}>
-          <AddIcon /> Add Service 
-          </Button>
-        </Box>
-  
-        {services.length === 0 && (
-          <Box sx={{ p: 2, textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
-              No services found
-            </Typography>
-          </Box>
-        )}
-        {services.length > 0 && (
-      <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }} className='table-container'>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead>
-            <TableRow sx={{ backgroundColor: '#17679b' }}>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Service</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Duration</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Visibilty</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {services.map((service, index) => (
-              <TableRow 
-                key={service.serviceId} 
-                sx={{ backgroundColor: index % 2 ? 'action.hover' : 'inherit' }}
-              >
-                <TableCell component="th" scope="row" onClick={() => handleOpenModal(service)}>{service?.serviceName}</TableCell>
-                <TableCell align="right">{service?.durationMins}</TableCell>
-                <TableCell align="right">{service?.price}</TableCell>
-                <TableCell align="right">{service?.isActive}</TableCell>
-                <TableCell align="right">
-                  <IconButton onClick={() => handleDelete(service)}>
-                    <DeleteIcon />
-                 </IconButton>
-              </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      
-      
-      </TableContainer>)}
-      <CustomModal open={modalOpen} onClose={() => setModalOpen(false)} onSave={handleSave} data={currentService} fields={serviceFields}/>
-      </>
-    )}
+          <ServiceDetailsTable
+            services={services}
+            totalCount={totalCount}
+            handleDelete={handleDelete}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            handleOpenModal={handleOpenModal}
+            setPage={setPage}
+            setRowsPerPage={setRowsPerPage}
+            setSearchedData={setSearchedData}
+          />
+        </>
+      )}
     </>
   );
 }

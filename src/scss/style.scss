@@ -57,7 +57,7 @@
 
 .table-container{
     margin: 0 auto;
-    width: 85% !important;
+    width: 100% !important;
 }
 
 .full-width-route {
@@ -78,4 +78,19 @@
 .collapsed-content {
     width: 94.5%;
     overflow-y: auto;
+}
+
+@media (max-width : 576px) {
+    .left-side-navbar-expanded {
+        width: 15%;
+    }
+    .left-side-navbar-collapsed {
+        width: 10%;
+    }
+    .collapsed-content {
+        width: 90%;
+    }
+    .expanded-content {
+        width: 85%;
+    }
 }

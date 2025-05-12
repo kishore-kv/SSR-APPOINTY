@@ -7,20 +7,20 @@ const getHeaders = () => {
 };
 
 
-export const request = async (url, method='get' , params={ }) => {
-  try {
-    const data = await axios[method](url , {
-      params,
-      headers: getHeaders()
-  });
-    if (!data) {
-      throw Error("Empty data from get settings");
+export const request = async (url, params = {}) => {
+    try {
+        const data = await axios.get(url, {
+            params: params,
+            headers: getHeaders()
+        })
+        if (!data) {
+            throw Error('Empty data from get settings')
+        }
+        return data
+    } catch (error) {
+        return error
     }
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
+}
 
 export const requestPdf = async (url) => {
   try {
