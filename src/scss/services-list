@@ -4,3 +4,22 @@
     display: flex;
     margin-block: 2.5em;
 }
+
+.table-container_wrapper{
+    display: flex;
+    width: 85% !important;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.pagination-label {
+    display: inline-block;
+    padding-top: 10px;
+    font-size: 14px;
+}
+
+.pagination-displayed-rows {
+    display: inline-block;
+    padding-top: 13px;
+    font-size: 14px;
+}

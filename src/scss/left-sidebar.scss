@@ -113,3 +113,13 @@
       right: 20%;
     }
   }
+
+  @media (max-width : 576px) {
+    .customListItemText {
+      display: none;
+    }
+    .custom_arrow_container, .custom_arrow_container_expanded {
+      display: none;
+    }
+  }
+  

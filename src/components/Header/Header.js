@@ -25,7 +25,7 @@ export default function Header({ isAuthorized, isLogout, triggerLogout }) {
       {isAuthorized && isLogout && (
         <div className="headerSection headerRight logoutContainer" onClick={handleLogout}>
           <LogoutIcon style={{ marginRight: "6px" }} />
-          <span>Cerrar sesión</span>
+          <span className="logout-text">Cerrar sesión</span>
         </div>
       )}
     </div>

@@ -121,8 +121,8 @@ updateLocation: async (req, res, next) => {
 
 getAllServices: async (req, res, next) => {
     
-      const {pageNo , limit} = req.query
-    let finalUrl = `${reactAppUrl}${endpoints.getAllServices}?page=${pageNo}&limit=${limit}`;
+      const {page , limit} = req.query
+    let finalUrl = `${reactAppUrl}${endpoints.getAllServices}?page=${page}&limit=${limit}`;
     console.log(`===finalUrl`, finalUrl);
     let response = await serviceReq(req,finalUrl, "GET",{},req.headers,true);
     let statusCode = response && response.status || 400
@@ -152,9 +152,9 @@ getAllServices: async (req, res, next) => {
 
   fetchStaff: async (req, res, next) => {
     try {
-      const pageNo = req.query.page || 0;
+      const page = req.query.page || 0;
       const limitNo = req.query.limit || 10;
-      let finalUrl = `${reactAppUrl}${endpoints.fetchStaff}?page=${pageNo}&limit=${limitNo}`;
+      let finalUrl = `${reactAppUrl}${endpoints.fetchStaff}?page=${page}&limit=${limitNo}`;
       let response = await serviceReq(req, finalUrl, "GET", {}, req.headers, true);
       let statusCode = (response && response.status) || 400;
       res.status(statusCode).send(response && response.data);

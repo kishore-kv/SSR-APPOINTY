@@ -91,3 +91,25 @@
         max-width: 200px;
     }
 }
+
+@media (max-width: 576px) {
+    .search-location-container {
+        flex-wrap: wrap;
+        margin-inline: 50px;
+    }
+    .locations-list-item{
+        flex-direction: column;
+        padding: 1rem 0;
+    }
+    .location-name{
+        width: 80%;
+        max-width: 800%;
+        align-items: flex-start;
+    }
+    .branchName{
+        font-size: 1.6rem !important;
+    }
+    .location-actions {
+        gap: 2rem;
+    }
+}
