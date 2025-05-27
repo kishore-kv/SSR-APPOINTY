@@ -197,5 +197,19 @@ getAllServices: async (req, res, next) => {
     }
   },
   
+  fetchServiceStaffDetails :  async (req, res, next) => {
+    const id = req.params.id;
+    const finalUrl = `${reactAppUrl}${endpoints.locationByStaffId}/${id}`;
+    console.log("FFFinalURL", finalUrl);
+    
+    try {
+      let response = await serviceReq(req, finalUrl, "GET", {}, req.headers, true);
+      let statusCode = (response && response.status) || 400;
+      res.status(statusCode).send(response && response.data);
+    } catch (error) {
+      console.error("Error fetching staff:", error);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  },
   
 };

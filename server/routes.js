@@ -22,5 +22,6 @@ routes.post("/addStaff", serverController.addStaff);
 routes.delete("/deleteStaff/:id", serverController.deleteStaff);
 routes.post("/updateService", serverController.updateService);
 routes.post("/updateLocation", serverController.updateLocation);
+routes.get("/fetchServiceStaffDetails/:id", serverController.fetchServiceStaffDetails);
 
 module.exports = routes;

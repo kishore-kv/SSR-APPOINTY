@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
-import { Box, Typography,TextField, IconButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { requestDelete, requestPost } from '../../services/request';
+import { requestDelete, requestPost, request } from '../../services/request';
 import Loader from '../../components/atoms/loader/Loader';
 import SearchBar from '../../components/molecules/searchBar/SearchBar';
 import LocationsDetails from '../../components/molecules/locationDetails/LocationsDetails';
 
-
-
-// function createData(cityname, address) {
-//   return { cityname, address };
-// }
 const locationFields = [
     { name: "branchName", label: "Branch Name" },
     { name: "address1", label: "Address1" },
@@ -24,10 +19,11 @@ const locationFields = [
 export default function  LocationsList() {
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [rows, setRows] = useState(0);
-  const [filteredRows, setFilteredRows] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(null); // For editing
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [locationData, setLocationData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [locations, setLocations] = useState([]);
 
   const addText = "Add Location";
 
@@ -51,8 +47,13 @@ const handleDelete = async (location) => {
 
 
   // Open modal for adding or updating location
-  const handleOpenModal = (location = null) => {
+  const handleOpenModalLocation = (location = null) => {
     setCurrentLocation(location);
+    setModalOpen(true);
+  };
+
+  const handleOpenDetailsModal = (location) => {
+    fetchServiceStaffDetails(location);
     setModalOpen(true);
   };
 
@@ -82,30 +83,38 @@ const handleDelete = async (location) => {
     }
   };
 
-  // Fetch locations from API (mocked here)
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [locations, setLocations] = useState([]);
   const fetchLocations = async () => {
     const payload = { limit: 10, page: 0 };
     setIsLoading(true);
     try {
       const response = await requestPost('/getAllLocations', payload);
-      if (response && response.data.status === "Success") {
-        const { data } = response.data;
-        // console.log(`data`,data);          
-        setLocations(data);
+      if (response?.data?.status === "Success") {
+        setLocations(response.data.data);
       }
     } catch (error) {
-      setIsError(true);
       console.error(error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Call fetchLocations when the component mounts
-  React.useEffect(() => {
+  const fetchServiceStaffDetails = async (location) => {
+    // const payload = { locationId: location.id };
+    setIsLoading(true);
+    try {
+      const response = await request(`/fetchServiceStaffDetails/${location.id}`, {});
+      if (response?.data?.status === "Success") {
+        console.log("LocationDetails" , response.data.data)
+        setLocationData(response.data.data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchLocations();
   }, []);
 
@@ -156,13 +165,16 @@ const handleDelete = async (location) => {
                         setModalOpen={setModalOpen}
                         handleSave={handleSave}
                         fields={locationFields}
+                        locationData={locationData}
+                        setLocationData={setLocationData}
+                        handleOpenModalLocation={handleOpenModalLocation}
                     />
 
                   {/* Locations List */}
                       <LocationsDetails
-                            locations={locations}
-                            handleOpenModal={handleOpenModal}
-                            handleDelete={handleDelete}
+                          locations={locations}
+                          handleOpenDetailsModal={handleOpenDetailsModal}
+                          handleDelete={handleDelete}
                       />
               </Box>
           )}
